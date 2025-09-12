@@ -1,6 +1,6 @@
 {
-  "name": "pm-platform-fe",
-  "version": "0.0.0",
+  "name": "pm-platform",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
