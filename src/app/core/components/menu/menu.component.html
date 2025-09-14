@@ -1,3 +1,31 @@
 <div class="menu">
- this is the menu
+    <div class="profile">
+       <div class="image">
+           <img src="" alt="img">
+       </div>
+       <div class="title">
+          <h3>{{ title }}</h3>
+       </div>
+       <div class="close-button">
+          <p-button icon="pi pi-chevron-left" size="small"></p-button>
+       </div>
+    </div>
+
+    <div class="search">
+        <p-iconfield>
+            <p-inputicon class="pi pi-search" />
+            <input type="text" pInputText placeholder="Search" />
+        </p-iconfield>
+    </div>
+
+    <p style="color: white; margin-bottom: 10px;">PAGES</p>
+    <p-panelMenu [model]="items" ></p-panelMenu>
+
+    <hr>
+
+    <p style="color: white; margin-top: 20px;">Projects</p>
+    <p-menu [model]="projectItems" ></p-menu>
 </div>
+
+
+

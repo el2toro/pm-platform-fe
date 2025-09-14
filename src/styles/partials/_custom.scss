@@ -1,0 +1,136 @@
+/* Section labels like "PAGES" */
+:host ::ng-deep .p-panelmenu .menu-section > a {
+  cursor: default;
+  pointer-events: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #9ca3af; /* gray-400 */
+  background: transparent !important;
+  padding: 0.75rem 1rem;
+  border: none;
+}
+
+/* Submenu items */
+:host ::ng-deep .p-panelmenu .p-menuitem-link {
+  padding: 0.65rem 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Active item */
+:host ::ng-deep .p-panelmenu .p-menuitem-link.p-menuitem-link-active {
+  background: #2563eb; /* blue-600 */
+  color: white;
+}
+
+/* Icons */
+:host ::ng-deep .p-panelmenu .p-menuitem-icon {
+  margin-right: 0.75rem;
+}
+
+/* Align chevron right */
+:host ::ng-deep .p-panelmenu .p-panelmenu-header > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+ .p-button-sm .p-button-icon-only .custom-color{
+      background-color: red !important;
+      border: none;
+      width: 50px;
+      height: 50px;
+   }
+
+   //  .p-panelmenu-panel:first-child{
+   //    a:hover{
+   //       cursor: auto;
+   //    }
+   // }
+
+   .p-panelmenu-panel {
+      border: none !important;
+      background-color: #131313 !important;
+
+      a:hover{
+        // cursor: pointer;
+      }
+
+      &:hover{
+         //background-color: #3E97FF;
+      }
+   }
+
+   .p-menu {
+      background-color: transparent !important;
+      border: none !important;
+   }
+
+   .p-panelmenu-header-content{
+     &:first-child:active{
+         //background-color: red !important;
+      }
+
+      &:hover{
+         background-color: transparent !important;
+         cursor: pointer !important;
+      }
+   }
+
+   .p-panelmenu-item-content{
+      &:active{
+         background-color: #3E97FF !important;
+      }
+
+      &:hover{
+         background-color: #3E97FF !important;
+         cursor: pointer !important;
+      }
+   }
+
+   .p-panelmenu-item-link{
+      color: white !important;
+      // &:li{
+      //    background-color: red;
+      // }
+   }
+
+   .p-panelmenu-header-label{
+      color: white !important;
+   }
+
+   .p-panelmenu-header-link{
+      margin-left: -10px !important;
+
+      svg{
+         position: absolute;
+         margin: 230px;
+         color: white;
+      }
+   }
+
+   .p-panelmenu{
+      margin-left: -5px;
+   }
+
+
+     .custom-icon{
+      .p-panelmenu-header-icon, .p-panelmenu-item-icon{
+          font-size: 0.5rem;
+          color: white;
+      }
+     
+      .p-menu-item-icon{
+         font-size: 0.5rem !important;
+         color: white !important;
+      }
+
+      .p-menu-item-label{
+         color: white;
+      }
+
+      .p-menu-item.p-focus .p-menu-item-content{
+         background-color: red !important;
+      }
+   }
