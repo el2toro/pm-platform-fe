@@ -21,22 +21,22 @@ const CustomPreset = definePreset(Aura, {
             light: {
                 primary: {
                     color: '#3E97FF',
-                    inverseColor: '#a61111ff',
+                    inverseColor: '#3E97FF',
                     hoverColor: '{blue.900}',
-                    activeColor: '#c5a353ff'
+                    activeColor: '#3E97FF'
                 },
                 highlight: {
                     background: '{blue.950}',
                     focusBackground: '{blue.700}',
-                    color: '#876e6eff',
-                    focusColor: '#959cccff'
+                    color: '#c60000ff',
+                    focusColor: '#ff0000ff'
                 },
 
                 item: {
-            color: '{purple.700}',
+            color: '{blue.700}',
             focus: {
-              background: '{purple.50}',
-              color: '{purple.700}',
+              background: '{blue.50}',
+              color: '{blue.700}',
             },}
             },
             dark: {

@@ -1,39 +1,39 @@
-/* Section labels like "PAGES" */
-:host ::ng-deep .p-panelmenu .menu-section > a {
-  cursor: default;
-  pointer-events: none;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #9ca3af; /* gray-400 */
-  background: transparent !important;
-  padding: 0.75rem 1rem;
-  border: none;
-}
+// /* Section labels like "PAGES" */
+// :host ::ng-deep .p-panelmenu .menu-section > a {
+//   cursor: default;
+//   pointer-events: none;
+//   font-size: 0.75rem;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   color: #9ca3af; /* gray-400 */
+//   background: transparent !important;
+//   padding: 0.75rem 1rem;
+//   border: none;
+// }
 
-/* Submenu items */
-:host ::ng-deep .p-panelmenu .p-menuitem-link {
-  padding: 0.65rem 1rem;
-  border-radius: 0.5rem;
-}
+// /* Submenu items */
+// :host ::ng-deep .p-panelmenu .p-menuitem-link {
+//   padding: 0.65rem 1rem;
+//   border-radius: 0.5rem;
+// }
 
-/* Active item */
-:host ::ng-deep .p-panelmenu .p-menuitem-link.p-menuitem-link-active {
-  background: #2563eb; /* blue-600 */
-  color: white;
-}
+// /* Active item */
+// :host ::ng-deep .p-panelmenu .p-menuitem-link.p-menuitem-link-active {
+//   background: #2563eb; /* blue-600 */
+//   color: white;
+// }
 
-/* Icons */
-:host ::ng-deep .p-panelmenu .p-menuitem-icon {
-  margin-right: 0.75rem;
-}
+// /* Icons */
+// :host ::ng-deep .p-panelmenu .p-menuitem-icon {
+//   margin-right: 0.75rem;
+// }
 
-/* Align chevron right */
-:host ::ng-deep .p-panelmenu .p-panelmenu-header > a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+// /* Align chevron right */
+// :host ::ng-deep .p-panelmenu .p-panelmenu-header > a {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// }
 
 
  .p-button-sm .p-button-icon-only .custom-color{
