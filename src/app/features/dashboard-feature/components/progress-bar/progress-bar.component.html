@@ -3,9 +3,13 @@
     <div class="progress" [style.width.%]="progress" [style.background]="progressBackground">
     </div>
     <div class="steps">
-      <span class="step completed"></span>
-      <span class="step completed"></span>
-      <span style="color: white; margin-left:10px; margin-top: 5px;">{{ title }}</span>
+      <span class="step completed">
+        <img src="assets/images/portrait.jpg" alt="img" class="image">
+      </span>
+      <span class="step completed">
+        <img src="assets/images/portrait1.jpg" alt="img" class="image">
+      </span>
+      <span class="title">{{ title }}</span>
       <span class="step active">{{ progress }}%</span>
     </div>
   </div>

@@ -1,19 +1,16 @@
 .progress-container {
   width: 100%;
-  max-width: 500px;
-  //margin: 2rem auto;
+  max-width: 600px;
   text-align: center;
 
   .progress-bar {
     position: relative;
     height: 40px;
-    //background: #EEF6FF;
     border-radius: 20px;
     overflow: hidden;
 
     .progress {
       height: 100%;
-      //background: #3E97FF;
       border-radius: inherit;
       transition: width 0.4s ease-in-out;
       display: flex;
@@ -28,7 +25,6 @@
       left: 0;
       width: 100%;
       display: flex;
-      //justify-content: space-between;
       transform: translateY(-50%);
       padding: 10px;
 
@@ -57,13 +53,25 @@
 
         &.active {
           background: #ff9800;
-          position: relative;
-          right: -70%;
           background: white;
           width: 40px;
           border-radius: 40%;
-          color: #5E6278
+          color: #5E6278;
+          margin-left: auto;
         }
+      }
+
+      .title{
+        color: white; 
+        margin-left:10px; 
+        margin-top: 5px;
+      }
+
+      .image{
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        border-radius: 50%;
       }
     }
   }

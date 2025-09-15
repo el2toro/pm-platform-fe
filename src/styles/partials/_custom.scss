@@ -46,14 +46,6 @@
    .p-panelmenu-panel {
       border: none !important;
       background-color: #131313 !important;
-
-      a:hover{
-        // cursor: pointer;
-      }
-
-      &:hover{
-         //background-color: #3E97FF;
-      }
    }
 
    .p-menu {
@@ -62,10 +54,6 @@
    }
 
    .p-panelmenu-header-content{
-     &:first-child:active{
-         //background-color: red !important;
-      }
-
       &:hover{
          background-color: transparent !important;
          cursor: pointer !important;
@@ -147,7 +135,9 @@
 }
 
 .p-datatable-tbody > tr > td{
-  ///display: flex !important;
    vertical-align: middle;
+}
 
+.p-tabs{
+  color: #A1A5B7 !important;
 }

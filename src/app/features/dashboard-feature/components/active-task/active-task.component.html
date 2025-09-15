@@ -1,6 +1,8 @@
 <div class="active-task">
   <div class="heading">
-    <p>Active Tasks</p>
+    <div class="title">
+       <p>Active Tasks</p>
+    </div>
     <div class="time-options">
       <div class="card">
     <p-tabs value="0" class="custom-tab-list">
@@ -18,7 +20,7 @@
                        <p>Research</p>                       
                         <app-progress-bar 
                           [title]="'Meeting'" 
-                          [progress]="70"
+                          [progress]="60"
                           [progressBackground]="'#3E97FF'"
                           [progressBarBackground]="'#EEF6FF'"></app-progress-bar>                   
                      </div>
@@ -48,8 +50,6 @@
                         <app-progress-bar 
                         [title]="'Product Module'" 
                         [progress]="75"
-                        [title]="'Landing Page'" 
-                        [progress]="55"
                         [progressBackground]="'#7239EA'"
                         [progressBarBackground]="'#F8F5FF'">
                       </app-progress-bar>                   
