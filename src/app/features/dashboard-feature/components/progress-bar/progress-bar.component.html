@@ -1,0 +1,12 @@
+<div class="progress-container">
+  <div class="progress-bar" [style.background]="progressBarBackground">
+    <div class="progress" [style.width.%]="progress" [style.background]="progressBackground">
+    </div>
+    <div class="steps">
+      <span class="step completed"></span>
+      <span class="step completed"></span>
+      <span style="color: white; margin-left:10px; margin-top: 5px;">{{ title }}</span>
+      <span class="step active">{{ progress }}%</span>
+    </div>
+  </div>
+</div>

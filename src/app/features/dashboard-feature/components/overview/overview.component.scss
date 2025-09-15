@@ -1,0 +1,15 @@
+.overview{
+    overflow-y: scroll;
+    height: 80vh;
+    .projects{
+       // border: 1px solid #E5E8EB;
+        //border-radius: 20px;
+    }
+
+    .active-tasks{
+        margin-top: 30px;
+        border: 1px solid #E5E8EB;
+        border-radius: 10px;
+        padding-bottom: 5px;
+    } 
+}

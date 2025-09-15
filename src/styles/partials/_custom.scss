@@ -134,3 +134,15 @@
          background-color: red !important;
       }
    }
+
+.p-datatable-tbody > tr > td{
+  //border: none !important;
+}
+
+/* CSS to move the tabs to the right side */
+.custom-tab-list{
+   .p-tablist-tab-list{
+   justify-content: flex-end;
+   z-index: 2;
+}
+}

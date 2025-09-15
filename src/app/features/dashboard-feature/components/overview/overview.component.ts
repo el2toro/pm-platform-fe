@@ -1,0 +1,31 @@
+import { Component, OnInit } from '@angular/core';
+import { TableModule } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+import { ActiveTaskComponent } from "../active-task/active-task.component";
+
+@Component({
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss'],
+  imports: [TableModule, CommonModule, ActiveTaskComponent],
+  standalone: true
+})
+export class OverviewComponent implements OnInit {
+  projects = <any[]>[];
+
+  constructor() { }
+
+  ngOnInit() {
+    this.initProjects();
+  }
+
+  initProjects(){
+    this.projects  = [
+      {name: 'First project', status: 'On Track', progress: '60', team: 'Dream Team', dueDate: '25/09/2026', chart: 'no chart'},
+      {name: 'First project', status: 'On Track', progress: '60', team: 'Dream Team', dueDate: '25/09/2026', chart: 'no chart'},
+      {name: 'First project', status: 'On Track', progress: '60', team: 'Dream Team', dueDate: '25/09/2026', chart: 'no chart'},
+      {name: 'First project', status: 'On Track', progress: '60', team: 'Dream Team', dueDate: '25/09/2026', chart: 'no chart'},
+      {name: 'First project', status: 'On Track', progress: '60', team: 'Dream Team', dueDate: '25/09/2026', chart: 'no chart'}
+    ]
+  }
+}
