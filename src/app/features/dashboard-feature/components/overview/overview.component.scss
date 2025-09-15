@@ -4,6 +4,37 @@
     .projects{
        // border: 1px solid #E5E8EB;
         //border-radius: 20px;
+
+        .inline-content{
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+        }
+
+        .label{
+           background-color: #E8FFF3; 
+           border-radius: 10px; 
+           color: #50CD89; 
+           padding: 5px 45px;
+        }
+
+        .progress-bar{
+            height: 4px;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .team{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+
+            img{
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+        }
     }
 
     .active-tasks{

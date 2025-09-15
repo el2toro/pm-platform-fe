@@ -43,12 +43,6 @@
       height: 50px;
    }
 
-   //  .p-panelmenu-panel:first-child{
-   //    a:hover{
-   //       cursor: auto;
-   //    }
-   // }
-
    .p-panelmenu-panel {
       border: none !important;
       background-color: #131313 !important;
@@ -91,9 +85,6 @@
 
    .p-panelmenu-item-link{
       color: white !important;
-      // &:li{
-      //    background-color: red;
-      // }
    }
 
    .p-panelmenu-header-label{
@@ -135,9 +126,6 @@
       }
    }
 
-.p-datatable-tbody > tr > td{
-  //border: none !important;
-}
 
 /* CSS to move the tabs to the right side */
 .custom-tab-list{
@@ -145,4 +133,21 @@
    justify-content: flex-end;
    z-index: 2;
 }
+}
+
+.p-datatable-thead{
+   font-size: 0.9rem;
+   color: #0F1417;
+}
+
+.p-datatable-table-container{
+   font-size: 0.9rem;
+   border: 1px solid #E5E8EB;
+   border-radius: 10px;
+}
+
+.p-datatable-tbody > tr > td{
+  ///display: flex !important;
+   vertical-align: middle;
+
 }

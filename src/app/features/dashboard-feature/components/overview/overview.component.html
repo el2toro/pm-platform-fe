@@ -16,11 +16,31 @@
         <ng-template #body let-project>
             <tr>
                 <td>{{ project.name }}</td>
-                <td>{{ project.status }}</td>
-                <td>{{ project.progress }}</td>
-                <td>{{ project.team }}</td>
+                <td>
+                  
+                  <span class="label">
+                    {{ project.status }}
+                  </span>
+                </td>
+                <td>
+                    <div class="inline-content">
+                      <p-progressbar class="progress-bar"
+                        [value]="project.progress" 
+                        [showValue]="false"/>
+                        {{ project.progress }} 
+                    </div>                       
+                </td>
+                <td>
+                  <!-- {{ project.team }} -->
+                  <div class="team">
+                    <img src="assets/images/portrait.jpg" alt="img">
+                  </div>
+                </td>
                 <td>{{ project.dueDate }}</td>
-                <td>{{ project.chart }}</td>
+                <td>
+                  <!-- {{ project.chart }} -->
+                  <app-wave-chart></app-wave-chart>
+                </td>
             </tr>
         </ng-template>
     </p-table>
