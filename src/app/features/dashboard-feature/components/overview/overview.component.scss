@@ -1,19 +1,15 @@
 .overview{
     overflow-y: scroll;
     height: 80vh;
+    
     .projects{
-       // border: 1px solid #E5E8EB;
-        //border-radius: 20px;
-
         .inline-content{
             display: grid;
             grid-template-columns: 4fr 1fr;
         }
 
         .label{
-           background-color: #E8FFF3; 
-           border-radius: 10px; 
-           color: #50CD89; 
+           border-radius: 10px;  
            padding: 5px 45px;
         }
 

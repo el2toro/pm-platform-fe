@@ -18,7 +18,9 @@
                 <td>{{ project.name }}</td>
                 <td>
                   
-                  <span class="label">
+                  <span class="label" 
+                  [style.background-color]="getStatusColor(project.status).backgroundColor"
+                  [style.color]="getStatusColor(project.status).color">
                     {{ project.status }}
                   </span>
                 </td>
@@ -33,13 +35,16 @@
                 <td>
                   <!-- {{ project.team }} -->
                   <div class="team">
-                    <img src="assets/images/portrait.jpg" alt="img">
+                    <img src="assets/images/{{project.team}}" alt="img">
                   </div>
                 </td>
                 <td>{{ project.dueDate }}</td>
                 <td>
                   <!-- {{ project.chart }} -->
-                  <app-wave-chart></app-wave-chart>
+                  <app-wave-chart 
+                  [borderColor]="project.status === 'On Track' ? '#50CD89' : '#F1416C'"
+                  [data]="project.chart">
+                </app-wave-chart>
                 </td>
             </tr>
         </ng-template>

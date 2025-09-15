@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
@@ -10,18 +10,24 @@ import { BaseChartDirective } from 'ng2-charts';
   standalone: true
 })
 export class WaveChartComponent implements OnInit {
+  @Input() data = <[]>[];
+  @Input() borderColor!: string;
+  lineChartData!: ChartConfiguration<'line'>['data'];
 
   constructor() { }
 
   ngOnInit() {
+    this.initChart();
+   
   }
 
-  lineChartData: ChartConfiguration<'line'>['data'] = {
+  initChart(){
+    this.lineChartData = {
     labels: Array.from({ length: 20 }, (_, i) => i),
     datasets: [
       {
-        data: [4, 6, 5, 8, 7, 9, 6, 5, 7, 6, 8, 7],
-        borderColor: '#50CD89',  // green
+        data: this.data,
+        borderColor: this.borderColor,
         borderWidth: 2,
         pointRadius: 0,
         tension: 0.4,
@@ -30,6 +36,9 @@ export class WaveChartComponent implements OnInit {
       }
     ]
   };
+  }
+
+  
 
   lineChartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
