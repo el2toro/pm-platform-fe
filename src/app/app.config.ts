@@ -5,6 +5,7 @@ import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import CustomPreset from '../styles/custom-theme';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
                 preset: CustomPreset
             }
         }),
-    provideCharts(withDefaultRegisterables())]
+    provideCharts(withDefaultRegisterables()),
+    provideHttpClient()]
 };

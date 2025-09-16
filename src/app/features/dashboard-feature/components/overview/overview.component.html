@@ -19,32 +19,32 @@
                 <td>
                   
                   <span class="label" 
-                  [style.background-color]="getStatusColor(project.status).backgroundColor"
-                  [style.color]="getStatusColor(project.status).color">
-                    {{ project.status }}
-                  </span>
+                  [style.background-color]="getStatusColor(project.projectStatus).backgroundColor"
+                  [style.color]="getStatusColor(project.projectStatus).color">
+                    {{ project.projectStatus | projectStatus}}
+                  </span> 
                 </td>
                 <td>
-                    <div class="inline-content">
+                    <!-- <div class="inline-content">
                       <p-progressbar class="progress-bar"
                         [value]="project.progress" 
                         [showValue]="false"/>
                         {{ project.progress }} 
-                    </div>                       
+                    </div>                        -->
                 </td>
                 <td>
                   <!-- {{ project.team }} -->
-                  <div class="team">
+                  <!-- <div class="team">
                     <img src="assets/images/{{project.team}}" alt="img">
-                  </div>
-                </td>
-                <td class="due-date">{{ project.dueDate }}</td>
+                  </div> -->
+                </td> 
+                <td class="due-date">{{ project.endDate | date}}</td>
                 <td>
                   <!-- {{ project.chart }} -->
-                  <app-wave-chart 
+                  <!-- <app-wave-chart 
                   [borderColor]="project.status === 'On Track' ? '#50CD89' : '#F1416C'"
                   [data]="project.chart">
-                </app-wave-chart>
+                </app-wave-chart> -->
                 </td>
             </tr>
         </ng-template>
