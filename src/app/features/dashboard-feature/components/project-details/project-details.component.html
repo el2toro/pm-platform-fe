@@ -1,0 +1,49 @@
+<div class="project-details">
+<div class="heading">
+  <h1>New Website UI Elements</h1>
+  <p>Project Description: Detailed description of the project, its objectives, and expected outcomes.</p>
+</div>
+
+<div class="tasks">
+ <h3>Task Breakdown</h3>
+
+  <p-table
+    [value]="projects"
+    [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template #header>
+            <tr>
+                <th>Task</th>
+                <th>Owner</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-project>
+            <tr>
+                <td>{{ project.name }}</td>
+                <td>
+                  <span>
+                    {{ project.owner }}
+                  </span>
+                </td>
+                <td>
+                    {{ project.deadline }}                       
+                </td>
+                <td>{{ project.status }}</td>
+                 <td>
+                  <p-button>Edit Task</p-button>
+                 </td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
+
+  <div class="teams">
+
+  </div>
+
+  <div class="notes">
+
+  </div>
+</div>
