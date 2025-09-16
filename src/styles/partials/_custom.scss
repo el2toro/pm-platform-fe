@@ -1,143 +1,151 @@
-// /* Section labels like "PAGES" */
-// :host ::ng-deep .p-panelmenu .menu-section > a {
-//   cursor: default;
-//   pointer-events: none;
-//   font-size: 0.75rem;
-//   font-weight: 600;
-//   text-transform: uppercase;
-//   color: #9ca3af; /* gray-400 */
-//   background: transparent !important;
-//   padding: 0.75rem 1rem;
-//   border: none;
-// }
+.p-panelmenu-panel {
+  border: none !important;
+  background-color: #131313 !important;
+}
 
-// /* Submenu items */
-// :host ::ng-deep .p-panelmenu .p-menuitem-link {
-//   padding: 0.65rem 1rem;
-//   border-radius: 0.5rem;
-// }
+.p-menu {
+  background-color: transparent !important;
+  border: none !important;
+}
 
-// /* Active item */
-// :host ::ng-deep .p-panelmenu .p-menuitem-link.p-menuitem-link-active {
-//   background: #2563eb; /* blue-600 */
-//   color: white;
-// }
+.p-panelmenu-header-content {
+  &:hover {
+    background-color: transparent !important;
+    cursor: pointer !important;
+  }
+}
 
-// /* Icons */
-// :host ::ng-deep .p-panelmenu .p-menuitem-icon {
-//   margin-right: 0.75rem;
-// }
+.p-panelmenu-item-content {
+  // background-color: transparent !important;
 
-// /* Align chevron right */
-// :host ::ng-deep .p-panelmenu .p-panelmenu-header > a {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-// }
+  &:hover {
+    background-color: #3e97ff !important;
+    cursor: pointer !important;
+  }
 
+  &:focus{
+   background-color: red !important;
+  }
+}
 
- .p-button-sm .p-button-icon-only .custom-color{
-      background-color: red !important;
-      border: none;
-      width: 50px;
-      height: 50px;
+//not ok
+.p-panelmenu-item-link {
+  //color: white !important;
+
+  
+}
+
+.p-panelmenu-header-label {
+  color: white !important;
+}
+
+.p-panelmenu-header-link {
+  margin-left: -10px !important;
+
+  svg {
+    position: absolute;
+    margin: 230px;
+    color: white;
+  }
+}
+
+.p-panelmenu {
+  margin-left: -5px;
+}
+
+.custom-icon {
+  .p-panelmenu-header-icon,
+  .p-panelmenu-item-icon {
+    font-size: 0.5rem;
+    color: white;
+  }
+
+  .p-menu-item-link{
+    border-radius: 10px;
+
+   &:hover{
+      background-color: #0072f4 !important;
    }
 
-   .p-panelmenu-panel {
-      border: none !important;
-      background-color: #131313 !important;
+   &:focus{
+      background-color: #3e97ff !important;
    }
+  }
 
-   .p-menu {
-      background-color: transparent !important;
-      border: none !important;
-   }
+  .p-menu-item-icon {
+    font-size: 0.5rem !important;
+    color: white !important;
+  }
 
-   .p-panelmenu-header-content{
-      &:hover{
-         background-color: transparent !important;
-         cursor: pointer !important;
-      }
-   }
+  .p-menu-item-label {
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
 
-   .p-panelmenu-item-content{
-      &:active{
-         background-color: #3E97FF !important;
-      }
+  .p-panelmenu-item-label {
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
 
-      &:hover{
-         background-color: #3E97FF !important;
-         cursor: pointer !important;
-      }
-   }
-
-   .p-panelmenu-item-link{
-      color: white !important;
-   }
-
-   .p-panelmenu-header-label{
-      color: white !important;
-   }
-
-   .p-panelmenu-header-link{
-      margin-left: -10px !important;
-
-      svg{
-         position: absolute;
-         margin: 230px;
-         color: white;
-      }
-   }
-
-   .p-panelmenu{
-      margin-left: -5px;
-   }
-
-
-     .custom-icon{
-      .p-panelmenu-header-icon, .p-panelmenu-item-icon{
-          font-size: 0.5rem;
-          color: white;
-      }
-     
-      .p-menu-item-icon{
-         font-size: 0.5rem !important;
-         color: white !important;
-      }
-
-      .p-menu-item-label{
-         color: white;
-      }
-
-      .p-menu-item.p-focus .p-menu-item-content{
-         background-color: red !important;
-      }
-   }
-
+  .p-menu-item-content {
+    background-color: transparent !important;
+  }
+}
 
 /* CSS to move the tabs to the right side */
-.custom-tab-list{
-   .p-tablist-tab-list{
-   justify-content: flex-end;
-   z-index: 2;
-}
-}
-
-.p-datatable-thead{
-   font-size: 0.9rem;
-   color: #0F1417;
+.custom-tab-list {
+  .p-tablist-tab-list {
+    justify-content: flex-end;
+    z-index: 2;
+  }
 }
 
-.p-datatable-table-container{
-   font-size: 0.9rem;
-   border: 1px solid #E5E8EB;
-   border-radius: 10px;
+.p-datatable-thead {
+  font-size: 0.9rem;
+  color: #0f1417;
 }
 
-.p-datatable-tbody > tr > td{
-   vertical-align: middle;
+.p-datatable-table-container {
+  font-size: 0.9rem;
+  border: 1px solid #e5e8eb;
+  border-radius: 10px;
 }
 
-.p-tabs{
-  color: #A1A5B7 !important;
+.p-datatable-tbody > tr > td {
+  vertical-align: middle;
+}
+
+.p-tabs {
+  color: #a1a5b7 !important;
+}
+
+.custom-button {
+  .p-button-icon {
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .p-button {
+    background-color: #404040;
+    color: #c1c1c1;
+    width: 25px;
+    height: 25px;
+    border: none;
+
+    &:hover {
+      background-color: #595959 !important;
+      border: none !important;
+    }
+  }
+}
+
+
+::ng-deep .p-panelmenu .p-menuitem-link.router-link-active {
+  background: red;
+  color: blue;
+}
+
+.p-panelmenu-item:first-child:focus{
+   background-color: red;
 }

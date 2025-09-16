@@ -1,30 +1,37 @@
-<div class="menu">
+<div class="collapse-button" [ngClass]="isCollapsed ? 'collapse-button' : 'not-collapsed'">
+    <p-button class="custom-button" 
+      (click)="isCollapsed = !isCollapsed" 
+      icon="{{isCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'}}" 
+      pTooltip="{{isCollapsed ? 'Expand' : 'Collapse'}}">
+    </p-button>
+</div>
+<div class="menu collapsible"  
+  [class.collapsed]="isCollapsed"
+  [ngStyle]="{'padding': isCollapsed ? '0px' : '30px'}">
+  
     <div class="profile">
-       <div class="image">
+         <div class="image" (click)="goToProfile()">
            <img src="assets/images/avatar.jpg" alt="img">
        </div>
        <div class="title">
           <h3>{{ title }}</h3>
-       </div>
-       <div class="close-button">
-          <p-button icon="pi pi-chevron-left" size="small"></p-button>
        </div>
     </div>
 
     <div class="search">
         <p-iconfield>
             <p-inputicon class="pi pi-search" />
-            <input type="text" pInputText placeholder="Search" />
+            <input type="text" pInputText placeholder="Search" (keyup)="search()"/>
         </p-iconfield>
     </div>
 
-    <p style="color: white; margin-bottom: 10px;">PAGES</p>
-    <p-panelMenu [model]="items" ></p-panelMenu>
+    <p style="color: #C7C7C7; margin-bottom: 10px; font-size: 0.9rem">PAGES</p>
+    <p-panelMenu [model]="items"></p-panelMenu>
 
     <hr>
 
-    <p style="color: white; margin-top: 20px;">Projects</p>
-    <p-menu [model]="projectItems" ></p-menu>
+    <p style="color: #EAEAEA; margin-top: 20px; font-size: 0.8rem;">Projects</p>
+    <p-menu [model]="projectItems"></p-menu>
 </div>
 
 

@@ -6,6 +6,8 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Menu } from 'primeng/menu';
+import { CommonModule } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
@@ -13,12 +15,13 @@ import { Menu } from 'primeng/menu';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   standalone: true,
-  imports: [PanelMenu, IconFieldModule, InputIconModule, Button, InputText, Menu]
+  imports: [CommonModule, TooltipModule, PanelMenu, IconFieldModule, InputIconModule, Button, InputText, Menu]
 })
 export class MenuComponent implements OnInit {
   items: MenuItem[] | undefined;
   projectItems: MenuItem[] | undefined;
   title = 'Eugenia';
+  isCollapsed!: boolean;
 
   constructor() { }
 
@@ -31,6 +34,7 @@ export class MenuComponent implements OnInit {
     {
       label: 'Dashboards',
       icon: 'pi pi-th-large',
+      expanded: true,
       items: [
         { label: 'Dashboard', routerLink: '/dashboard', icon: 'pi pi-circle-fill', styleClass: 'custom-icon' },
         { label: 'Project Details', routerLink: '/projects/details', icon: 'pi pi-circle-fill', styleClass: 'custom-icon' },
@@ -76,5 +80,13 @@ export class MenuComponent implements OnInit {
       ]
     },
   ]
+  }
+
+  goToProfile() {
+    throw new Error('Method not implemented.');
+  }
+
+  search() {
+   throw new Error('Method not implemented.');
   }
 }
