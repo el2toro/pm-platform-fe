@@ -1,0 +1,49 @@
+.project-details{
+    color: #0F1417;
+    padding: 24px;
+    
+    .heading{
+        h1{
+            font-size: 1.5rem;
+            font-weight: 600;
+          color: #0F1417;
+        }
+
+        p{
+            font-size: 1rem;
+           color: #0F1417;
+           margin-top: 16px;
+        }
+    }
+
+    .tasks{
+        margin-top: 40px;
+
+        h3{
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0F1417;
+            margin-bottom: 24px;
+        }
+
+        .edit-task-button{
+            width: 94px;
+            height: 30px;
+            background-color: #E8FFF3;
+            color: #50CD89;
+            border: none;
+            border-radius: 20%;
+            font-size: 0.8rem;
+            font-weight: 600;
+
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+            }
+        }
+    }
+
+    .teams{
+        margin-top: 40px;
+    }
+}

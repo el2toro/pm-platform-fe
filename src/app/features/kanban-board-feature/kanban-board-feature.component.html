@@ -1,0 +1,39 @@
+<div class="kanban-board">
+  <div class="column" *ngFor="let col of columns" 
+       pDroppable="shared"
+       (onDrop)="onDrop(col)">
+    
+     <div class="column-header">
+       <p class="title">{{ col.title }}</p>
+       <span class="task-count">5</span>
+     </div>
+     <button class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
+    <ul class="">
+      <li *ngFor="let item of col.items"
+          class=""
+          pDraggable="shared"
+          (onDragStart)="dragStart(item, col)"
+          (onDragEnd)="dragEnd()">
+
+          <div class="task">
+            <p>{{ item.name }}</p>
+
+              <div class="image">
+                <img src="assets/images/portrait1.jpg" alt="img">
+              </div>
+                   
+            <p-progressbar class="progress-bar"
+                        [value]="50" 
+                        [showValue]="false"/>
+                        <!-- {{ project.progress }}  -->
+
+            <div class="details">
+              <span><i class="pi pi-paperclip"></i> 5</span>
+              <span><i class="pi pi-check-square"></i> 5/8</span>
+              <span><i class="pi pi-clock"></i> 5 days left</span>
+            </div>
+          </div>
+      </li>
+    </ul>
+  </div>
+</div>

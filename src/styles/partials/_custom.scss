@@ -129,20 +129,37 @@
   }
 }
 
-.p-panelmenu-item{
-   padding: 1px 0px;
+.p-panelmenu-item {
+  padding: 1px 0px;
 }
 
-.p-panelmenu-item-link:hover{
-      .p-panelmenu-item-icon {
+.p-panelmenu-item-link:hover {
+  .p-panelmenu-item-icon {
     font-size: 0.5rem;
     color: white !important;
   }
-   }
+}
 
 .p-highlight {
   .p-panelmenu-item-link {
     background-color: #3e97ff !important;
     border-radius: 5px;
+  }
+}
+
+.custom-edit-task-button {
+  button {
+    width: 94px;
+    height: 30px;
+    background-color: #e8fff3;
+    color: #50cd89;
+  }
+}
+
+.progress-bar {
+  height: 5px;
+
+  .p-progressbar-value {
+    background: #1ad598 !important;
   }
 }
