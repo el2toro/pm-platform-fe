@@ -1,33 +1,79 @@
- .collapse-button{
-      position: absolute;
-      top: 11px;
-      left: 10px;
-      z-index: 100;
-    }
+.collapse-button {
+  position: absolute;
+  top: 11px;
+  left: 10px;
+  z-index: 100;
+}
 
-    .not-collapsed{
-        top: 45px;
-        left: 268px;
-        z-index: 100;
-    }
+.not-collapsed {
+  top: 45px;
+  left: 268px;
+  z-index: 100;
+}
 
-    .collapsible {
-      overflow: hidden;
-      max-width: 500px;
-      transition: max-width 0.2s ease;
-    }
+.collapsible {
+  overflow: hidden;
+  max-width: 500px;
+  transition: max-width 0.2s ease;
+}
 
-    .collapsed {
-      max-width: 0;
-    }
+.collapsed {
+  max-width: 0;
+}
+
+/* Chrome, Edge, Safari */
+.menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Hides the up/down arrow buttons */
+.menu::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Track (background area) */
+.menu::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0;
+}
+
+/* Thumb (the draggable part) */
+.menu::-webkit-scrollbar-thumb {
+  background-color: #007ad9;
+  border-radius: 4px;
+  min-height: 30px; /* prevents thumb being too tall */
+}
+
+
+
+/* Hide scrollbar buttons (arrows) */
+.menu::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
 
 .menu {
   background-color: #131313;
-  min-height: 100vh;
+  height: 100vh;
   font-size: 1rem;
   z-index: 99;
+  overflow-y: scroll;
 
-  .profile {
+   /* scrollbar styling */
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: #404040 transparent;   /* thumb color | track color */
+
+  .sticky{
+    position: sticky;
+    top: 0px;
+    background: #131313;
+    z-index: 10;
+    padding-top: 30px;
+    
+    .profile {
     display: flex;
     align-items: center;
 
@@ -37,7 +83,7 @@
       border: 2px solid var(--primary);
       border-radius: 5px;
 
-      &:hover{
+      &:hover {
         cursor: pointer;
         opacity: 0.8;
       }
@@ -57,7 +103,7 @@
       h3 {
         color: white;
       }
-    }  
+    }
   }
 
   .search {
@@ -68,5 +114,6 @@
       border: none;
       color: white;
     }
+  }
   }
 }

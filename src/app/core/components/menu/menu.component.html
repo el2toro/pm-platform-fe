@@ -7,9 +7,10 @@
 </div>
 <div class="menu collapsible"  
   [class.collapsed]="isCollapsed"
-  [ngStyle]="{'padding': isCollapsed ? '0px' : '30px'}">
+  [ngStyle]="{'padding': isCollapsed ? '0px' : '0px 30px 25px 30px'}">
   
-    <div class="profile">
+    <div class="sticky">
+         <div class="profile">
          <div class="image" (click)="goToProfile()">
            <img src="assets/images/avatar.jpg" alt="img">
        </div>
@@ -23,6 +24,7 @@
             <p-inputicon class="pi pi-search" />
             <input type="text" pInputText placeholder="Search" (keyup)="search()"/>
         </p-iconfield>
+    </div>
     </div>
 
     <p style="color: #C7C7C7; margin-bottom: 10px; font-size: 0.9rem">PAGES</p>
