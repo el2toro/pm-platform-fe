@@ -16,4 +16,7 @@ getProjects() : Observable<ProjectModel[]>{
   return this.http.get<ProjectModel[]>(this.baseUrl + 'projects');
 }
 
+// getProjectWithTasks() : Observable<ProjectModel[]>{
+//   return this.http.get<ProjectModel[]>(this.baseUrl + 'projects');
+// }
 }

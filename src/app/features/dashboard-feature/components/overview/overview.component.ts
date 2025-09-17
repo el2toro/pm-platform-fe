@@ -50,8 +50,6 @@ export class OverviewComponent implements OnInit {
     let backgroundColor = '';
     let color = '';
 
-    console.log(this.projectStatusLabel)
-
     switch (status) {
       
       case ProjectStatus.NotStarted:

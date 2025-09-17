@@ -8,9 +8,7 @@ export class ProjectStatusPipe implements PipeTransform {
 
   transform(status: number): string {
     let projectStatus = '';
-
-    console.log('this is pipe: ', status)
-
+    
     switch(status){
       case ProjectStatus.NotStarted: 
         projectStatus = ProjectStatus[ProjectStatus.NotStarted];

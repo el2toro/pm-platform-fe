@@ -16,23 +16,10 @@
 }
 
 .p-panelmenu-item-content {
-  // background-color: transparent !important;
-
   &:hover {
-    background-color: #3e97ff !important;
+    background-color: #0072f4 !important;
     cursor: pointer !important;
   }
-
-  &:focus{
-   background-color: red !important;
-  }
-}
-
-//not ok
-.p-panelmenu-item-link {
-  //color: white !important;
-
-  
 }
 
 .p-panelmenu-header-label {
@@ -60,16 +47,16 @@
     color: white;
   }
 
-  .p-menu-item-link{
-    border-radius: 10px;
+  .p-menu-item-link {
+    border-radius: 5px;
 
-   &:hover{
+    &:hover {
       background-color: #0072f4 !important;
-   }
+    }
 
-   &:focus{
+    &:focus {
       background-color: #3e97ff !important;
-   }
+    }
   }
 
   .p-menu-item-icon {
@@ -87,6 +74,7 @@
     color: white;
     font-size: 0.9rem;
     line-height: 1.6;
+    padding: 1px;
   }
 
   .p-menu-item-content {
@@ -119,6 +107,7 @@
 
 .p-tabs {
   color: #a1a5b7 !important;
+  margin-bottom: 10px;
 }
 
 .custom-button {
@@ -140,12 +129,20 @@
   }
 }
 
-
-::ng-deep .p-panelmenu .p-menuitem-link.router-link-active {
-  background: red;
-  color: blue;
+.p-panelmenu-item{
+   padding: 1px 0px;
 }
 
-.p-panelmenu-item:first-child:focus{
-   background-color: red;
+.p-panelmenu-item-link:hover{
+      .p-panelmenu-item-icon {
+    font-size: 0.5rem;
+    color: white !important;
+  }
+   }
+
+.p-highlight {
+  .p-panelmenu-item-link {
+    background-color: #3e97ff !important;
+    border-radius: 5px;
+  }
 }
