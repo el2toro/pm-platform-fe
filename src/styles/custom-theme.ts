@@ -26,10 +26,10 @@ const CustomPreset = definePreset(Aura, {
                     activeColor: '#3E97FF'
                 },
                 highlight: {
-                    background: '{blue.950}',
-                    focusBackground: '{blue.700}',
-                    color: '#c60000ff',
-                    focusColor: '#ff0000ff'
+                    background: '#3E97FF',
+                    focusBackground: '{blue.500}',
+                    color: '#fff',
+                    focusColor: '#b49a9aff'
                 },
 
                 item: {

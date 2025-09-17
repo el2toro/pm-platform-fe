@@ -1,3 +1,5 @@
+import { TaskModel } from "./task-model";
+
 export class ProjectModel {
   id = '';
   tenantId = '';
@@ -7,4 +9,5 @@ export class ProjectModel {
   createdBy = '';
   projectStatus = 0;
   endDate = '';
+  tasks!:  TaskModel[];
 }

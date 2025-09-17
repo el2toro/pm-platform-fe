@@ -8,6 +8,7 @@ import { ProjectService } from '../../apis/project/project.service';
 import { ProjectModel } from '../../models/project-model';
 import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 import { ProjectStatus } from '../../enums/project-status.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -25,26 +26,23 @@ import { ProjectStatus } from '../../enums/project-status.enum';
 })
 export class OverviewComponent implements OnInit {
   projects = <ProjectModel[]>[];
-  @ViewChild('projectStatusLabel') projectStatusLabel: any;
+  selectedProject!: ProjectModel;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private router: Router) {}
 
   ngOnInit() {
-    //this.initProjects();
+    this.initProjects();
+  }
+
+  initProjects(){
     this.projectService.getProjects().subscribe({
-      next: (projects) => (this.projects = projects.slice(0, 5)), // take only 5 projects
+      next: (projects) => this.projects = projects.slice(0, 5), // take only 5 projects
     });
   }
 
-  // initProjects(){
-  //   this.projects  = [
-  //     {name: 'Project Alpha', status: 'On Track', progress: '60', team: 'portrait.jpg', dueDate: 'Dec 03, 2025', chart: [4, 6, 5, 8, 7, 9, 6, 5, 7, 6, 8, 7]},
-  //     {name: 'Product Beta', status: 'At Risk', progress: '40', team: 'portrait.jpg', dueDate: 'Nov 15, 2025', chart: [3, 4, 6, 5, 7, 8, 7, 6, 5, 4, 6, 5]},
-  //     {name: 'Feature Gamma', status: 'Delayed', progress: '20', team: 'portrait.jpg', dueDate: 'Jan 25, 2026', chart: [5, 7, 4, 6, 8, 5, 9, 6, 7, 8, 6, 5]},
-  //     {name: 'Marketing Delta', status: 'On Track', progress: '75', team: 'portrait.jpg', dueDate: 'Oct 10, 2025', chart: [2, 4, 3, 5, 4, 6, 5, 4, 3, 5, 4, 6]},
-  //     {name: 'UI Zeta', status: 'At Risk', progress: '50', team: 'portrait.jpg', dueDate: 'Jan 09, 2026', chart: [2, 3, 4, 6, 5, 7, 6, 5, 4, 6, 7, 5]}
-  //   ]
-  // }
+  onRowSelect(){
+    this.router.navigate(['/project-details'], { queryParams: { projectId: this.selectedProject.id, tenantId: this.selectedProject.tenantId } });
+  }
 
   getStatusColor(status: number) {
     let backgroundColor = '';

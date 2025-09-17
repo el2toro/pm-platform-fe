@@ -2,7 +2,10 @@
   <div class="projects">
     <p-table
     [value]="projects"
-    [tableStyle]="{ 'min-width': '50rem' }">
+    selectionMode="single" 
+    [(selection)]="selectedProject" 
+    dataKey="id"
+    (onRowSelect)="onRowSelect()">
         <ng-template #header>
             <tr>
                 <th>Project</th>
@@ -14,7 +17,7 @@
             </tr>
         </ng-template>
         <ng-template #body let-project>
-            <tr>
+            <tr [pSelectableRow]="project">
                 <td class="project-name">{{ project.name }}</td>
                 <td>
                   
