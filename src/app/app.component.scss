@@ -2,6 +2,12 @@
     display: flex;
 
     .custom-router-outlet{
+        app-dashboard-nav{
+          position: sticky;
+          top: 0;
+          z-index: 1;
+        }
+
         height: 100vh;
         width: 100vw;
         overflow: auto;
