@@ -1,0 +1,103 @@
+<div class="insight-and-report">
+  <div class="heading">
+    <h1>Project Performnce KPIs</h1>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi-item">
+      <p>Completion Rate</p>
+      <p>80%</p>
+    </div>
+    <div class="kpi-item">
+      <p>Overdue Tasks</p>
+      <p>10</p>
+    </div>
+    <div class="kpi-item">
+      <p>Budget Usage</p>
+      <p>60%</p>
+    </div>
+    <div class="kpi-item">
+      <p>Risk Assesment</p>
+      <p>Delayed</p>
+    </div>
+  </div>
+
+  <div class="custom-report">
+    <h3>Custom Report</h3>
+    <div class="report-name">
+      <p>Report Name</p>
+      <input placeholder="Enter report name" />
+    </div>
+
+    <div class="report-description">
+      <p>Report Description</p>
+      <textarea></textarea>
+    </div>
+
+    <button>Generate Report</button>
+  </div>
+
+  <div class="projects">
+    <h3>Your Projects</h3>
+
+    <div class="project-list">
+      @for (project of projects; track $index) {
+      <div class="project-item">
+        <div class="timeline">
+          <div class="bullet" [style.bottom.%]="project.progress"></div>
+        </div>
+
+        <div class="details">
+          <p>{{ project.name }}</p>
+          <p>{{ project.dueDate }}</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="project-data">
+    <div class="contributors">
+      <div class="count">
+        <p>357</p>
+        <p>Professionals</p>
+      </div>
+
+      <div class="contributors-details">
+        <p>Today's Heroes</p>
+        <div class="heroes">
+          @for (professional of professionals.slice(0, 7); track $index) {
+          <div class="hero-item">
+            <!-- <img src="assets/images/portrait1.jpg" alt="img"> -->
+
+            <p>
+              {{
+                $index === 6
+                  ? "+" + professionals.length
+                  : professional.charAt(0)
+              }}
+            </p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="active-projects">
+      <div class="count">
+        <p>69</p>
+        <p>Active Projects</p>
+      </div>
+      <div class="pending-projects">
+        <div class="status">
+          <p>43 Pending</p>
+          <p>72%</p>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="60"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
