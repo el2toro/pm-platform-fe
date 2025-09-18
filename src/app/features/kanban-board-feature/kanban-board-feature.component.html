@@ -1,11 +1,20 @@
 <div class="kanban-board">
-  <div class="column" *ngFor="let col of columns" 
+  <div class="project-title">
+   <h1>{{ project.name }}</h1>
+   <p>{{ project.description }}</p>
+  </div>
+
+  <div class="columns">
+     <div class="column" *ngFor="let col of columns" 
        pDroppable="shared"
        (onDrop)="onDrop(col)">
     
      <div class="column-header">
        <p class="title">{{ col.title }}</p>
-       <span class="task-count">5</span>
+       <div class="action">
+        <span class="task-count">5</span>
+        <button><i class="pi pi-ellipsis-h"></i></button>
+       </div>
      </div>
      <button class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
     <ul class="">
@@ -35,5 +44,6 @@
           </div>
       </li>
     </ul>
+  </div>
   </div>
 </div>

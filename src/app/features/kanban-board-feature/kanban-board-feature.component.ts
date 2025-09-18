@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ProgressBar } from "primeng/progressbar";
-import { ButtonDirective, Button } from "primeng/button";
+import { ProjectModel } from '../dashboard-feature/models/project-model';
 
 interface Product {
   id: number;
@@ -22,6 +22,8 @@ interface Column {
   imports: [CommonModule, DragDropModule, ProgressBar]
 })
 export class KanbanBoardFeatureComponent implements OnInit {
+  project!: ProjectModel;
+
  columns: Column[] = [
     {
       title: 'To Do',
@@ -46,7 +48,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
       items: []
     },
     {
-      title: 'Completed',
+      title: 'Done',
       items: []
     }
   ];
@@ -57,6 +59,9 @@ export class KanbanBoardFeatureComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.project = new ProjectModel();
+    this.project.name = 'Projects from 5 March to 15 March - Sprint 6'
+     this.project.description = 'Project Description: Detailed description of the project, its objectives, and expected outcomes.'
   }
 
   dragStart(item: Product, from: Column) {

@@ -1,134 +1,169 @@
 .kanban-board {
-    width: 75vw;
-    height: 80vh;
-  display: flex;
-  gap: 1rem; // spacing between columns
-  align-items: flex-start; // 🔑 allows different heights
-  justify-content: space-between;
-  overflow-x: scroll;
-
-  .column {
-    border: 1px solid #D9E1E7;
-    border-radius: 10px;
-    padding: 1rem;
-    min-width: 20rem; // fixed width for consistency
-    background: #fff;
-
-    .column-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-      .title{
-        text-align: start;
-      margin-bottom: 0.5rem;
-      color: #809FB8;
-      font-size: 1.1rem;
-      font-weight: 100;
-      }
-
-      .task-count{
-        width: 40px;
-        height: 27px;
-        border-radius: 20px;
-        background-color: #99B2C6;
-        color: #fff;
-        text-align: center;
-        align-content: center;
-      }
+  .project-title {
+    padding: 30px 0px 30px 0px;
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #0f1417;
     }
 
-     .add-task-button{
-         width: 100%;
+    p {
+      margin-top: 20px;
+      color: #0f1417;
+      font-size: 1rem;
+    }
+  }
+  .columns {
+    //width: 75vw;
+    height: 80vh;
+    display: flex;
+    gap: 1rem; // spacing between columns
+    align-items: flex-start; // 🔑 allows different heights
+    justify-content: space-between;
+    overflow-x: hidden;
+
+    .column {
+      border: 1px solid #d9e1e7;
+      border-radius: 10px;
+      padding: 1rem;
+      min-width: 20rem; // fixed width for consistency
+      background: #fff;
+
+      .column-header {
+        display: flex;
+        justify-content: space-between;
+        // align-items: center;
+
+        .title {
+          text-align: start;
+          margin-bottom: 0.5rem;
+          color: #809fb8;
+          font-size: 1.1rem;
+          font-weight: 100;
+        }
+
+        .action {
+          display: flex;
+          gap: 0.8rem;
+
+          .task-count {         
+            width: 40px;
+            height: 27px;
+            border-radius: 20px;
+            background-color: #99b2c6;
+            color: #fff;
+            text-align: center;
+            align-content: center;
+          }
+
+          button {
+            border: none;
+            background-color: transparent;
+
+            i {
+              color: #99b2c6;
+              font-size: 2rem;
+              margin-top: -10px;
+              border: 1px solid transparent;
+            }
+
+            &:hover {
+              cursor: pointer;
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+
+      .add-task-button {
+        width: 100%;
         height: 58px;
         border-radius: 15px;
         margin: 10px 0px 30px 0px;
-        background-color: #EEF6FF;
-        color: #3E97FF;
+        background-color: #eef6ff;
+        color: #3e97ff;
         border: none;
         font-size: 1rem;
         text-align: center;
 
-        i{
+        i {
+          font-size: 0.8rem;
+          font-weight: 600;
+          margin-right: 20px;
+        }
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.7;
+        }
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          background: #f9f9f9;
+          padding: 0.5rem;
+          border-radius: 4px;
+          margin-bottom: 0.5rem;
+          cursor: grab;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .task {
+        p {
+          margin-bottom: 1.5rem;
+        }
+
+        .image {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          margin: 10px;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+        }
+
+        .progress-bar {
+          height: 6px;
+        }
+
+        .details {
+          text-align: right;
+          padding: 20px 0px 15px 0px;
+
+          span {
+            margin-right: 10px;
             font-size: 0.8rem;
-            font-weight: 600;
-            margin-right: 20px;
-        }
+            color: #809fb8;
 
-        &:hover{
-            cursor: pointer;
-            opacity: 0.7;
+            i {
+              color: #809fb8;
+              font-size: 0.8rem;
+            }
+          }
+
+          span:last-child {
+            padding: 4px 6px;
+            background-color: #99b2c6;
+            color: #26323c;
+            opacity: 0.4;
+            border-radius: 5px;
+
+            i {
+              color: #26323c;
+            }
+          }
         }
       }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
-      li {
-        background: #f9f9f9;
-        padding: 0.5rem;
-        border-radius: 4px;
-        margin-bottom: 0.5rem;
-        cursor: grab;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-    }
-
-    .task{
-     p{
-        margin-bottom: 1.5rem;
-     }
-            
-
-            .image{
-                width: 46px;
-                height: 46px;
-                border-radius: 50%;
-                margin: 10px;
-
-                img{
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    border-radius: 50%;
-                }
-            }
-        
-            .progress-bar{
-                height: 6px;
-
-            }
-
-            .details{
-                text-align: right;
-                padding: 20px 0px 15px 0px;
-
-                span{
-                    margin-right: 10px;
-                    font-size: 0.8rem;
-                    color: #809FB8;
-
-                    i{
-                        color: #809FB8;
-                        font-size: 0.8rem;
-                    }
-                }
-
-                
-                span:last-child{
-                  padding: 4px 6px;
-                  background-color: #99b2c6;
-                  color: #26323c;
-                  opacity: 0.4;
-                  border-radius: 5px;
-
-                  i{
-                    color: #26323c;
-                  }
-                }
-            }
     }
   }
 }
