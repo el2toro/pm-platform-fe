@@ -10,7 +10,7 @@ import { BaseChartDirective } from 'ng2-charts';
   standalone: true
 })
 export class WaveChartComponent implements OnInit {
-  @Input() data = <[]>[];
+  @Input() data = <any[]>[];
   @Input() borderColor!: string;
   lineChartData!: ChartConfiguration<'line'>['data'];
 
@@ -18,7 +18,6 @@ export class WaveChartComponent implements OnInit {
 
   ngOnInit() {
     this.initChart();
-   
   }
 
   initChart(){

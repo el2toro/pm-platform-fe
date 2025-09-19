@@ -17,9 +17,9 @@ export class ProjectService {
   }
 
   getProjectDetails(projectId: string, tenantId: string): Observable<ProjectModel> {
-    const params = new HttpParams()
-      .set('projectId', projectId)
-      .set('tenantId', tenantId);
+    // const params = new HttpParams()
+    //   .set('projectId', projectId)
+    //   .set('tenantId', tenantId);
 
     return this.http.get<ProjectModel>(`${this.baseUrl}project/${projectId}/${tenantId}`);
   }

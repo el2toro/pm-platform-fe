@@ -36,12 +36,42 @@ export class OverviewComponent implements OnInit {
 
   initProjects(){
     this.projectService.getProjects().subscribe({
-      next: (projects) => this.projects = projects.slice(0, 5), // take only 5 projects
+      next: (projects) => this.projects = projects
     });
   }
 
   onRowSelect(){
     this.router.navigate(['/project-details'], { queryParams: { projectId: this.selectedProject.id, tenantId: this.selectedProject.tenantId } });
+  }
+
+  getChartData(project: ProjectModel): number[]{
+    let createdAtDate = new Date(project.createdAt);
+    let projectEndDate = new Date(project.endDate);
+    
+   let chartData = [
+      project.projectStatus,
+      Number(project.progress.toString().split('')[0]),  
+      createdAtDate.getDay(),
+      createdAtDate.getMonth(), 
+      ...this.spliNumber(createdAtDate.getFullYear()),
+      projectEndDate.getDay(),
+      projectEndDate.getMonth(), 
+      ...this.spliNumber(projectEndDate.getFullYear())
+    ];
+
+    return chartData;
+  }
+
+  spliNumber(value: number): number[]{
+      let values = <number[]>[];
+
+      value.toString().split('').forEach(c => {
+      if(!Number(c)){
+        values.push(Number(c))
+      }
+     })
+
+     return values
   }
 
   getStatusColor(status: number) {
@@ -79,4 +109,22 @@ export class OverviewComponent implements OnInit {
 
     return { backgroundColor: backgroundColor, color: color };
   }
+
+  getChartColor(projectStatus: number) : string{
+    switch(projectStatus){
+      case ProjectStatus.InProgress: 
+      case ProjectStatus.Completed:
+        return '#50CD89';
+
+      case ProjectStatus.Cancelled: 
+        return '#F1416C';
+
+        case ProjectStatus.OnHold: 
+        case ProjectStatus.Pending: 
+        return '#F6C000';
+    }
+
+    return  '#c6c0c2ff';
+  }
 }
+
