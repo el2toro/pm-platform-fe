@@ -17,10 +17,16 @@ export class ProjectService {
   }
 
   getProjectDetails(projectId: string, tenantId: string): Observable<ProjectModel> {
-    // const params = new HttpParams()
-    //   .set('projectId', projectId)
-    //   .set('tenantId', tenantId);
+    return this.http.get<ProjectModel>(
+      `${this.baseUrl}project/${projectId}/${tenantId}`
+    );
+  }
 
-    return this.http.get<ProjectModel>(`${this.baseUrl}project/${projectId}/${tenantId}`);
+  createProject(project: any) {
+    return this.http.post(this.baseUrl + 'projects', project);
+  }
+
+  editProject(project: any) {
+    return this.http.put(this.baseUrl + 'projects', project);
   }
 }
