@@ -4,29 +4,28 @@
 
 <form [formGroup]="formGroup" class="form">
   <div class="form-field">
-    <input
-      pInputText
-      type="text"
-      id="name"
-      placeholder="Project name"
-      formControlName="name"
-      [invalid]="isInvalid('name')"
-    />
+   <p-floatlabel style="width: 100%;">
+    <input class="input-field" id="name" pInputText formControlName="name"/>
+    <label for="name">Project name</label>
+</p-floatlabel>
     @if (isInvalid('name')) {
     <p-message severity="error" size="small" variant="simple"
       >Project name is required.</p-message
     >
     }
   </div>
+
   <div class="form-field">
-    <textarea
-      pInputText
-      type="text"
+     <p-floatlabel>
+    <textarea class="input-field"
+      pTextarea
       id="description"
-      placeholder="Description"
       formControlName="description"
-      [invalid]="isInvalid('description')"
     ></textarea>
+    <label for="description">Description</label>
+</p-floatlabel>
+
+    
     <!-- @if (isInvalid('description')) {
             @if (formGroup.get('description')?.errors?.['required']) {
                 <p-message severity="error" size="small" variant="simple">Description is required.</p-message>
@@ -38,7 +37,18 @@
   </div>
 
   <div class="form-field">
-    <p-datepicker appendTo="body" [autofocus]="false" [formControlName]="'startDate'" placeholder="Project starts on..." />
+    <p-floatlabel>
+       <p-datepicker class="input-field" appendTo="body" [autofocus]="false" formControlName="startDate" />
+    <label for="startDate">Project starts on...</label>
+</p-floatlabel>
+  </div>
+
+   <div class="form-field">
+      <p-floatlabel>
+       <p-select [autofocus]="false" class="input-field" appendTo="body" [options]="projectStatuses" formControlName="projectStatus" optionLabel="name" optionValue="value" />
+    <label for="projectStatus">Select project status</label>
+</p-floatlabel>
+ 
   </div>
   <div class="actions">
     <button

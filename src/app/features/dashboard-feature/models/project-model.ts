@@ -9,6 +9,7 @@ export class ProjectModel {
   createdAt = '';
   createdBy = '';
   projectStatus = 0;
+  startDate = '';
   endDate = '';
   progress = 0;
   team!: UserModel[];
