@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { afterNextRender, Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ActiveTaskComponent } from '../active-task/active-task.component';
@@ -9,6 +9,8 @@ import { ProjectModel } from '../../models/project-model';
 import { ProjectStatusPipe } from '../../pipes/project-status.pipe';
 import { ProjectStatus } from '../../enums/project-status.enum';
 import { Router } from '@angular/router';
+import { AddEditProjectModalComponent } from '../add-edit-project-modal/add-edit-project-modal.component';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-overview',
@@ -21,14 +23,18 @@ import { Router } from '@angular/router';
     ActiveTaskComponent,
     WaveChartComponent,
     ProjectStatusPipe,
+    DynamicDialogModule
   ],
-  standalone: true,
+  standalone: true
 })
 export class OverviewComponent implements OnInit {
   projects = <ProjectModel[]>[];
   selectedProject!: ProjectModel;
+  ref!: DynamicDialogRef;
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(private projectService: ProjectService, 
+    private router: Router,
+  private dialogService: DialogService) {}
 
   ngOnInit() {
     this.initProjects();
@@ -72,6 +78,37 @@ export class OverviewComponent implements OnInit {
      })
 
      return values
+  }
+
+  openCreateProjectModal(){
+    this.ref = this.dialogService.open(AddEditProjectModalComponent, {
+      width: '500px',
+      modal: true
+    });
+
+    this.ref.onClose.subscribe(result => {
+      if(!result){ return };
+
+       this.projectService.createProject(result).subscribe({
+        next: () =>console.log('project created succefilly', result)
+      })
+    });
+  }
+
+  openEditProjectModal(project: ProjectModel){
+    this.ref = this.dialogService.open(AddEditProjectModalComponent, {
+      width: '500px',
+      modal: true,
+      data: project
+    });
+
+    this.ref.onClose.subscribe(result => {
+      if(!result){ return };
+
+       this.projectService.editProject(result).subscribe({
+        next: () =>console.log('project updated succefilly', result)
+      })
+    });
   }
 
   getStatusColor(status: number) {

@@ -1,57 +1,74 @@
 <div class="overview">
+  <div class="heading">
+    <h1>Dashboard</h1>
+    <button (click)="openCreateProjectModal()">Create Project</button>
+  </div>
   <div class="projects">
     <p-table
-    [value]="projects"
-    selectionMode="single"
-    [rows]="5" 
-    [paginator]="true"
-    [rowsPerPageOptions]="[5, 10, 15]"
-    [(selection)]="selectedProject" 
-    dataKey="id"
-    (onRowSelect)="onRowSelect()">
-        <ng-template #header>
-            <tr>
-                <th>Project</th>
-                <th>Status</th>
-                <th>Progress</th>
-                <th>Team</th>
-                <th>Due Date</th>
-                <th>Chart</th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-project>
-            <tr [pSelectableRow]="project">
-                <td class="project-name">{{ project.name }}</td>
-                <td>
-                  
-                  <span class="label" 
-                  [style.background-color]="getStatusColor(project.projectStatus).backgroundColor"
-                  [style.color]="getStatusColor(project.projectStatus).color">
-                    {{ project.projectStatus | projectStatus}}
-                  </span> 
-                </td>
-                <td>
-                    <div class="inline-content">
-                      <p-progressbar class="progress-bar"
-                        [value]="project.progress" 
-                        [showValue]="false"/>
-                        {{ project.progress }} 
-                    </div>   
-                </td>
-                <td>
-                   <div class="team">
-                    <img src="assets/images/{{project.team[0]?.image}}" alt="img">
-                  </div> 
-                </td> 
-                <td class="due-date">{{ project.endDate | date}}</td>
-                <td>
-                <app-wave-chart 
-                  [borderColor]="getChartColor(project.projectStatus)"
-                  [data]="getChartData(project)">
-                </app-wave-chart> 
-                </td>
-            </tr>
-        </ng-template>
+      [value]="projects"
+      [rows]="5"
+      [paginator]="true"
+      [rowsPerPageOptions]="[5, 10, 15]"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Project</th>
+          <th>Status</th>
+          <th>Progress</th>
+          <th>Team</th>
+          <th>Due Date</th>
+          <th>Chart</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-project>
+        <tr [pSelectableRow]="project">
+          <td class="project-name">{{ project.name }}</td>
+          <td>
+            <span
+              class="label"
+              [style.background-color]="
+                getStatusColor(project.projectStatus).backgroundColor
+              "
+              [style.color]="getStatusColor(project.projectStatus).color"
+            >
+              {{ project.projectStatus | projectStatus }}
+            </span>
+          </td>
+          <td>
+            <div class="inline-content">
+              <p-progressbar
+                class="progress-bar"
+                [value]="project.progress"
+                [showValue]="false"
+              />
+              {{ project.progress }}
+            </div>
+          </td>
+          <td>
+            <div class="team">
+              <img src="assets/images/{{ project.team[0]?.image }}" alt="img" />
+            </div>
+          </td>
+          <td class="due-date">{{ project.endDate | date }}</td>
+          <td>
+            <app-wave-chart
+              [borderColor]="getChartColor(project.projectStatus)"
+              [data]="getChartData(project)"
+            >
+            </app-wave-chart>
+          </td>
+          <td>
+            <button
+              class="project-edit-button"
+              pButton
+              (click)="openEditProjectModal(project)"
+            >
+              <i class="pi pi-pen-to-square"></i>Edit
+            </button>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
   </div>
   <div class="active-tasks">

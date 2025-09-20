@@ -1,0 +1,52 @@
+<div class="heading">
+  <h1>{{ iSCreate ? 'Create new Project' : 'Edit Project'}}</h1>
+</div>
+
+<form [formGroup]="formGroup" class="form">
+  <div class="form-field">
+    <input
+      pInputText
+      type="text"
+      id="name"
+      placeholder="Project name"
+      formControlName="name"
+      [invalid]="isInvalid('name')"
+    />
+    @if (isInvalid('name')) {
+    <p-message severity="error" size="small" variant="simple"
+      >Project name is required.</p-message
+    >
+    }
+  </div>
+  <div class="form-field">
+    <textarea
+      pInputText
+      type="text"
+      id="description"
+      placeholder="Description"
+      formControlName="description"
+      [invalid]="isInvalid('description')"
+    ></textarea>
+    <!-- @if (isInvalid('description')) {
+            @if (formGroup.get('description')?.errors?.['required']) {
+                <p-message severity="error" size="small" variant="simple">Description is required.</p-message>
+            }
+            @if (formGroup.get('email')?.errors?.['email']) {
+                <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+            }
+        } -->
+  </div>
+
+  <div class="form-field">
+    <p-datepicker appendTo="body" [autofocus]="false" [formControlName]="'startDate'" placeholder="Project starts on..." />
+  </div>
+  <div class="actions">
+    <button
+      pButton
+      label="Cancel"
+      severity="secondary"
+      (click)="onClose()"
+    ></button>
+    <button pButton label="{{iSCreate ? 'Create' : 'Save'}}" (click)="onCreate()"></button>
+  </div>
+</form>
