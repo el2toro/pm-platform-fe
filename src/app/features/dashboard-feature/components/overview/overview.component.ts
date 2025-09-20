@@ -46,10 +46,6 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  onRowSelect(){
-    this.router.navigate(['/project-details'], { queryParams: { projectId: this.selectedProject.id, tenantId: this.selectedProject.tenantId } });
-  }
-
   getChartData(project: ProjectModel): number[]{
     let createdAtDate = new Date(project.createdAt);
     let projectEndDate = new Date(project.endDate);
@@ -90,7 +86,7 @@ export class OverviewComponent implements OnInit {
       if(!result){ return };
 
        this.projectService.createProject(result).subscribe({
-        next: () =>console.log('project created succefilly', result)
+        next: () => this.initProjects()
       })
     });
   }
@@ -106,9 +102,15 @@ export class OverviewComponent implements OnInit {
       if(!result){ return };
 
        this.projectService.editProject(result).subscribe({
-        next: () =>console.log('project updated succefilly', result)
+        next: () => this.initProjects()
       })
     });
+  }
+
+  goToProjectDetails(projectId: string, tenantId: string){
+    console.log({projectIds: projectId, tenant: tenantId})
+   this.router.navigate(['/project-details'], 
+    { queryParams: { projectId: projectId, tenantId: tenantId } });
   }
 
   getStatusColor(status: number) {

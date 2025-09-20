@@ -5,7 +5,7 @@ import { InsightAndReportFeatureComponent } from './features/insight-and-report-
 import { KanbanBoardFeatureComponent } from './features/kanban-board-feature/kanban-board-feature.component';
 
 export const routes: Routes = [
-    { path: 'dashboard', component: OverviewComponent },
+    { path: '', component: OverviewComponent },
     { path: 'project-details', component: ProjectDetailsComponent },
     { path: 'reports', component: InsightAndReportFeatureComponent },
     { path: 'board', component: KanbanBoardFeatureComponent }
