@@ -13,6 +13,7 @@ import { ProjectStatus } from '../../enums/project-status.enum';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FloatLabel } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
+ import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-project-modal',
@@ -25,11 +26,11 @@ export class AddEditProjectModalComponent implements OnInit {
   messageService = inject(MessageService);
   formGroup!: FormGroup;
   formSubmitted = false;
-  projectToUpdate!: ProjectModel;
+  project!: ProjectModel;
   projectStatuses = <any[]>[];
 
   get iSCreate() : boolean{
-    return !this.projectToUpdate;
+    return !this.project;
   }
 
   constructor(private ref: DynamicDialogRef, 
@@ -37,13 +38,13 @@ export class AddEditProjectModalComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.projectToUpdate = this.config.data;
+    this.project = this.config.data;
     this.mapProjectStatuses();
     this.openModal();
   }
 
   openModal(){
-    this.projectToUpdate ?
+    this.project ?
       this.editProjectForm() : 
       this.createProjectForm();
   }
@@ -58,16 +59,17 @@ export class AddEditProjectModalComponent implements OnInit {
       name: [null],
       description: [null],
       startDate: [null],
-      projectStatus: [null]
+      endDate: [null]
     })
   }
 
    editProjectForm(){
     this.formGroup = this.formBuilder.group({
-      name: [this.projectToUpdate.name],
-      description: [this.projectToUpdate.description],
-      startDate: [new Date(this.projectToUpdate.startDate)],
-      projectStatus: [this.projectToUpdate.projectStatus]
+      name: [this.project.name],
+      description: [this.project.description],
+      startDate: [new Date(this.project.startDate)],
+      endDate: [new Date(this.project.endDate)],
+      projectStatus: [this.project.projectStatus]
     })
   }
 
@@ -75,28 +77,29 @@ export class AddEditProjectModalComponent implements OnInit {
     this.ref.close();
   }
 
-  onCreate(){
-    if(!this.formGroup.dirty){ 
-      console.log('value changed')
-   };
+  onSaveOrCreate(){
+  //   if(!this.formGroup.dirty){ 
+  //     console.log('value changed')
+  //  };
 
-   if(!this.iSCreate){
-    this.mapToUpdateProject();
+    this.mapFormToProjectModel();
 
-    console.log(this.projectToUpdate)
-
-    this.ref.close(this.projectToUpdate);
-    return;
-   }
-
-    this.ref.close(this.formGroup.value)
+    this.ref.close(this.project)
   }
 
-  mapToUpdateProject(){
-    this.projectToUpdate.name = this.formGroup.get(['name'])?.value;
-    this.projectToUpdate.description = this.formGroup.get(['description'])?.value;
-    this.projectToUpdate.startDate = this.formGroup.get(['startDate'])?.value;
-     this.projectToUpdate.projectStatus = this.formGroup.get(['projectStatus'])?.value;
+  mapFormToProjectModel(){
+    if(this.iSCreate){
+      this.project = new ProjectModel();
+    }
+
+    if(!this.iSCreate){
+       this.project.projectStatus = this.formGroup.get(['projectStatus'])?.value;
+    }
+
+    this.project.name = this.formGroup.get(['name'])?.value;
+    this.project.description = this.formGroup.get(['description'])?.value;
+    this.project.startDate = formatDate(this.formGroup.get('startDate')?.value, 'yyyy-MM-dd', 'en-US');
+    this.project.endDate = formatDate(this.formGroup.get('endDate')?.value, 'yyyy-MM-dd', 'en-US');
   }
 
   mapProjectStatuses(){
@@ -110,3 +113,5 @@ export class AddEditProjectModalComponent implements OnInit {
     ]
   }
 }
+
+

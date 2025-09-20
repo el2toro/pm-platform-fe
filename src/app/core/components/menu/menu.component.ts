@@ -48,9 +48,16 @@ export class MenuComponent implements OnInit {
           {
             label: 'Dashboard',
             expanded: false,
-            routerLink: '',
+            routerLink: 'dashboard',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon p-highlight',
+            command: (menuItem) => this.setActive(menuItem),
+          },
+          {
+            label: 'Kanban Board',
+            routerLink: 'board',
+            icon: 'pi pi-circle-fill',
+            styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem),
           },
           {

@@ -1,13 +1,13 @@
 <div class="heading">
-  <h1>{{ iSCreate ? 'Create new Project' : 'Edit Project'}}</h1>
+  <h1>{{ iSCreate ? "Create new Project" : "Edit Project" }}</h1>
 </div>
 
 <form [formGroup]="formGroup" class="form">
   <div class="form-field">
-   <p-floatlabel style="width: 100%;">
-    <input class="input-field" id="name" pInputText formControlName="name"/>
-    <label for="name">Project name</label>
-</p-floatlabel>
+    <p-floatlabel>
+      <input class="input-field" id="name" pInputText formControlName="name" />
+      <label for="name">Project name</label>
+    </p-floatlabel>
     @if (isInvalid('name')) {
     <p-message severity="error" size="small" variant="simple"
       >Project name is required.</p-message
@@ -16,16 +16,16 @@
   </div>
 
   <div class="form-field">
-     <p-floatlabel>
-    <textarea class="input-field"
-      pTextarea
-      id="description"
-      formControlName="description"
-    ></textarea>
-    <label for="description">Description</label>
-</p-floatlabel>
+    <p-floatlabel>
+      <textarea
+        class="input-field"
+        pTextarea
+        id="description"
+        formControlName="description"
+      ></textarea>
+      <label for="description">Description</label>
+    </p-floatlabel>
 
-    
     <!-- @if (isInvalid('description')) {
             @if (formGroup.get('description')?.errors?.['required']) {
                 <p-message severity="error" size="small" variant="simple">Description is required.</p-message>
@@ -38,18 +38,45 @@
 
   <div class="form-field">
     <p-floatlabel>
-       <p-datepicker class="input-field" appendTo="body" [autofocus]="false" formControlName="startDate" />
-    <label for="startDate">Project starts on...</label>
-</p-floatlabel>
+      <p-datepicker
+        class="input-field"
+        appendTo="body"
+        [autofocus]="false"
+        formControlName="startDate"
+      />
+      <label for="startDate">Project starts on...</label>
+    </p-floatlabel>
   </div>
 
-   <div class="form-field">
-      <p-floatlabel>
-       <p-select [autofocus]="false" class="input-field" appendTo="body" [options]="projectStatuses" formControlName="projectStatus" optionLabel="name" optionValue="value" />
-    <label for="projectStatus">Select project status</label>
-</p-floatlabel>
- 
+  <div class="form-field">
+    <p-floatlabel>
+      <p-datepicker
+        class="input-field"
+        appendTo="body"
+        [autofocus]="false"
+        formControlName="endDate"
+      />
+      <label for="endDate">Project ends on...</label>
+    </p-floatlabel>
   </div>
+
+  @if(!iSCreate){
+    <div class="form-field">
+    <p-floatlabel>
+      <p-select
+        [autofocus]="false"
+        class="input-field"
+        appendTo="body"
+        [options]="projectStatuses"
+        formControlName="projectStatus"
+        optionLabel="name"
+        optionValue="value"
+      />
+      <label for="projectStatus">Select project status</label>
+    </p-floatlabel>
+  </div>
+  }
+  
   <div class="actions">
     <button
       pButton
@@ -57,6 +84,10 @@
       severity="secondary"
       (click)="onClose()"
     ></button>
-    <button pButton label="{{iSCreate ? 'Create' : 'Save'}}" (click)="onCreate()"></button>
+    <button
+      pButton
+      label="{{ iSCreate ? 'Create' : 'Save' }}"
+      (click)="onSaveOrCreate()"
+    ></button>
   </div>
 </form>

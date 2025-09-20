@@ -21,10 +21,10 @@ export class DashboardNavComponent implements OnInit {
 
   initMenuItems(){
     this.items = [
-            { label: 'Account' },
+            { label: 'Dashboard' },
             { label: 'Overview' }
         ];
 
-        this.home = { icon: 'pi pi-home', routerLink: '/' };
+        this.home = { icon: 'pi pi-home', routerLink: 'dashboard' };
   }
 }
