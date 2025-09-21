@@ -1,3 +1,18 @@
-<p>
-  login works!
-</p>
+<div class="login">
+  <div class="login-container">
+    <h1>Signin</h1>
+   <form>
+     <p-floatlabel>
+      <input class="input-field" id="email" pInputText formControlName="email" />
+      <label for="email">Email</label>
+    </p-floatlabel>
+    
+    <p-floatlabel>
+      <input class="input-field" id="password" pInputText type="password" formControlName="password" />
+      <label for="password">Password</label>
+    </p-floatlabel>
+   </form>
+
+   <button pButton (click)="login()">Login</button>
+  </div>
+</div>
