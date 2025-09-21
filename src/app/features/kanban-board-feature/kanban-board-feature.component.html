@@ -12,7 +12,7 @@
      <div class="column-header">
        <p class="title">{{ col.title }}</p>
        <div class="action">
-        <span class="task-count">5</span>
+        <span class="task-count">{{ col.items.length }}</span>
         <button><i class="pi pi-ellipsis-h"></i></button>
        </div>
      </div>
@@ -32,14 +32,14 @@
               </div>
                    
             <p-progressbar class="progress-bar"
-                        [value]="50" 
+                        [value]="getTaskProgressValue(item.subtasks)" 
                         [showValue]="false"/>
                         <!-- {{ project.progress }}  -->
 
             <div class="details">
               <span><i class="pi pi-paperclip"></i> 5</span>
-              <span><i class="pi pi-check-square"></i> 5/8</span>
-              <span><i class="pi pi-clock"></i> 5 days left</span>
+              <span><i class="pi pi-check-square"></i> {{getSubtaskCount(item.subtasks)}}/{{item.subtasks.length}}</span>
+              <span><i class="pi pi-clock"></i> {{getDaysLeft(item.dueDate)}} days left</span>
             </div>
           </div>
       </li>

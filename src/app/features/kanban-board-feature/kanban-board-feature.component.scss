@@ -18,7 +18,6 @@
     gap: 1rem; // spacing between columns
     align-items: flex-start; // 🔑 allows different heights
     justify-content: space-between;
-    //overflow-x: hidden;
 
     .column {
       border: 1px solid #d9e1e7;
@@ -30,7 +29,6 @@
       .column-header {
         display: flex;
         justify-content: space-between;
-        // align-items: center;
 
         .title {
           text-align: start;
@@ -75,7 +73,7 @@
 
       .add-task-button {
         width: 100%;
-        height: 58px;
+        height: 47px;
         border-radius: 15px;
         margin: 10px 0px 30px 0px;
         background-color: #eef6ff;

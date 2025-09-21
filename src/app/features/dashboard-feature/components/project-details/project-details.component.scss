@@ -26,13 +26,24 @@
             margin-bottom: 24px;
         }
 
+        .label{
+            height: 32px;
+            width: 145px;
+            padding: 8px 20px;
+            background-color: #F0F2F5;
+            color: #0F1417;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
         .edit-task-button{
             width: 94px;
             height: 30px;
             background-color: #E8FFF3;
             color: #50CD89;
             border: none;
-            border-radius: 20%;
+            border-radius: 10px;
             font-size: 0.8rem;
             font-weight: 600;
 

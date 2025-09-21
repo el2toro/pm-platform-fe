@@ -3,10 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ProgressBar } from "primeng/progressbar";
 import { ProjectModel } from '../dashboard-feature/models/project-model';
+import { ProjectService } from '../dashboard-feature/apis/project/project.service';
+import { TaskStatus } from '../dashboard-feature/enums/task-status.enum';
+import { TaskModel } from '../dashboard-feature/models/task-model';
+import { map } from 'rxjs';
+import { SubtaskModel } from '../dashboard-feature/models/subtask-model';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
+  dueDate: Date;
+  subtasks: SubtaskModel[]
 }
 
 interface Column {
@@ -23,45 +30,25 @@ interface Column {
 })
 export class KanbanBoardFeatureComponent implements OnInit {
   project!: ProjectModel;
-
- columns: Column[] = [
-    {
-      title: 'To Do',
-      items: [
-        { id: 1, name: 'Feature 1' },
-        { id: 2, name: 'UI/UX' },
-        { id: 3, name: 'Testing' },
-        { id: 4, name: 'Add new module' },
-        { id: 5, name: 'SQL query' }
-      ]
-    },
-    {
-      title: 'In Progress',
-      items: []
-    },
-    {
-      title: 'Testing',
-      items: []
-    },
-    {
-      title: 'In Review',
-      items: []
-    },
-    {
-      title: 'Done',
-      items: []
-    }
-  ];
+ columns = <Column[]>[];
 
   draggedItem?: Product;
   draggedFrom?: Column;
 
-  constructor() { }
+  constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
-    this.project = new ProjectModel();
-    this.project.name = 'Projects from 5 March to 15 March - Sprint 6'
-     this.project.description = 'Project Description: Detailed description of the project, its objectives, and expected outcomes.'
+    this.initProject();
+  }
+
+  initProject(){
+    this.projectService.getProjectDetails('8D4B5374-47DA-4900-BEDA-E3AA9D46E5B6', 'FF2C542E-5948-4726-A28A-4A5FD5CB76DA')
+    .subscribe({
+      next: (project: ProjectModel) => {
+        this.project = project, this.initColumn(this.project.tasks)
+        console.log(this.project.tasks)
+      }
+    })
   }
 
   dragStart(item: Product, from: Column) {
@@ -84,5 +71,52 @@ export class KanbanBoardFeatureComponent implements OnInit {
       targetCol.items.push(this.draggedItem);
     }
     this.dragEnd();
+  }
+
+  initColumn(tasks: TaskModel[]){
+    this.columns = [
+    {
+      title: 'To Do',
+      items: this.mapColumnItems(tasks, TaskStatus.ToDo)
+    },
+    {
+      title: 'In Progress',
+      items: this.mapColumnItems(tasks, TaskStatus.InProgress)
+    },
+    {
+      title: 'Testing',
+      items: this.mapColumnItems(tasks, TaskStatus.Testing)
+    },
+    {
+      title: 'In Review',
+      items: this.mapColumnItems(tasks, TaskStatus.Review)
+    },
+    {
+      title: 'Done',
+      items: this.mapColumnItems(tasks, TaskStatus.Done)
+    }
+    ]
+  }
+
+  mapColumnItems(tasks: TaskModel[], status: TaskStatus){
+   return tasks.filter(task => task.taskStatus === status)
+    .map(task => { 
+      return {id: task.id, name: task.title, dueDate: task.dueDate, subtasks: task.subtasks}});
+  }
+
+  getSubtaskCount(subtasks: SubtaskModel[]) : number{
+    return subtasks.filter(st => st.isCompleted).length
+  }
+
+  getTaskProgressValue(subtasks: SubtaskModel[]) : number{
+    return (this.getSubtaskCount(subtasks) * 100) / subtasks.length;
+  }
+
+  getDaysLeft(dueDate: Date) : number{
+    const date = (new Date(dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24);
+
+    if(date <= 0) { return 0 }
+
+    return Math.floor(date)
   }
 }

@@ -29,7 +29,9 @@
                 <td>
                     {{ task.dueDate | date }}                       
                 </td>
-                <td>{{ task.taskStatus | taskStatus }}</td>
+                <td>
+                  <span class="label">{{ task.taskStatus | taskStatus }}</span>
+                </td>
                  <td>
                   <button class="edit-task-button">Edit Task</button>
                  </td>
