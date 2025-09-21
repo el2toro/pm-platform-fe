@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuItem, MenuItemCommandEvent } from 'primeng/api';
 import { PanelMenu } from 'primeng/panelmenu';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -8,6 +8,8 @@ import { InputText } from 'primeng/inputtext';
 import { Menu } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
+import { AuthService } from '../../auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -33,6 +35,8 @@ export class MenuComponent implements OnInit {
   activeLabel: any;
 
   constructor() {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.initMenuItems();
@@ -184,7 +188,9 @@ export class MenuComponent implements OnInit {
   }
 
   goToProfile() {
-    throw new Error('Method not implemented.');
+    this.authService.logout();
+    console.log('user logged out')
+    this.router.navigate(['/login']);
   }
 
   search() {

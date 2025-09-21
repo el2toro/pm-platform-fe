@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from "primeng/table";
-import { Button } from "primeng/button";
 import { ActivatedRoute, Route } from '@angular/router';
 import { ProjectService } from '../../apis/project/project.service';
 import { ProjectModel } from '../../models/project-model';
@@ -13,7 +12,7 @@ import { TaskStatusPipe } from "../../pipes/task-status.pipe";
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss'],
   standalone: true,
-  imports: [TableModule, CommonModule, Button, TaskStatusPipe]
+  imports: [TableModule, CommonModule, TaskStatusPipe]
 })
 export class ProjectDetailsComponent implements OnInit {
   tasks = <TaskModel[]>[];

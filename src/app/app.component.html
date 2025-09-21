@@ -1,10 +1,16 @@
 <div class="main-page">
-  <app-menu></app-menu>
+  @if(!userIsLoggedIn){
+    <app-login></app-login>
+  }
+
+  @if (userIsLoggedIn) {
+    <app-menu></app-menu>
 
   <div class="custom-router-outlet">
     <app-dashboard-nav></app-dashboard-nav>
     <router-outlet></router-outlet>
   </div>
+  }
 </div>
 
 
