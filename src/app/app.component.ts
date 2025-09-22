@@ -1,14 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { MenuComponent } from './core/components/menu/menu.component';
 import { RouterOutlet } from '@angular/router';
-import { DashboardNavComponent } from "./features/dashboard-feature/components/dashboard-nav/dashboard-nav.component";
 import { AuthService } from './core/auth/services/auth.service';
-import { LoginComponent } from "./core/auth/login/login.component";
-
+import { MenuComponent } from "./core/components/menu/menu.component";
+import { DashboardNavComponent } from "./features/dashboard-feature/components/dashboard-nav/dashboard-nav.component";
 
 @Component({
     selector: 'app-root',
-    imports: [MenuComponent, RouterOutlet, DashboardNavComponent, LoginComponent],
+    imports: [RouterOutlet, MenuComponent, DashboardNavComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })

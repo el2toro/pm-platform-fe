@@ -5,11 +5,13 @@ import { InsightAndReportFeatureComponent } from './features/insight-and-report-
 import { KanbanBoardFeatureComponent } from './features/kanban-board-feature/kanban-board-feature.component';
 import { LoginComponent } from './core/auth/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { UserGuard } from './core/guards/user.guard';
 
 export const routes: Routes = [
     { 
         path: 'login', 
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [UserGuard]
     },
     { 
         path: 'dashboard', 

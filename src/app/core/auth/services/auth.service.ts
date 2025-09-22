@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthApiService } from '../apis/auth-api.service';
 import { LoginRequestModel } from '../models/login-request.model';
 import { HttpClient } from '@angular/common/http';
 import { LoginResponse as LoginResponseModel } from '../models/login-response';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class AuthService {
 constructor() { }
  private accessToken$ = new BehaviorSubject<string | null>(null);
  private http = inject(HttpClient);
+ private router = inject(Router);
   private baseUrl = 'https://localhost:7194/api/auth';
 
     /** Keep access token only in memory */
@@ -23,14 +24,15 @@ constructor() { }
   }
 
   isLoggedIn(): boolean {
-    return this.accessToken$.value !== null;
+    console.log('user is logged in: ', !!this.accessToken$.value)
+    return !!this.accessToken$.value;
   }
 
-  login(loginRequest: LoginRequestModel) {
-     this.http.post<LoginResponseModel>(`${this.baseUrl}/login`, loginRequest, { withCredentials: true })
+  login(loginRequest: LoginRequestModel): Observable<LoginResponseModel> {
+   return  this.http.post<LoginResponseModel>(`${this.baseUrl}/login`, loginRequest, { withCredentials: true })
      .pipe(
       tap((response) => this.accessToken$.next(response.token))
-    ).subscribe()
+    );
   }
 
     /** Ask backend to refresh token using HttpOnly cookie */
@@ -47,9 +49,5 @@ constructor() { }
   logout() {
     this.accessToken$.next(null);
     return this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true });
-  }
-
-  private setLoggedInUser() : void{
-
   }
 }

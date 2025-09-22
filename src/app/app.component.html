@@ -1,16 +1,18 @@
-<div class="main-page">
-  @if(!userIsLoggedIn){
-    <app-login></app-login>
-  }
+@if (!userIsLoggedIn) {
+  <router-outlet></router-outlet>
+}
 
-  @if (userIsLoggedIn) {
-    <app-menu></app-menu>
+@if (userIsLoggedIn) {
+<div class="main-page"> 
+  <app-menu></app-menu>
 
   <div class="custom-router-outlet">
     <app-dashboard-nav></app-dashboard-nav>
     <router-outlet></router-outlet>
   </div>
-  }
 </div>
+}
+
+
 
 

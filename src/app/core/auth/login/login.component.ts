@@ -25,9 +25,9 @@ export class LoginComponent implements OnInit {
     let request = new LoginRequestModel();
     request.email = 'michael.smith@tenant123.com'
     request.password = 'Password123'
-    this.authService.login(request);
-  
-    this.router.navigate(['/dashboard'])
     
+    this.authService.login(request).subscribe({
+      next: (response) => this.router.navigate(['/dashboard'])
+    });   
   }
 }
