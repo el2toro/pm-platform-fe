@@ -188,8 +188,11 @@ export class MenuComponent implements OnInit {
   }
 
   goToProfile() {
-    this.authService.logout();
-    console.log('user logged out')
+    //TODO: add tenant id variable
+    this.authService.logout('FF2C542E-5948-4726-A28A-4A5FD5CB76DA')
+    .subscribe({
+      next: (response) => console.log('logout: ',response)
+    });
     this.router.navigate(['/login']);
   }
 

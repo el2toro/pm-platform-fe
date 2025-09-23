@@ -46,7 +46,6 @@ export class KanbanBoardFeatureComponent implements OnInit {
     .subscribe({
       next: (project: ProjectModel) => {
         this.project = project, this.initColumn(this.project.tasks)
-        console.log(this.project.tasks)
       }
     })
   }
