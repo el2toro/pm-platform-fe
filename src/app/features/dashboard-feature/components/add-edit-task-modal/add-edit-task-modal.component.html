@@ -1,0 +1,81 @@
+<div class="heading">
+  <h1>{{  "Edit Task" }}</h1>
+</div>
+
+<form [formGroup]="formGroup" class="form">
+  <div class="form-field">
+    <p-floatlabel>
+      <input class="input-field" id="title" pInputText formControlName="title" />
+      <label for="title">Task title</label>
+    </p-floatlabel>
+    <!-- @if (isInvalid('title')) {
+    <p-message severity="error" size="small" variant="simple"
+      >Task title is required.</p-message
+    >
+    } -->
+  </div>
+
+  <!-- <div class="form-field">
+    <p-floatlabel>
+      <textarea
+        class="input-field"
+        pTextarea
+        id="description"
+        formControlName="description"
+      ></textarea>
+      <label for="description">Description</label>
+    </p-floatlabel>
+
+     @if (isInvalid('description')) {
+            @if (formGroup.get('description')?.errors?.['required']) {
+                <p-message severity="error" size="small" variant="simple">Description is required.</p-message>
+            }
+            @if (formGroup.get('email')?.errors?.['email']) {
+                <p-message severity="error" size="small" variant="simple">Please enter a valid email.</p-message>
+            }
+        } 
+  </div> -->
+
+  <div class="form-field">
+    <p-floatlabel>
+      <p-datepicker
+        class="input-field"
+        appendTo="body"
+        [autofocus]="false"
+        formControlName="dueDate"
+      />
+      <label for="dueDate">Task ends on...</label>
+    </p-floatlabel>
+  </div>
+
+  @if(true){
+    <div class="form-field">
+    <p-floatlabel>
+      <p-select
+        [autofocus]="false"
+        class="input-field"
+        appendTo="body"
+        [options]="taskStatuses"
+        formControlName="taskStatus"
+        optionLabel="name"
+        optionValue="value"
+      />
+      <label for="taskStatus">Select task status</label>
+    </p-floatlabel>
+  </div>
+  }
+  
+  <div class="actions">
+    <button
+      pButton
+      label="Cancel"
+      severity="secondary"
+      (click)="onClose()"
+    ></button>
+    <button
+      pButton
+      label="{{  'Save' }}"
+      (click)="onSaveOrCreate()"
+    ></button>
+  </div>
+</form>

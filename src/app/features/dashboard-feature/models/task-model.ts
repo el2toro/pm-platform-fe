@@ -1,3 +1,4 @@
+import { UserModel } from "../../../core/auth/models/user.model";
 import { TaskStatus } from "../enums/task-status.enum";
 import { SubtaskModel } from "./subtask-model";
 
@@ -5,13 +6,14 @@ export class TaskModel {
     id!: string;
     title!: string;
     description?: string;
-    dueDate!: Date;
+    dueDate!: string;
     projectId!: string;
     assignedTo!: string;
     taskStatus!: TaskStatus;
-    createdAt!: Date;
-    updatedAt!: Date;
+    createdAt!: string;
+    updatedAt!: string;
     createdBy!: string;
     updatedBy!: string;
+    user!: UserModel;
     subtasks!: SubtaskModel[];
 }

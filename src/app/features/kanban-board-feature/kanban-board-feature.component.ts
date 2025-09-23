@@ -12,7 +12,7 @@ import { SubtaskModel } from '../dashboard-feature/models/subtask-model';
 interface Product {
   id: string;
   name: string;
-  dueDate: Date;
+  dueDate: string;
   subtasks: SubtaskModel[]
 }
 
@@ -111,7 +111,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
     return (this.getSubtaskCount(subtasks) * 100) / subtasks.length;
   }
 
-  getDaysLeft(dueDate: Date) : number{
+  getDaysLeft(dueDate: string) : number{
     const date = (new Date(dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24);
 
     if(date <= 0) { return 0 }

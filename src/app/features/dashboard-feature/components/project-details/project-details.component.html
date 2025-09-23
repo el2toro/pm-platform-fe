@@ -23,7 +23,8 @@
                 <td>{{ task.title }}</td>
                 <td>
                   <span>
-                    {{ task.createdBy }}
+                    {{ task.user.firstName }}
+                    {{ task.user.lastName }}
                   </span>
                 </td>
                 <td>
@@ -33,7 +34,7 @@
                   <span class="label">{{ task.taskStatus | taskStatus }}</span>
                 </td>
                  <td>
-                  <button class="edit-task-button">Edit Task</button>
+                  <button (click)="openEditTaskModal(task)" class="edit-task-button">Edit Task</button>
                  </td>
             </tr>
         </ng-template>
