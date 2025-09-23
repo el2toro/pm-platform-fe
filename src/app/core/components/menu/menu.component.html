@@ -12,10 +12,10 @@
     <div class="sticky">
          <div class="profile">
          <div class="image" (click)="goToProfile()">
-           <img src="assets/images/avatar.jpg" alt="img">
+           <img src="assets/images/{{user?.image}}" alt="img">
        </div>
        <div class="title">
-          <h3>{{ title }}</h3>
+          <h3>{{ user?.firstName }}</h3>
        </div>
     </div>
 

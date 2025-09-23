@@ -11,6 +11,7 @@ export class UserGuard implements CanActivate {
 
   constructor() {}
 
+  //TODO: check why this.authService.isLoggedIn() is always false
   canActivate(): boolean | UrlTree {
     if (this.authService.isLoggedIn()) {
       // Redirect logged-in users to dashboard

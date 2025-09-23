@@ -1,4 +1,4 @@
-import { afterNextRender, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ActiveTaskComponent } from '../active-task/active-task.component';
@@ -108,7 +108,6 @@ export class OverviewComponent implements OnInit {
   }
 
   goToProjectDetails(projectId: string, tenantId: string){
-    console.log({projectIds: projectId, tenant: tenantId})
    this.router.navigate(['/project-details'], 
     { queryParams: { projectId: projectId, tenantId: tenantId } });
   }

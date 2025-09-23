@@ -3,23 +3,27 @@ import { LoginRequestModel } from '../models/login-request.model';
 import { HttpClient } from '@angular/common/http';
 import { LoginResponse as LoginResponseModel } from '../models/login-response';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { UserModel } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = false; // Replace with real logic (token check, API call, etc.)
-  loginResponse: any;
 
 constructor() { }
  private accessToken$ = new BehaviorSubject<string | null>(null);
  private refreshToken$ = new BehaviorSubject<string | null>(null);
+ private loggedInUser$ = new BehaviorSubject<UserModel | null>(null);
  private http = inject(HttpClient);
   private baseUrl = 'https://localhost:7194/api/auth';
 
     /** Keep access token only in memory */
   get accessToken(): string | null {
     return this.accessToken$.value;
+  }
+
+  get loggedInUser(): UserModel | null {
+    return this.loggedInUser$.value;
   }
 
   isLoggedIn(): boolean {
@@ -29,7 +33,11 @@ constructor() { }
   login(loginRequest: LoginRequestModel): Observable<LoginResponseModel> {
    return  this.http.post<LoginResponseModel>(`${this.baseUrl}/login`, loginRequest, { withCredentials: true })
      .pipe(
-      tap((response) => this.setTokens(response.refreshToken, response.token))
+      tap((response) => {
+        this.setTokens(response.refreshToken, response.token);
+        //TODO: add proper mapping
+        this.loggedInUser$.next({id: response.userId, tenantId: response.tenantId, firstName: response.firstName, lastName: response.lastName, email: response.email, image: 'avatar.jpg'});
+      })
     );
   }
 
@@ -42,7 +50,6 @@ constructor() { }
       { withCredentials: true }
     ).pipe(
       tap(res => this.setTokens(res.refreshToken, res.accessToken)),
-      //map(res => {res.refreshToken, console.log('from refreshRoken(): ', res)})
     );
   }
 

@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
+import { UserModel } from '../../auth/models/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -30,9 +31,12 @@ import { Router } from '@angular/router';
 export class MenuComponent implements OnInit {
   items: MenuItem[] | undefined;
   projectItems: MenuItem[] | undefined;
-  title = 'Eugenia';
   isCollapsed!: boolean;
   activeLabel: any;
+
+  get user() : UserModel | null{
+    return this.authService.loggedInUser;
+  }
 
   constructor() {}
   private authService = inject(AuthService);

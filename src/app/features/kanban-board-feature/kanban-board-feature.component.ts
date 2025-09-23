@@ -30,7 +30,7 @@ interface Column {
 })
 export class KanbanBoardFeatureComponent implements OnInit {
   project!: ProjectModel;
- columns = <Column[]>[];
+  columns = <Column[]>[];
 
   draggedItem?: Product;
   draggedFrom?: Column;
