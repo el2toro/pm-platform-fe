@@ -69,101 +69,48 @@
     </p-floatlabel>
   </div>
   }
-<!-- 
-  @if (displaySubstask) {
-
-  <div class="form-field">
-    <p-floatlabel>
-      <input
-        class="input-field"
-        id="subtaskTitle"
-        pInputText
-        formControlName="subtaskTitle"
-      />
-      <label for="subtaskTitle">Subtask title</label>
-       <button (click)="addSubtask()">
-        <i class="pi pi-plus"></i>
-      </button>
-    </p-floatlabel>
-    <!-- @if (isInvalid('title')) {
-    <p-message severity="error" size="small" variant="simple"
-      >Task title is required.</p-message
-    >
-    } 
-  </div>
-
-   <div class="comment-list" style="display: grid;">
-      @for (subtask of subtasks; track $index) {
-        <span>{{subtask.title}}
-          <button (click)="deleteSubtask(subtask)"><i class="pi pi-times"></i></button>
-        </span>
-      }
-    </div>
-  }
-
-
-  <!-- @if (displayComment) {
-  <div class="form-field">
-    <p-floatlabel>
-      <textarea
-        class="input-field"
-        id="commnet"
-        pInputText
-        formControlName="comment"
-      ></textarea>
-      <label for="subtaskTitle">Comment</label>
-      <button (click)="addComment()">
-        <i class="pi pi-plus"></i>
-      </button>
-    </p-floatlabel>
-     @if (isInvalid('title')) {
-    <p-message severity="error" size="small" variant="simple"
-      >Task title is required.</p-message
-    >
-  } 
-  </div> 
-
-  [tableStyle]="{ 'min-width': '50rem' }"
-  } -->
 
   <div class="card">
-    <p-table [value]="iSCreate ? subtasks : task.subtasks" dataKey="id">
-        <ng-template #header>
+    <p-table formArrayName="subtasks" [value]="subtasks.controls" editMode="row">
+        <ng-template pTemplate="header">
             <tr>
               @if (!iSCreate) {
                 <th>Subtasks</th>
+                <th></th>
               }
                @if (iSCreate) {
-                 <th>
-                  <input pInputText type="text" placeholder="Subtask Title" formControlName="subtaskTitle" />
+                     
+                    <th>
+                  <input pInputText type="text" placeholder="Subtask Title" formControlName="subtasks" />
                 </th>
                 <th style="width: 4rem">
                   <button (click)="addSubtask()" pButton icon="pi pi-plus" class="p-button-rounded p-button-success"></button>
                 </th>
+              
                }
             </tr>
         </ng-template>
 
-        <ng-template #body let-subtask let-editing="editing">
-            <tr>
-                <!-- Title Column -->
-                <td [pEditableColumn]="subtask.title" pEditableColumnField="title">
+        <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr [formGroupName]="i">
+                <td [pEditableColumn]="row" pEditableColumnField="title">
+                  
                     <p-cellEditor>
-                        <ng-template #input>
+                        <ng-template pTemplate="input">
                             <input
-                                formControlName="subtaskTitle"
+                                formControlName="title"
                                 pInputText
-                                fluid 
+                                 
                                 [readOnly]="iSCreate"/>
                         </ng-template>
-                        <ng-template #output>
-                            {{ subtask.title }}
+                        <ng-template pTemplate="output">
+                            {{ row.value.title  }}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                @if (iSCreate) {
                 <td>
-                    <button (click)="deleteSubtask(subtask)" pButton icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
+                    <button (click)="deleteSubtask(row)" pButton icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
                 </td>
                }
             </tr>
@@ -171,6 +118,51 @@
     </p-table>
 </div>
 
+<!-- Comments table -->
+  <!-- <div class="card">
+    <p-table [value]="iSCreate ? comments : task.comments" dataKey="id">
+        <ng-template #header>
+            <tr>
+              @if (!iSCreate) {
+                <th>Comments</th>
+              }
+               @if (iSCreate) {
+                 <th>
+                  <input pInputText type="text" placeholder="Comment Title" formControlName="comment" />
+                </th>
+                <th style="width: 4rem">
+                  <button (click)="addComment()" pButton icon="pi pi-plus" class="p-button-rounded p-button-success"></button>
+                </th>
+               }
+            </tr>
+        </ng-template>
+
+        <ng-template #body let-comment let-editing="editing">
+            <tr>
+                 Title Column 
+                <td [pEditableColumn]="comment.content" pEditableColumnField="content">
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <input
+                                formControlName="comment"
+                                pInputText
+                                fluid 
+                                [readOnly]="iSCreate"/>
+                        </ng-template>
+                        <ng-template #output>
+                            {{ comment.content  }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+               @if (iSCreate) {
+                <td>
+                    <button (click)="deleteComment(comment)" pButton icon="pi pi-times" class="p-button-rounded p-button-danger"></button>
+                </td>
+               }
+            </tr>
+        </ng-template>
+    </p-table>
+</div> -->
 
   <div class="actions">
     <button

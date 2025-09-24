@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskModel } from '../../models/task-model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
@@ -35,13 +35,16 @@ export class AddEditTaskModalComponent implements OnInit {
   taskStatuses = <any[]>[];
 
   comments = <CommentModel[]>[];
-  subtasks = <SubtaskModel[]>[];
 
   displaySubstask = false;
   displayComment = false;
 
   get iSCreate() : boolean{
     return !this.task;
+  }
+
+  get subtasks() {
+    return this.formGroup.get(['subtasks']) as FormArray;
   }
 
   constructor() { }
@@ -78,18 +81,25 @@ export class AddEditTaskModalComponent implements OnInit {
   }
 
    editTaskForm(){
+    console.log('Edit Task:', this.task.comments);
     this.formGroup = this.formBuilder.group({
       title: [this.task.title],
       description: [this.task.description],
       dueDate: [new Date(this.task.dueDate)],
       taskStatus: [this.task.taskStatus],
-      subtaskTitle: [this.task.subtasks?.map(s => s.title)],
-      comment: [this.task.comments?.map(c => c.content)]
-    })
+      subtasks: this.formBuilder
+          .array(this.task.subtasks?.map(st => this.formBuilder
+          .group({id: st.id,  title: st.title , isComplited: st.isCompleted}))),
 
-    this.formGroup.get(['subtaskTitle'])?.valueChanges.subscribe(value => {
-      console.log('Subtask Title changed:', value);
+      comment: this.formBuilder
+          .array(this.task.comments?.map(comment => this.formBuilder
+          .group({content: comment.content})))
     });
+
+    //TODO: the subtasks are not updated in database, at the backend it arrives ok
+    this.formGroup.controls['subtasks'].valueChanges.subscribe(value => {
+      this.task.subtasks = value;
+     });
   }
 
   onClose(){
@@ -110,7 +120,7 @@ export class AddEditTaskModalComponent implements OnInit {
      if(this.iSCreate){
        this.task = new TaskModel();
         this.task.comments = this.comments;
-        this.task.subtasks = this.subtasks;
+       // this.task.subtasks = this.subtasks;
      }
 
      if(!this.iSCreate){
@@ -155,10 +165,10 @@ export class AddEditTaskModalComponent implements OnInit {
   }
 
   deleteSubtask(subtask: SubtaskModel){
-    const index = this.subtasks?.indexOf(subtask);
-    if(index > -1){
-      this.subtasks.splice(index, 1);
-    }
+    // const index = this.subtasks?.indexOf(subtask);
+    // if(index > -1){
+    //   this.subtasks.splice(index, 1);
+    // }
   }
 
   //TODO: map dinamicly not hardcoded
