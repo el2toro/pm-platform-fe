@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskModel } from '../../models/task-model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
@@ -12,41 +12,52 @@ import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TaskStatus } from '../../enums/task-status.enum';
-import { formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
+import { CommentModel } from '../../models/comment-model';
+import { SubtaskModel } from '../../models/subtask-model';
+import { TableModule } from "primeng/table";
 
 @Component({
   selector: 'app-add-edit-task-modal',
   templateUrl: './add-edit-task-modal.component.html',
   styleUrls: ['./add-edit-task-modal.component.scss'],
   providers: [MessageService],
-  imports: [DialogModule, InputTextModule, ButtonModule, MessageModule, ReactiveFormsModule, InputText, DatePickerModule, Select, FloatLabelModule, TextareaModule, FloatLabel]
+  imports: [CommonModule, DialogModule, InputTextModule, ButtonModule, MessageModule, ReactiveFormsModule, InputText, DatePickerModule, Select, FloatLabelModule, TextareaModule, FloatLabel, TableModule, FormsModule]
 })
 export class AddEditTaskModalComponent implements OnInit {
-messageService = inject(MessageService);
+  private messageService = inject(MessageService);
+  private ref = inject(DynamicDialogRef);
+  private config = inject(DynamicDialogConfig);
+  private formBuilder = inject(FormBuilder);
   formGroup!: FormGroup;
   formSubmitted = false;
   task = new TaskModel();
   taskStatuses = <any[]>[];
 
-  // get iSCreate() : boolean{
-  //   return !!this.task;
-  // }
+  comments = <CommentModel[]>[];
+  subtasks = <SubtaskModel[]>[];
 
-  constructor(private ref: DynamicDialogRef, 
-    private config: DynamicDialogConfig,
-    private formBuilder: FormBuilder) { }
+  displaySubstask = false;
+  displayComment = false;
+
+  get iSCreate() : boolean{
+    return !this.task;
+  }
+
+  constructor() { }
 
   ngOnInit() {
     this.task = this.config.data;
 
    this.mapTaskStatuses();
-    //this.openModal();
-    this.editTaskForm()
+    this.openModal();
+
+     // this.formGroup.get(['subtaskTitle'])?.disable();
   }
 
   openModal(){
-    //this.iSCreate ?
-   // this.createTaskForm() :
+    this.iSCreate ?
+    this.createTaskForm() :
     this.editTaskForm();
   }
 
@@ -60,7 +71,9 @@ messageService = inject(MessageService);
       title: [null],
       description: [null],
       dueDate: [null],
-      taskStatus: [null]
+      taskStatus: [null],
+      subtaskTitle: [null],
+      comment: [null]
     })
   }
 
@@ -69,8 +82,14 @@ messageService = inject(MessageService);
       title: [this.task.title],
       description: [this.task.description],
       dueDate: [new Date(this.task.dueDate)],
-      taskStatus: [this.task.taskStatus]
+      taskStatus: [this.task.taskStatus],
+      subtaskTitle: [this.task.subtasks?.map(s => s.title)],
+      comment: [this.task.comments?.map(c => c.content)]
     })
+
+    this.formGroup.get(['subtaskTitle'])?.valueChanges.subscribe(value => {
+      console.log('Subtask Title changed:', value);
+    });
   }
 
   onClose(){
@@ -88,13 +107,15 @@ messageService = inject(MessageService);
   }
 
   mapFormToTaskModel(){
-    // if(this.iSCreate){
-    //   this.task = new TaskModel();
-    // }
+     if(this.iSCreate){
+       this.task = new TaskModel();
+        this.task.comments = this.comments;
+        this.task.subtasks = this.subtasks;
+     }
 
-    // if(!this.iSCreate){
+     if(!this.iSCreate){
       this.task.taskStatus = this.formGroup.get(['taskStatus'])?.value;
-    // }
+     }
 
     this.task.title = this.formGroup.get(['title'])?.value;
     this.task.description = this.formGroup.get(['description'])?.value;
@@ -102,6 +123,43 @@ messageService = inject(MessageService);
     //this.task.endDate = formatDate(this.formGroup.get('endDate')?.value, 'yyyy-MM-dd', 'en-US');
   }
 
+  addComment(){
+    const commentControl = this.formGroup.get('comment');
+
+    console.log(commentControl?.value);
+
+    if(commentControl?.value && commentControl.value.trim() !== ''){
+      let comment = new CommentModel();
+      comment.content = commentControl.value;
+      this.comments?.push(comment);
+      commentControl.reset();
+    }
+  }
+
+  deleteComment(comment: CommentModel){
+    const index = this.comments?.indexOf(comment);
+    if(index > -1){
+      this.comments.splice(index, 1);
+    }
+  }
+
+  addSubtask(){
+    const subtaskControl = this.formGroup.get('subtaskTitle');
+
+    if(subtaskControl?.value && subtaskControl.value.trim() !== ''){
+      let subtask = new SubtaskModel();
+      subtask.title = subtaskControl.value;
+      this.subtasks?.push(subtask);
+      subtaskControl.reset();
+    }
+  }
+
+  deleteSubtask(subtask: SubtaskModel){
+    const index = this.subtasks?.indexOf(subtask);
+    if(index > -1){
+      this.subtasks.splice(index, 1);
+    }
+  }
 
   //TODO: map dinamicly not hardcoded
   mapTaskStatuses(){
