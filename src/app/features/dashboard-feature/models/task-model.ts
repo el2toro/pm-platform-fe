@@ -1,5 +1,6 @@
 import { UserModel } from "../../../core/auth/models/user.model";
 import { TaskStatus } from "../enums/task-status.enum";
+import { CommentModel } from "./comment-model";
 import { SubtaskModel } from "./subtask-model";
 
 export class TaskModel {
@@ -15,5 +16,6 @@ export class TaskModel {
     createdBy!: string;
     updatedBy!: string;
     user!: UserModel;
-    subtasks!: SubtaskModel[];
+    subtasks = <SubtaskModel[]>[];
+    comments = <CommentModel[]>[];
 }
