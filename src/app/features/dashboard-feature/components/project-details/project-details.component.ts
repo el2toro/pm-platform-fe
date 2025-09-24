@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../apis/project/project.service';
 import { ProjectModel } from '../../models/project-model';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { TaskModel } from '../../models/task-model';
 import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { AddEditTaskModalComponent } from '../add-edit-task-modal/add-edit-task-modal.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TaskService } from '../../apis/task/task.service';
 
 @Component({
   selector: 'app-project-details',
@@ -17,7 +18,9 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
   imports: [TableModule, CommonModule, TaskStatusPipe],
 })
 export class ProjectDetailsComponent implements OnInit {
-  dialogService = inject(DialogService);
+  private taskService =  inject(TaskService);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
   ref!: DynamicDialogRef;
   tasks = <TaskModel[]>[];
   projectId!: string;
@@ -66,10 +69,37 @@ export class ProjectDetailsComponent implements OnInit {
         return;
       }
 
-      this.projectService.editTask(result).subscribe({
+      this.taskService.updateTask(result).subscribe({
         next: () => this.getProjectDetails(),
       });
     });
+  }
+
+  openCreateTaskModal() {
+    this.ref = this.dialogService.open(AddEditTaskModalComponent, {
+      width: '500px',
+      modal: true,
+      data: null,
+    });
+
+    this.ref.onClose.subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      result.projectId = this.projectId;
+     // result.tenantId = this.tenantId;
+
+      this.taskService.createTask(result).subscribe({
+        next: () => this.getProjectDetails(),
+      });
+    });
+  }
+
+  openTaskDetailsPage(taskId: string) {
+    // Navigate to the task details page with the taskId as a route parameter
+    // Assuming you have a router instance available
+    this.router.navigate(['/task-details', taskId]);
   }
 
   getStatusColor(arg0: any) {

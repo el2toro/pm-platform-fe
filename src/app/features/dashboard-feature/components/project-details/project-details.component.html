@@ -1,7 +1,12 @@
 <div class="project-details">
 <div class="heading">
-  <h1>{{ project.name }}</h1>
-  <p>{{ project.description }}</p>
+  <div class="project-info">
+    <h1>{{ project.name }}</h1>
+    <p>{{ project.description }}</p>
+  </div>
+  <div class="actions">
+    <button (click)="openCreateTaskModal()">Create Task</button>
+  </div>
 </div>
 
 <div class="tasks">
@@ -34,6 +39,7 @@
                   <span class="label">{{ task.taskStatus | taskStatus }}</span>
                 </td>
                  <td>
+                  <button (click)="openTaskDetailsPage(task.id)" class="edit-task-button">Details</button>
                   <button (click)="openEditTaskModal(task)" class="edit-task-button">Edit Task</button>
                  </td>
             </tr>

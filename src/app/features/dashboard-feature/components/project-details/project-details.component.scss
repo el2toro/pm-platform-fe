@@ -1,60 +1,86 @@
-.project-details{
-    color: #0F1417;
-    padding: 24px;
-    
-    .heading{
-        h1{
-            font-size: 1.5rem;
-            font-weight: 600;
-          color: #0F1417;
-        }
+.project-details {
+  color: #0f1417;
+  padding: 24px;
 
-        p{
-            font-size: 1rem;
-           color: #0F1417;
-           margin-top: 16px;
-        }
+  .heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .project-info {
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      p {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #5c6368;
+      }
     }
 
-    .tasks{
-        margin-top: 40px;
+    .actions {
+      margin-top: 16px;
 
-        h3{
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #0F1417;
-            margin-bottom: 24px;
+      button {
+        width: 120px;
+        height: 36px;
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        //font-weight: 600;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
         }
+      }
+    }
+  }
 
-        .label{
-            height: 32px;
-            width: 145px;
-            padding: 8px 20px;
-            background-color: #F0F2F5;
-            color: #0F1417;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+  .tasks {
+    margin-top: 40px;
 
-        .edit-task-button{
-            width: 94px;
-            height: 30px;
-            background-color: #E8FFF3;
-            color: #50CD89;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-
-            &:hover{
-                cursor: pointer;
-                opacity: 0.8;
-            }
-        }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f1417;
+      margin-bottom: 24px;
     }
 
-    .teams{
-        margin-top: 40px;
+    .label {
+      height: 32px;
+      width: 145px;
+      padding: 8px 20px;
+      background-color: #f0f2f5;
+      color: #0f1417;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
     }
+
+    .edit-task-button {
+      width: 94px;
+      height: 30px;
+      background-color: #e8fff3;
+      color: #50cd89;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .teams {
+    margin-top: 40px;
+  }
 }

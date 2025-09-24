@@ -29,12 +29,4 @@ export class ProjectService {
   editProject(project: any) {
     return this.http.put(this.baseUrl + 'projects', project);
   }
-
-  createTask(task: any) {
-    return this.http.post(this.baseUrl + 'projects', task);
-  }
-
-   editTask(task: any) {
-    return this.http.put(this.baseUrl + 'projects', task);
-  }
 }
