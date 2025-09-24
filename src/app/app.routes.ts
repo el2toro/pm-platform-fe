@@ -6,6 +6,7 @@ import { KanbanBoardFeatureComponent } from './features/kanban-board-feature/kan
 import { LoginComponent } from './core/auth/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { UserGuard } from './core/guards/user.guard';
+import { TaskDetailsPageComponent } from './features/dashboard-feature/pages/task-details-page/task-details-page.component';
 
 export const routes: Routes = [
     { 
@@ -21,5 +22,6 @@ export const routes: Routes = [
     { path: 'project-details', component: ProjectDetailsComponent },
     { path: 'reports', component: InsightAndReportFeatureComponent },
     { path: 'board', component: KanbanBoardFeatureComponent },
+    { path: 'task-details/:taskId', component: TaskDetailsPageComponent },
     { path: '**', redirectTo: 'login' }
 ];
