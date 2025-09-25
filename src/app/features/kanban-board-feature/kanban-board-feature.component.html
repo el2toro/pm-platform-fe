@@ -13,33 +13,34 @@
        <p class="title">{{ col.title }}</p>
        <div class="action">
         <span class="task-count">{{ col.items.length }}</span>
-        <button><i class="pi pi-ellipsis-h"></i></button>
+        <button (click)="deleteTableColumn(col.title)"><i class="pi pi-ellipsis-h"></i></button>
        </div>
      </div>
-     <button class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
+     <button (click)="openCreateTaskModal()" class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
     <ul class="">
-      <li *ngFor="let item of col.items"
+      <li *ngFor="let task of col.items"
           class=""
           pDraggable="shared"
-          (onDragStart)="dragStart(item, col)"
+          (click)="openTaskDetailsPage(task.id)"
+          (onDragStart)="dragStart(task, col)"
           (onDragEnd)="dragEnd()">
 
           <div class="task">
-            <p>{{ item?.name }}</p>
+            <p>{{ task?.title }}</p>
 
               <div class="image">
                 <img src="assets/images/portrait1.jpg" alt="img">
               </div>
                    
             <p-progressbar class="progress-bar"
-                        [value]="getTaskProgressValue(item.subtasks)" 
+                        [value]="getTaskProgressValue(task.subtasks)" 
                         [showValue]="false"/>
                         <!-- {{ project.progress }}  -->
 
             <div class="details">
               <span><i class="pi pi-paperclip"></i> 5</span>
-              <span><i class="pi pi-check-square"></i> {{getSubtaskCount(item.subtasks)}}/{{item.subtasks.length}}</span>
-              <span><i class="pi pi-clock"></i> {{getDaysLeft(item.dueDate)}} days left</span>
+              <span><i class="pi pi-check-square"></i> {{getSubtaskCount(task.subtasks)}}/{{task.subtasks.length}}</span>
+              <span><i class="pi pi-clock"></i> {{getDaysLeft(task.dueDate)}} days left</span>
             </div>
           </div>
       </li>

@@ -1,24 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ProgressBar } from "primeng/progressbar";
 import { ProjectModel } from '../dashboard-feature/models/project-model';
 import { ProjectService } from '../dashboard-feature/apis/project/project.service';
 import { TaskStatus } from '../dashboard-feature/enums/task-status.enum';
 import { TaskModel } from '../dashboard-feature/models/task-model';
-import { map } from 'rxjs';
 import { SubtaskModel } from '../dashboard-feature/models/subtask-model';
-
-interface Product {
-  id: string;
-  name: string;
-  dueDate: string;
-  subtasks: SubtaskModel[]
-}
+import { AddEditTaskModalComponent } from '../dashboard-feature/components/add-edit-task-modal/add-edit-task-modal.component';
+import { TaskService } from '../dashboard-feature/apis/task/task.service';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Router } from '@angular/router';
 
 interface Column {
   title: string;
-  items: Product[];
+  items: TaskModel[];
 }
 
 @Component({
@@ -26,16 +22,22 @@ interface Column {
   templateUrl: './kanban-board-feature.component.html',
   styleUrls: ['./kanban-board-feature.component.scss'],
   standalone: true,
-  imports: [CommonModule, DragDropModule, ProgressBar]
+  imports: [CommonModule, DragDropModule, ProgressBar],
+  providers: [DynamicDialogRef]
 })
 export class KanbanBoardFeatureComponent implements OnInit {
+  private taskService = inject(TaskService);
+  private dialogService = inject(DialogService);
+  private projectService = inject(ProjectService);
+  private router = inject(Router);
+
   project!: ProjectModel;
   columns = <Column[]>[];
 
-  draggedItem?: Product;
+  draggedItem?: TaskModel;
   draggedFrom?: Column;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private ref: DynamicDialogRef) { }
 
   ngOnInit() {
     this.initProject();
@@ -45,12 +47,13 @@ export class KanbanBoardFeatureComponent implements OnInit {
     this.projectService.getProjectDetails('8D4B5374-47DA-4900-BEDA-E3AA9D46E5B6', 'FF2C542E-5948-4726-A28A-4A5FD5CB76DA')
     .subscribe({
       next: (project: ProjectModel) => {
+        //TODO: use tap/map ??
         this.project = project, this.initColumn(this.project.tasks)
       }
     })
   }
 
-  dragStart(item: Product, from: Column) {
+  dragStart(item: TaskModel, from: Column) {
     this.draggedItem = item;
     this.draggedFrom = from;
   }
@@ -99,8 +102,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
   mapColumnItems(tasks: TaskModel[], status: TaskStatus){
    return tasks.filter(task => task.taskStatus === status)
-    .map(task => { 
-      return {id: task.id, name: task.title, dueDate: task.dueDate, subtasks: task.subtasks}});
+    .map(task => task);
   }
 
   getSubtaskCount(subtasks: SubtaskModel[]) : number{
@@ -118,4 +120,34 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
     return Math.floor(date)
   }
+
+  openCreateTaskModal() {
+      this.ref = this.dialogService.open(AddEditTaskModalComponent, {
+        width: '600px',
+        modal: true,
+        data: null,
+      });
+  
+      this.ref.onClose.subscribe((result) => {
+        if (!result) {
+          return;
+        }
+  
+        result.projectId = this.project.id;
+  
+        this.taskService.createTask(result).subscribe({
+         next: () => this.initProject(),
+        });
+      });
+    }
+
+    openTaskDetailsPage(taskId: string){
+      const task = this.project.tasks.find(t => t.id === taskId);
+      this.router.navigate(['/task-details', taskId], 
+        {state: { task: task, projectTitle: this.project.name, projectDescription: this.project.description }});
+    }
+
+    deleteTableColumn(columnTitle: string) {
+      this.columns = this.columns.filter(col => col.title !== columnTitle);
+    }
 }
