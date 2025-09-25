@@ -34,17 +34,16 @@ export class AddEditTaskModalComponent implements OnInit {
   task = new TaskModel();
   taskStatuses = <any[]>[];
 
-  comments = <CommentModel[]>[];
-
-  displaySubstask = false;
-  displayComment = false;
-
   get iSCreate() : boolean{
     return !this.task;
   }
 
   get subtasks() {
     return this.formGroup.get(['subtasks']) as FormArray;
+  }
+
+   get comments() {
+    return this.formGroup.get(['comments']) as FormArray;
   }
 
   constructor() { }
@@ -75,13 +74,15 @@ export class AddEditTaskModalComponent implements OnInit {
       description: [null],
       dueDate: [null],
       taskStatus: [null],
+      subtasks: this.formBuilder.array([]),
       subtaskTitle: [null],
-      comment: [null]
+      comments: this.formBuilder.array([]),
+      commentContent: [null]
+
     })
   }
 
    editTaskForm(){
-    console.log('Edit Task:', this.task.comments);
     this.formGroup = this.formBuilder.group({
       title: [this.task.title],
       description: [this.task.description],
@@ -91,7 +92,7 @@ export class AddEditTaskModalComponent implements OnInit {
           .array(this.task.subtasks?.map(st => this.formBuilder
           .group({id: st.id,  title: st.title , isComplited: st.isCompleted}))),
 
-      comment: this.formBuilder
+      comments: this.formBuilder
           .array(this.task.comments?.map(comment => this.formBuilder
           .group({content: comment.content})))
     });
@@ -99,6 +100,13 @@ export class AddEditTaskModalComponent implements OnInit {
     //TODO: the subtasks are not updated in database, at the backend it arrives ok
     this.formGroup.controls['subtasks'].valueChanges.subscribe(value => {
       this.task.subtasks = value;
+      console.log('subtasks: ', this.task.subtasks);
+     });
+
+      this.formGroup.controls['comments'].valueChanges.subscribe(value => {
+      this.task.comments = value;
+
+      console.log('comments: ', this.task.comments);
      });
   }
 
@@ -119,7 +127,7 @@ export class AddEditTaskModalComponent implements OnInit {
   mapFormToTaskModel(){
      if(this.iSCreate){
        this.task = new TaskModel();
-        this.task.comments = this.comments;
+        //this.task.comments = this.comments;
        // this.task.subtasks = this.subtasks;
      }
 
@@ -130,46 +138,31 @@ export class AddEditTaskModalComponent implements OnInit {
     this.task.title = this.formGroup.get(['title'])?.value;
     this.task.description = this.formGroup.get(['description'])?.value;
     this.task.dueDate = formatDate(this.formGroup.get('dueDate')?.value, 'yyyy-MM-dd', 'en-US');
-    //this.task.endDate = formatDate(this.formGroup.get('endDate')?.value, 'yyyy-MM-dd', 'en-US');
+    this.task.subtasks = this.formGroup.get(['subtasks'])?.value;
+    this.task.comments = this.formGroup.get(['comments'])?.value;
   }
 
   addComment(){
-    const commentControl = this.formGroup.get('comment');
-
-    console.log(commentControl?.value);
-
-    if(commentControl?.value && commentControl.value.trim() !== ''){
-      let comment = new CommentModel();
-      comment.content = commentControl.value;
-      this.comments?.push(comment);
-      commentControl.reset();
-    }
+     const content = this.formGroup.value.commentContent?.trim();
+  if (!content) return;
+  this.comments.push(this.formBuilder.group({ content: [content] }));
+  this.formGroup.get('commentContent')?.reset();
   }
 
-  deleteComment(comment: CommentModel){
-    const index = this.comments?.indexOf(comment);
-    if(index > -1){
-      this.comments.splice(index, 1);
-    }
+  deleteComment(index: number){
+     this.comments?.removeAt(index);
   }
 
-  addSubtask(){
-    const subtaskControl = this.formGroup.get('subtaskTitle');
+ addSubtask() {
+ const title = this.formGroup.value.subtaskTitle?.trim();
+  if (!title) return;
+  this.subtasks.push(this.formBuilder.group({ title: [title] }));
+  this.formGroup.get('subtaskTitle')?.reset();
+}
 
-    if(subtaskControl?.value && subtaskControl.value.trim() !== ''){
-      let subtask = new SubtaskModel();
-      subtask.title = subtaskControl.value;
-      this.subtasks?.push(subtask);
-      subtaskControl.reset();
-    }
-  }
-
-  deleteSubtask(subtask: SubtaskModel){
-    // const index = this.subtasks?.indexOf(subtask);
-    // if(index > -1){
-    //   this.subtasks.splice(index, 1);
-    // }
-  }
+deleteSubtask(index: number) {
+  this.subtasks?.removeAt(index);
+}
 
   //TODO: map dinamicly not hardcoded
   mapTaskStatuses(){

@@ -59,7 +59,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   openEditTaskModal(task: TaskModel) {
     this.ref = this.dialogService.open(AddEditTaskModalComponent, {
-      width: '500px',
+      width: '600px',
       modal: true,
       data: task,
     });
@@ -77,7 +77,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   openCreateTaskModal() {
     this.ref = this.dialogService.open(AddEditTaskModalComponent, {
-      width: '500px',
+      width: '600px',
       modal: true,
       data: null,
     });
