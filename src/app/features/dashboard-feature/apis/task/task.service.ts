@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TaskModel } from '../../models/task-model';
 import { Observable } from 'rxjs';
+import { TaskStatus } from '../../enums/task-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +24,13 @@ export class TaskService {
     const params = new HttpHeaders();
     params.append('taskId', taskId.toString());
     return this.httpClient.delete<any>(this.baseUrl, { headers: params });
+  }
+
+  updateTaskStatus(taskId: string, status: TaskStatus): Observable<any> {
+    const url = `${this.baseUrl}/status`;
+    // const params = new HttpParams()
+    //   .set('taskId', taskId)
+    //   .set('status', status);
+    return this.httpClient.patch<any>(url, { taskId: taskId, status: status });
   }
 }

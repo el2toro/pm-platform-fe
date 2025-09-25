@@ -10,7 +10,7 @@
        (onDrop)="onDrop(col)">
     
      <div class="column-header">
-       <p class="title">{{ col.title }}</p>
+       <p class="title">{{ col.title | taskStatus}}</p>
        <div class="action">
         <span class="task-count">{{ col.items.length }}</span>
         <button (click)="deleteTableColumn(col.title)"><i class="pi pi-ellipsis-h"></i></button>

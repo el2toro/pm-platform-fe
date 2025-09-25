@@ -11,9 +11,10 @@ import { AddEditTaskModalComponent } from '../dashboard-feature/components/add-e
 import { TaskService } from '../dashboard-feature/apis/task/task.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
+import { TaskStatusPipe } from "../dashboard-feature/pipes/task-status.pipe";
 
 interface Column {
-  title: string;
+  title: TaskStatus;
   items: TaskModel[];
 }
 
@@ -22,7 +23,7 @@ interface Column {
   templateUrl: './kanban-board-feature.component.html',
   styleUrls: ['./kanban-board-feature.component.scss'],
   standalone: true,
-  imports: [CommonModule, DragDropModule, ProgressBar],
+  imports: [CommonModule, DragDropModule, ProgressBar, TaskStatusPipe],
   providers: [DynamicDialogRef]
 })
 export class KanbanBoardFeatureComponent implements OnInit {
@@ -31,7 +32,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
   private projectService = inject(ProjectService);
   private router = inject(Router);
 
-  project!: ProjectModel;
+  project = new ProjectModel();
   columns = <Column[]>[];
 
   draggedItem?: TaskModel;
@@ -71,30 +72,39 @@ export class KanbanBoardFeatureComponent implements OnInit {
       );
       // add to new column
       targetCol.items.push(this.draggedItem);
+
+      // update task status
+      this.draggedItem.taskStatus = targetCol?.title;
+      console.log(this.draggedItem);
+      this.taskService.updateTaskStatus(this.draggedItem!.id, targetCol?.title).subscribe();
     }
     this.dragEnd();
   }
 
   initColumn(tasks: TaskModel[]){
     this.columns = [
+      {
+      title: TaskStatus.Backlog,
+      items: this.mapColumnItems(tasks, TaskStatus.Backlog)
+    },
     {
-      title: 'To Do',
+      title: TaskStatus.ToDo,
       items: this.mapColumnItems(tasks, TaskStatus.ToDo)
     },
     {
-      title: 'In Progress',
+      title: TaskStatus.InProgress,
       items: this.mapColumnItems(tasks, TaskStatus.InProgress)
     },
     {
-      title: 'Testing',
+      title: TaskStatus.Testing,
       items: this.mapColumnItems(tasks, TaskStatus.Testing)
     },
     {
-      title: 'In Review',
+      title: TaskStatus.Review,
       items: this.mapColumnItems(tasks, TaskStatus.Review)
     },
     {
-      title: 'Done',
+      title: TaskStatus.Done,
       items: this.mapColumnItems(tasks, TaskStatus.Done)
     }
     ]
@@ -144,10 +154,10 @@ export class KanbanBoardFeatureComponent implements OnInit {
     openTaskDetailsPage(taskId: string){
       const task = this.project.tasks.find(t => t.id === taskId);
       this.router.navigate(['/task-details', taskId], 
-        {state: { task: task, projectTitle: this.project.name, projectDescription: this.project.description }});
+        {state: { task: task, projectTitle: this.project?.name, projectDescription: this.project.description }});
     }
 
-    deleteTableColumn(columnTitle: string) {
+    deleteTableColumn(columnTitle: TaskStatus) {
       this.columns = this.columns.filter(col => col.title !== columnTitle);
     }
 }
