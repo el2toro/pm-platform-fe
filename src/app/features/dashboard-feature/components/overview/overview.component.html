@@ -6,9 +6,13 @@
   <div class="projects">
     <p-table
       [value]="projects"
-      [rows]="5"
+      [rows]="pageSize"
       [paginator]="true"
-      [rowsPerPageOptions]="[5, 10, 15]"
+      [totalRecords]="100"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[5, 10, 25, 50]"
+      currentPageReportTemplate="Showing {first} to {last} of {{totalRecords}} entries"
+      (onPage)="onPageChange($event)"
     >
       <ng-template #header>
         <tr>
@@ -59,23 +63,23 @@
             </app-wave-chart>
           </td>
           <td>
-             <div class="actions">
+            <div class="actions">
               <button
-              class="action-button"
-              pButton
-              (click)="goToProjectDetails(project.id, project.tenantId)"
-            >
-              <!-- <i class="pi pi-pen-to-square"></i>Details -->
-               Details
-            </button>
-            <button
-              class="action-button"
-              pButton
-              (click)="openEditProjectModal(project)"
-            >
-              <i class="pi pi-pen-to-square"></i>Edit
-            </button>
-             </div>
+                class="action-button"
+                pButton
+                (click)="goToProjectDetails(project.id, project.tenantId)"
+              >
+                <!-- <i class="pi pi-pen-to-square"></i>Details -->
+                Details
+              </button>
+              <button
+                class="action-button"
+                pButton
+                (click)="openEditProjectModal(project)"
+              >
+                <i class="pi pi-pen-to-square"></i>Edit
+              </button>
+            </div>
           </td>
         </tr>
       </ng-template>

@@ -12,8 +12,12 @@ export class ProjectService {
 
   constructor() {}
 
-  getProjects(): Observable<ProjectModel[]> {
-    return this.http.get<ProjectModel[]>(this.baseUrl + 'projects');
+  getProjects(pageNumber: number, pageSize: number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', pageSize);
+
+    return this.http.get<any>(this.baseUrl + 'projects', { params: params } );
   }
 
   getProjectDetails(projectId: string, tenantId: string): Observable<ProjectModel> {

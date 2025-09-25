@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ActiveTaskComponent } from '../active-task/active-task.component';
@@ -28,21 +28,31 @@ import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dy
   standalone: true
 })
 export class OverviewComponent implements OnInit {
+  private projectService = inject(ProjectService);
+  private router = inject(Router)
+  private dialogService = inject(DialogService);
+
   projects = <ProjectModel[]>[];
   selectedProject!: ProjectModel;
   ref!: DynamicDialogRef;
+  pageSize = 5;
+  pageNumber = 1;
+  totalRecords = 0;
+  totalPages = 0;
 
-  constructor(private projectService: ProjectService, 
-    private router: Router,
-  private dialogService: DialogService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.initProjects();
+    this.getProjects();
   }
 
-  initProjects(){
-    this.projectService.getProjects().subscribe({
-      next: (projects) => this.projects = projects
+  getProjects(){
+    this.projectService.getProjects(this.pageNumber, this.pageSize).subscribe({
+      next: (paginatedResponse) => {
+        this.projects = paginatedResponse.items
+        this.totalRecords = paginatedResponse.totalItems;
+        this.totalPages = paginatedResponse.totalPages;
+      }
     });
   }
 
@@ -86,7 +96,7 @@ export class OverviewComponent implements OnInit {
       if(!result){ return };
 
        this.projectService.createProject(result).subscribe({
-        next: () => this.initProjects()
+        next: () => this.getProjects()
       })
     });
   }
@@ -102,10 +112,19 @@ export class OverviewComponent implements OnInit {
       if(!result){ return };
 
        this.projectService.editProject(result).subscribe({
-        next: () => this.initProjects()
+        next: () => this.getProjects()
       })
     });
   }
+
+  onPageChange(event: any) {
+   this.pageNumber = event.first / event.rows + 1;
+  this.pageSize = event.rows;
+
+  // Example: call backend with pagination
+  this.getProjects();
+}
+
 
   goToProjectDetails(projectId: string, tenantId: string){
    this.router.navigate(['/project-details'], 
