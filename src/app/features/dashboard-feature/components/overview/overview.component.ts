@@ -11,6 +11,8 @@ import { ProjectStatus } from '../../enums/project-status.enum';
 import { Router } from '@angular/router';
 import { AddEditProjectModalComponent } from '../add-edit-project-modal/add-edit-project-modal.component';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
 
 @Component({
   selector: 'app-overview',
@@ -23,14 +25,16 @@ import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dy
     ActiveTaskComponent,
     WaveChartComponent,
     ProjectStatusPipe,
-    DynamicDialogModule
+    DynamicDialogModule,
+    ToastModule
   ],
-  standalone: true
+  standalone: true,
 })
 export class OverviewComponent implements OnInit {
   private projectService = inject(ProjectService);
   private router = inject(Router)
   private dialogService = inject(DialogService);
+  private messageService = inject(CustomMessageService);
 
   projects = <ProjectModel[]>[];
   selectedProject!: ProjectModel;
@@ -95,9 +99,12 @@ export class OverviewComponent implements OnInit {
     this.ref.onClose.subscribe(result => {
       if(!result){ return };
 
-       this.projectService.createProject(result).subscribe({
-        next: () => this.getProjects()
-      })
+       this.projectService.createProject(result)
+       .subscribe({
+        next: () => {
+          this.getProjects()
+          this.messageService.showSuccess('Project created successfully');
+      }})
     });
   }
 
@@ -112,7 +119,10 @@ export class OverviewComponent implements OnInit {
       if(!result){ return };
 
        this.projectService.editProject(result).subscribe({
-        next: () => this.getProjects()
+        next: () => {
+          this.getProjects();
+          this.messageService.showSuccess('Project updated successfully');
+        }
       })
     });
   }
@@ -131,6 +141,7 @@ export class OverviewComponent implements OnInit {
     { queryParams: { projectId: projectId, tenantId: tenantId } });
   }
 
+  //TODO: move to pipe or service
   getStatusColor(status: number) {
     let backgroundColor = '';
     let color = '';
