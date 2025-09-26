@@ -1,0 +1,33 @@
+<div class="register">
+  <div class="register-container">
+    <h1>Create account</h1>
+   <form [formGroup]="form">
+      <p-floatlabel>
+      <input class="input-field" id="firstName" pInputText formControlName="firstName" />
+      <label for="firstName">First Name</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+      <input class="input-field" id="lastName" pInputText formControlName="lastName" />
+      <label for="lastName">Last Name</label>
+    </p-floatlabel>
+
+     <p-floatlabel>
+      <input class="input-field" id="email" pInputText formControlName="email" />
+      <label for="email">Email</label>
+    </p-floatlabel>
+    
+    <p-floatlabel>
+      <input class="input-field" id="password" pInputText type="password" formControlName="password" />
+      <label for="password">Password</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+      <input class="input-field" id="tenantName" pInputText type="tenantName" formControlName="tenantName" />
+      <label for="tenantName">Tenant Name</label>
+    </p-floatlabel>
+   </form>
+   
+    <button pButton (click)="createAccount()" [loading]="loading">Register</button>
+  </div>
+</div>

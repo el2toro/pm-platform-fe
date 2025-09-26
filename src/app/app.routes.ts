@@ -7,11 +7,17 @@ import { LoginComponent } from './core/auth/login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { UserGuard } from './core/guards/user.guard';
 import { TaskDetailsPageComponent } from './features/dashboard-feature/pages/task-details-page/task-details-page.component';
+import { RegisterComponent } from './core/auth/register/register.component';
 
 export const routes: Routes = [
     { 
         path: 'login', 
         component: LoginComponent,
+        canActivate: [UserGuard]
+    },
+    { 
+        path: 'register', 
+        component: RegisterComponent,
         canActivate: [UserGuard]
     },
     { 

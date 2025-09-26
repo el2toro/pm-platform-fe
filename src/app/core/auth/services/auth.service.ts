@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { LoginRequestModel } from '../models/login-request.model';
 import { HttpClient } from '@angular/common/http';
-import { LoginResponse as LoginResponseModel } from '../models/login-response';
+import { LoginResponseModel as LoginResponseModel } from '../models/login-response.model';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { UserModel } from '../models/user.model';
+import { RegisterRequestModel } from '../models/register-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,10 @@ constructor() { }
       })
     );
   }
+
+  register(registerRequest: RegisterRequestModel) {
+      return this.http.post(`${this.baseUrl}/register`, registerRequest);
+    }
 
     /** Ask backend to refresh token using HttpOnly cookie */
   refreshToken(tenantId: string): Observable<any>{
