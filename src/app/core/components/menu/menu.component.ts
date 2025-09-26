@@ -24,8 +24,7 @@ import { UserModel } from '../../auth/models/user.model';
     IconFieldModule,
     InputIconModule,
     Button,
-    InputText,
-    Menu,
+    InputText
   ],
 })
 export class MenuComponent implements OnInit {

@@ -13,6 +13,7 @@ import { ProjectStatus } from '../../enums/project-status.enum';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FloatLabel } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
+import { ToastModule } from 'primeng/toast';
  import { formatDate } from '@angular/common';
 
 @Component({
@@ -20,10 +21,8 @@ import { TextareaModule } from 'primeng/textarea';
   templateUrl: './add-edit-project-modal.component.html',
   styleUrls: ['./add-edit-project-modal.component.scss'],
   imports: [DialogModule, InputTextModule, ButtonModule, MessageModule, ReactiveFormsModule, InputText, DatePickerModule, Select, FloatLabelModule, TextareaModule, FloatLabel],
-  providers: [MessageService]
 })
 export class AddEditProjectModalComponent implements OnInit {
-  messageService = inject(MessageService);
   formGroup!: FormGroup;
   formSubmitted = false;
   project!: ProjectModel;
