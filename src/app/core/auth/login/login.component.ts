@@ -7,16 +7,19 @@ import { Router } from '@angular/router';
 import { LoginRequestModel } from '../models/login-request.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, } from '@angular/forms';
 import { finalize } from 'rxjs';
+import { ToastModule } from "primeng/toast";
+import { CustomMessageService } from '../../../../shared/services/custom-message.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [InputText, FloatLabel, ButtonDirective, ReactiveFormsModule]
+  imports: [InputText, FloatLabel, ButtonDirective, ReactiveFormsModule, ToastModule]
 })
 export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private messageService = inject(CustomMessageService);
 
   form!: FormGroup;
   loading = false;
@@ -49,7 +52,10 @@ export class LoginComponent implements OnInit {
     .pipe(
       finalize(() => this.loading = false)
     ).subscribe({
-      next: (response) => this.router.navigate(['/dashboard'])
+      next: (response) => this.router.navigate(['/dashboard']),
+      error: (error) => {
+        this.messageService.showError('Login Failed. Please check your credentials and try again.');
+      }
     });   
   }
 

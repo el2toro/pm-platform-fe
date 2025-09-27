@@ -9,7 +9,6 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { DialogService } from 'primeng/dynamicdialog';
 import { authInterceptor } from './core/auth/interceptors/auth.interceptor';
 import { MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
