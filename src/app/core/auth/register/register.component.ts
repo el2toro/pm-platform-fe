@@ -4,21 +4,23 @@ import { FloatLabel } from "primeng/floatlabel";
 import { ButtonDirective } from "primeng/button";
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { LoginRequestModel } from '../models/login-request.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RegisterRequestModel } from '../models/register-request.model';
 import { finalize } from 'rxjs';
+import { ToastModule } from "primeng/toast";
+import { CustomMessageService } from '../../../../shared/services/custom-message.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [FloatLabel, ReactiveFormsModule, InputText, ButtonDirective]
+  imports: [FloatLabel, ReactiveFormsModule, InputText, ButtonDirective, ToastModule]
 })
 export class RegisterComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private messageService = inject(CustomMessageService);
   
   form!: FormGroup;
   loading = false;
@@ -59,8 +61,11 @@ export class RegisterComponent implements OnInit {
       finalize(() => this.loading = false)
     )
     .subscribe({
-      next: (response) => this.router.navigate(['/login']),
-      //error: (error) => this.loading = false
+      next: (response) => {
+        this.messageService.showSuccess('Registration Successful. Please login with your credentials.');
+        this.router.navigate(['/login']);
+      },
+      error: (error) => this.messageService.showError('Registration Failed. Please check your details and try again.')
     });   
   }
 }
