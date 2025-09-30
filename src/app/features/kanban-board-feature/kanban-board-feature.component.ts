@@ -12,6 +12,7 @@ import { TaskService } from '../dashboard-feature/apis/task/task.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
 import { TaskStatusPipe } from "../dashboard-feature/pipes/task-status.pipe";
+import { ColumnModel } from '../dashboard-feature/models/column.model';
 
 interface Column {
   title: TaskStatus;
@@ -33,15 +34,16 @@ export class KanbanBoardFeatureComponent implements OnInit {
   private router = inject(Router);
 
   project = new ProjectModel();
-  columns = <Column[]>[];
+  columns = <ColumnModel[]>[];
 
   draggedItem?: TaskModel;
-  draggedFrom?: Column;
+  draggedFrom?: ColumnModel;
 
   constructor(private ref: DynamicDialogRef) { }
 
   ngOnInit() {
-    this.initProject();
+    //this.initProject();
+    this.initBoard();
   }
 
   initProject(){
@@ -49,12 +51,18 @@ export class KanbanBoardFeatureComponent implements OnInit {
     .subscribe({
       next: (project: ProjectModel) => {
         //TODO: use tap/map ??
-        this.project = project, this.initColumn(this.project.tasks)
+       // this.project = project, this.initColumn(this.project.tasks)
       }
     })
   }
 
-  dragStart(item: TaskModel, from: Column) {
+  initBoard(){
+    this.projectService.getBoard('11111111-1111-1111-1111-111111111111').subscribe({
+      next: (board) => {console.log(board), this.columns = board.columns}
+    })
+  }
+
+  dragStart(item: TaskModel, from: ColumnModel) {
     this.draggedItem = item;
     this.draggedFrom = from;
   }
@@ -64,51 +72,52 @@ export class KanbanBoardFeatureComponent implements OnInit {
     this.draggedFrom = undefined;
   }
 
-  onDrop(targetCol: Column) {
+  onDrop(targetCol: ColumnModel) {
     if (this.draggedItem && this.draggedFrom) {
       // remove from old column
-      this.draggedFrom.items = this.draggedFrom.items.filter(
-        p => p.id !== this.draggedItem!.id
+      this.draggedFrom.tasks = this.draggedFrom.tasks.filter(
+        task => task.id !== this.draggedItem!.id
       );
       // add to new column
-      targetCol.items.push(this.draggedItem);
+      targetCol.tasks.push(this.draggedItem);
 
       // update task status
-      this.draggedItem.taskStatus = targetCol?.title;
+      //TODO: map to task status
+      //this.draggedItem.taskStatus = targetCol?.name as TaskStatus;
       console.log(this.draggedItem);
-      this.taskService.updateTaskStatus(this.draggedItem!.id, targetCol?.title).subscribe();
+     // this.taskService.updateTaskStatus(this.draggedItem!.id, targetCol?.name).subscribe();
     }
     this.dragEnd();
   }
 
-  initColumn(tasks: TaskModel[]){
-    this.columns = [
-      {
-      title: TaskStatus.Backlog,
-      items: this.mapColumnItems(tasks, TaskStatus.Backlog)
-    },
-    {
-      title: TaskStatus.ToDo,
-      items: this.mapColumnItems(tasks, TaskStatus.ToDo)
-    },
-    {
-      title: TaskStatus.InProgress,
-      items: this.mapColumnItems(tasks, TaskStatus.InProgress)
-    },
-    {
-      title: TaskStatus.Testing,
-      items: this.mapColumnItems(tasks, TaskStatus.Testing)
-    },
-    {
-      title: TaskStatus.Review,
-      items: this.mapColumnItems(tasks, TaskStatus.Review)
-    },
-    {
-      title: TaskStatus.Done,
-      items: this.mapColumnItems(tasks, TaskStatus.Done)
-    }
-    ]
-  }
+  // initColumn(tasks: TaskModel[]){
+  //   this.columns = [
+  //     {
+  //     title: TaskStatus.Backlog,
+  //     items: this.mapColumnItems(tasks, TaskStatus.Backlog)
+  //   },
+  //   {
+  //     title: TaskStatus.ToDo,
+  //     items: this.mapColumnItems(tasks, TaskStatus.ToDo)
+  //   },
+  //   {
+  //     title: TaskStatus.InProgress,
+  //     items: this.mapColumnItems(tasks, TaskStatus.InProgress)
+  //   },
+  //   {
+  //     title: TaskStatus.Testing,
+  //     items: this.mapColumnItems(tasks, TaskStatus.Testing)
+  //   },
+  //   {
+  //     title: TaskStatus.Review,
+  //     items: this.mapColumnItems(tasks, TaskStatus.Review)
+  //   },
+  //   {
+  //     title: TaskStatus.Done,
+  //     items: this.mapColumnItems(tasks, TaskStatus.Done)
+  //   }
+  //   ]
+  // }
 
   mapColumnItems(tasks: TaskModel[], status: TaskStatus){
    return tasks.filter(task => task.taskStatus === status)
@@ -158,6 +167,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
     }
 
     deleteTableColumn(columnTitle: TaskStatus) {
-      this.columns = this.columns.filter(col => col.title !== columnTitle);
+      //TODO: map task status
+      //this.columns = this.columns.filter(col => col.name !== columnTitle);
     }
 }

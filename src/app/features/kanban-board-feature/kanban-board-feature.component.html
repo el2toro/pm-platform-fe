@@ -5,24 +5,24 @@
   </div>
 
   <div class="columns">
-     <div class="column" *ngFor="let col of columns" 
+     <div class="column" *ngFor="let column of columns" 
        pDroppable="shared"
-       (onDrop)="onDrop(col)">
+       (onDrop)="onDrop(column)">
     
      <div class="column-header">
-       <p class="title">{{ col.title | taskStatus}}</p>
+       <p class="title">{{ column.name }}</p>
        <div class="action">
-        <span class="task-count">{{ col.items.length }}</span>
-        <button (click)="deleteTableColumn(col.title)"><i class="pi pi-ellipsis-h"></i></button>
+        <span class="task-count">{{ column.tasks.length }}</span>
+        <button (click)="deleteTableColumn(1)"><i class="pi pi-ellipsis-h"></i></button>
        </div>
      </div>
      <button (click)="openCreateTaskModal()" class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
     <ul class="">
-      <li *ngFor="let task of col.items"
+      <li *ngFor="let task of column.tasks"
           class=""
           pDraggable="shared"
           (click)="openTaskDetailsPage(task.id)"
-          (onDragStart)="dragStart(task, col)"
+          (onDragStart)="dragStart(task, column)"
           (onDragEnd)="dragEnd()">
 
           <div class="task">
