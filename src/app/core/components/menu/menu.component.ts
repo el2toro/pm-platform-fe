@@ -5,12 +5,12 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { Menu } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { UserModel } from '../../auth/models/user.model';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-menu',
@@ -28,6 +28,8 @@ import { UserModel } from '../../auth/models/user.model';
   ],
 })
 export class MenuComponent implements OnInit {
+  private menuService = inject(MenuService);
+
   items: MenuItem[] | undefined;
   projectItems: MenuItem[] | undefined;
   isCollapsed!: boolean;
@@ -205,6 +207,8 @@ export class MenuComponent implements OnInit {
 
   setActive(event: MenuItemCommandEvent) {
     this.activeLabel = event.item?.label ?? null;
+
+    this.menuService.setActiveMenuTitle(this.activeLabel);
 
     if (!event.item) {
       return;
