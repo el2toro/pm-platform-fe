@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProjectModel } from '../../models/project-model';
+import { BoardModel } from '../../models/board.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,10 @@ export class ProjectService {
     return this.http.get<ProjectModel>(
       `${this.baseUrl}project/${projectId}/${tenantId}`
     );
+  }
+
+   getBoard(projectId: string): Observable<BoardModel> {
+    return this.http.get<BoardModel>(`${this.baseUrl}projects/${projectId}/board`);
   }
 
   createProject(project: any) {
