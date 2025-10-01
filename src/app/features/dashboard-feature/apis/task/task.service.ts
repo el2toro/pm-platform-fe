@@ -26,11 +26,11 @@ export class TaskService {
     return this.httpClient.delete<any>(this.baseUrl, { headers: params });
   }
 
-  updateTaskStatus(taskId: string, status: TaskStatus): Observable<any> {
+  updateTaskStatus(taskId: string, columnId: string, status: TaskStatus): Observable<any> {
     const url = `${this.baseUrl}/status`;
     // const params = new HttpParams()
     //   .set('taskId', taskId)
     //   .set('status', status);
-    return this.httpClient.patch<any>(url, { taskId: taskId, status: status });
+    return this.httpClient.patch<any>(url, { taskId: taskId, columnId: columnId, status: status });
   }
 }
