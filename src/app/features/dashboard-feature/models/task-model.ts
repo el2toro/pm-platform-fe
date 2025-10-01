@@ -16,6 +16,7 @@ export class TaskModel {
     createdBy!: string;
     updatedBy!: string;
     user!: UserModel;
+    columnId!: string
     subtasks = <SubtaskModel[]>[];
     comments = <CommentModel[]>[];
 }

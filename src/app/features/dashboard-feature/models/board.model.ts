@@ -8,5 +8,7 @@ export class BoardModel{
     createdAt = '';
     updatedAt = '';
     projectId = '';
+    projectName = '';
+    projectDescription = '';
     columns = <ColumnModel[]>[];
 }
