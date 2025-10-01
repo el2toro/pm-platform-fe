@@ -9,6 +9,7 @@ import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { AddEditTaskModalComponent } from '../add-edit-task-modal/add-edit-task-modal.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TaskService } from '../../apis/task/task.service';
+import { AuthService } from '../../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-project-details',
@@ -21,6 +22,7 @@ export class ProjectDetailsComponent implements OnInit {
   private taskService =  inject(TaskService);
   private dialogService = inject(DialogService);
   private router = inject(Router);
+  private authService = inject(AuthService);
   ref!: DynamicDialogRef;
   tasks = <TaskModel[]>[];
   projectId!: string;
@@ -94,6 +96,10 @@ export class ProjectDetailsComponent implements OnInit {
         next: () => this.getProjectDetails(),
       });
     });
+  }
+
+  getAssignedUser(){
+    //this.authService.getUserById()
   }
 
   openTaskDetailsPage(taskId: string) {
