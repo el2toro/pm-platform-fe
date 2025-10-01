@@ -11,12 +11,17 @@ import { AddEditTaskModalComponent } from '../dashboard-feature/components/add-e
 import { TaskService } from '../dashboard-feature/apis/task/task.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
-import { TaskStatusPipe } from "../dashboard-feature/pipes/task-status.pipe";
 import { ColumnModel } from '../dashboard-feature/models/column.model';
+import { Toast } from "primeng/toast";
+import { CustomMessageService } from '../../../shared/services/custom-message.service';
+import { BoardModel } from '../dashboard-feature/models/board.model';
+import { map } from 'rxjs';
 
-interface Column {
-  title: TaskStatus;
-  items: TaskModel[];
+interface CreateEditTaskModalDto{
+  isCreate: boolean;
+  columnId: string;
+  projectId: string;
+  task: TaskModel | null;
 }
 
 @Component({
@@ -24,7 +29,7 @@ interface Column {
   templateUrl: './kanban-board-feature.component.html',
   styleUrls: ['./kanban-board-feature.component.scss'],
   standalone: true,
-  imports: [CommonModule, DragDropModule, ProgressBar, TaskStatusPipe],
+  imports: [CommonModule, DragDropModule, ProgressBar, Toast],
   providers: [DynamicDialogRef]
 })
 export class KanbanBoardFeatureComponent implements OnInit {
@@ -32,8 +37,9 @@ export class KanbanBoardFeatureComponent implements OnInit {
   private dialogService = inject(DialogService);
   private projectService = inject(ProjectService);
   private router = inject(Router);
+  private customMessageService = inject(CustomMessageService);
 
-  project = new ProjectModel();
+  board = new BoardModel();
   columns = <ColumnModel[]>[];
 
   draggedItem?: TaskModel;
@@ -42,24 +48,17 @@ export class KanbanBoardFeatureComponent implements OnInit {
   constructor(private ref: DynamicDialogRef) { }
 
   ngOnInit() {
-    //this.initProject();
     this.initBoard();
   }
 
-  initProject(){
-    this.projectService.getProjectDetails('8D4B5374-47DA-4900-BEDA-E3AA9D46E5B6', 'FF2C542E-5948-4726-A28A-4A5FD5CB76DA')
-    .subscribe({
-      next: (project: ProjectModel) => {
-        //TODO: use tap/map ??
-       // this.project = project, this.initColumn(this.project.tasks)
-      }
-    })
-  }
-
   initBoard(){
-    this.projectService.getBoard('11111111-1111-1111-1111-111111111111').subscribe({
-      next: (board) => {console.log(board), this.columns = board.columns}
-    })
+    this.projectService.getBoard('11111111-1111-1111-1111-111111111111')
+    .pipe(
+      map(board =>{ 
+        this.board = board;
+        this.columns = board.columns;
+      })
+    ).subscribe()
   }
 
   dragStart(item: TaskModel, from: ColumnModel) {
@@ -83,41 +82,14 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
       // update task status
       //TODO: map to task status
-      //this.draggedItem.taskStatus = targetCol?.name as TaskStatus;
+      let taskStatus = this.mapColumnNameToTaskStatus(targetCol?.name)
+      this.draggedItem.taskStatus = taskStatus;
+      this.draggedItem.columnId = targetCol.id;
       console.log(this.draggedItem);
-     // this.taskService.updateTaskStatus(this.draggedItem!.id, targetCol?.name).subscribe();
+      this.taskService.updateTaskStatus(this.draggedItem!.id, targetCol.id, taskStatus).subscribe();
     }
     this.dragEnd();
   }
-
-  // initColumn(tasks: TaskModel[]){
-  //   this.columns = [
-  //     {
-  //     title: TaskStatus.Backlog,
-  //     items: this.mapColumnItems(tasks, TaskStatus.Backlog)
-  //   },
-  //   {
-  //     title: TaskStatus.ToDo,
-  //     items: this.mapColumnItems(tasks, TaskStatus.ToDo)
-  //   },
-  //   {
-  //     title: TaskStatus.InProgress,
-  //     items: this.mapColumnItems(tasks, TaskStatus.InProgress)
-  //   },
-  //   {
-  //     title: TaskStatus.Testing,
-  //     items: this.mapColumnItems(tasks, TaskStatus.Testing)
-  //   },
-  //   {
-  //     title: TaskStatus.Review,
-  //     items: this.mapColumnItems(tasks, TaskStatus.Review)
-  //   },
-  //   {
-  //     title: TaskStatus.Done,
-  //     items: this.mapColumnItems(tasks, TaskStatus.Done)
-  //   }
-  //   ]
-  // }
 
   mapColumnItems(tasks: TaskModel[], status: TaskStatus){
    return tasks.filter(task => task.taskStatus === status)
@@ -140,11 +112,11 @@ export class KanbanBoardFeatureComponent implements OnInit {
     return Math.floor(date)
   }
 
-  openCreateTaskModal() {
+  openCreateTaskModal(columnId: string) {
       this.ref = this.dialogService.open(AddEditTaskModalComponent, {
         width: '600px',
         modal: true,
-        data: null,
+        data: {isCreate: true, columnId: columnId, projectId: this.board.projectId} as CreateEditTaskModalDto,
       });
   
       this.ref.onClose.subscribe((result) => {
@@ -152,22 +124,36 @@ export class KanbanBoardFeatureComponent implements OnInit {
           return;
         }
   
-        result.projectId = this.project.id;
+        result.projectId = this.board.projectId;
   
         this.taskService.createTask(result).subscribe({
-         next: () => this.initProject(),
+         next: () => this.initBoard(), //TODO: call reload task not board
+         error: (error) => this.customMessageService.showError(`Something went wrong! Error: ${error.message}`)
         });
       });
     }
 
-    openTaskDetailsPage(taskId: string){
-      const task = this.project.tasks.find(t => t.id === taskId);
-      this.router.navigate(['/task-details', taskId], 
-        {state: { task: task, projectTitle: this.project?.name, projectDescription: this.project.description }});
+    openTaskDetailsPage(task: TaskModel){
+      this.router.navigate(['/task-details', task.id], 
+        {state: { task: task, projectTitle: this.board?.projectName, projectDescription: this.board.projectDescription }});
     }
 
     deleteTableColumn(columnTitle: TaskStatus) {
       //TODO: map task status
       //this.columns = this.columns.filter(col => col.name !== columnTitle);
+    }
+
+    //TODO: mapping is not working corectly avoid hard coded cases
+    mapColumnNameToTaskStatus(columName: string) : TaskStatus{
+      switch(columName.trim()){
+        case 'InProgress':
+          return TaskStatus.InProgress;
+          case 'ToDo':
+          return TaskStatus.ToDo;
+          case 'Done':
+          return TaskStatus.Done;
+      }
+
+      return TaskStatus.Backlog;
     }
 }

@@ -1,7 +1,8 @@
+<p-toast></p-toast>
 <div class="kanban-board">
   <div class="project-title">
-   <h1>{{ project.name }}</h1>
-   <p>{{ project.description }}</p>
+   <h1>{{ board.projectName }}</h1>
+   <p>{{ board.projectDescription }}</p>
   </div>
 
   <div class="columns">
@@ -16,12 +17,11 @@
         <button (click)="deleteTableColumn(1)"><i class="pi pi-ellipsis-h"></i></button>
        </div>
      </div>
-     <button (click)="openCreateTaskModal()" class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
+     <button (click)="openCreateTaskModal(column.id)" class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
     <ul class="">
       <li *ngFor="let task of column.tasks"
-          class=""
           pDraggable="shared"
-          (click)="openTaskDetailsPage(task.id)"
+          (click)="openTaskDetailsPage(task)"
           (onDragStart)="dragStart(task, column)"
           (onDragEnd)="dragEnd()">
 
