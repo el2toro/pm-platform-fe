@@ -17,6 +17,13 @@ import { CommentModel } from '../../models/comment-model';
 import { SubtaskModel } from '../../models/subtask-model';
 import { TableModule } from "primeng/table";
 
+interface CreateEditTaskModalDto{
+  isCreate: boolean;
+  columnId: string;
+  projectId: string;
+  task: TaskModel | null;
+}
+
 @Component({
   selector: 'app-add-edit-task-modal',
   templateUrl: './add-edit-task-modal.component.html',
@@ -34,8 +41,10 @@ export class AddEditTaskModalComponent implements OnInit {
   task = new TaskModel();
   taskStatuses = <any[]>[];
 
+  createEditTaskModalDto!: CreateEditTaskModalDto;
+
   get iSCreate() : boolean{
-    return !this.task;
+    return this.createEditTaskModalDto.isCreate;
   }
 
   get subtasks() {
@@ -49,7 +58,7 @@ export class AddEditTaskModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.task = this.config.data;
+    this.createEditTaskModalDto = this.config.data as CreateEditTaskModalDto;
 
    this.mapTaskStatuses();
     this.openModal();
@@ -140,6 +149,8 @@ export class AddEditTaskModalComponent implements OnInit {
     this.task.dueDate = formatDate(this.formGroup.get('dueDate')?.value, 'yyyy-MM-dd', 'en-US');
     this.task.subtasks = this.formGroup.get(['subtasks'])?.value;
     this.task.comments = this.formGroup.get(['comments'])?.value;
+    this.task.columnId = this.createEditTaskModalDto.columnId;
+    this.task.projectId = this.createEditTaskModalDto.projectId;
   }
 
   addComment(){
