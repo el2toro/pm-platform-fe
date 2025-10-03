@@ -71,7 +71,7 @@ export class MenuComponent implements OnInit {
           },
           {
             label: 'Team Management',
-            routerLink: '/team',
+            routerLink: '/team-management',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem)
@@ -192,13 +192,10 @@ export class MenuComponent implements OnInit {
     ];
   }
 
+
+
   goToProfile() {
-    //TODO: add tenant id variable
-    this.authService.logout('FF2C542E-5948-4726-A28A-4A5FD5CB76DA')
-    .subscribe({
-      next: (response) => console.log('logout: ',response)
-    });
-    this.router.navigate(['/login']);
+    this.router.navigate(['/profile']);
   }
 
   search() {
