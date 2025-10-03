@@ -9,7 +9,7 @@ import { BoardModel } from '../../models/board.model';
 })
 export class ProjectService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://localhost:7186/api/';
+  private baseUrl = 'https://localhost:5054/project-service/';
 
   constructor() {}
 

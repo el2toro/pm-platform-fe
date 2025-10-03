@@ -16,7 +16,7 @@ constructor() { }
  private refreshToken$ = new BehaviorSubject<string | null>(null);
  private loggedInUser$ = new BehaviorSubject<UserModel | null>(null);
  private http = inject(HttpClient);
-  private baseUrl = 'https://localhost:7194/api/auth';
+  private baseUrl = 'https://localhost:5054/auth-service';
 
     /** Keep access token only in memory */
   get accessToken(): string | null {
