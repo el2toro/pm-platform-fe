@@ -1,0 +1,60 @@
+<div class="user-management">
+  <div class="heading">
+  <div class="title">
+    <h1>Team Management</h1>
+    <p>Manage your teams</p>
+  </div>
+
+    <div class="search">
+      <p-iconfield>
+            <p-inputicon class="pi pi-search" />
+            <input type="text" [value]="searchText" pInputText placeholder="Search" (keyup)="search()"/>
+        </p-iconfield>
+    </div>
+  </div>
+
+  <div class="users">
+    <p-table [value]="users">
+      <ng-template #header>
+        <tr>
+          <th></th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Birth Date</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-user>
+        <tr [pSelectableRow]="user">
+          <td>
+            <div class="user-image">
+              <img src="assets/images/{{ user.image }}" alt="img" />
+            </div>
+          </td>
+          <td>{{user.firstName}}</td>
+          <td>{{user.lastName}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.phoneNumber}}</td>
+          <td>{{user.birthDate}}</td>
+          <td>{{user.createdAt}}</td>
+          <td>{{user.updatedAt}}</td>
+          <td>
+            <div class="actions">
+              <button class="action-button" pButton >
+                Details
+              </button>
+              <button
+                class="action-button"
+                pButton icon="pi pi-pen-to-square" label="Edit">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
