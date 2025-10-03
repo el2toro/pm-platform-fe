@@ -1,0 +1,71 @@
+.profile {
+  margin: 15px;
+  border: 1px solid red;
+  border-radius: 10px;
+  padding: 20px;
+
+  .heading {
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #0f1417;
+    }
+
+    p {
+      margin-top: 20px;
+      color: #0f1417;
+      font-size: 1rem;
+    }
+  }
+
+  .photo-section{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 30px;
+
+    .photo{
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+
+        img{
+            object-fit: cover;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+    }
+
+    .upload-image{
+        display: flex;
+        gap: 15px;
+    }
+  }
+
+   .personal-information{
+        padding: 10px;
+        margin-top: 10px;
+
+        .form{
+            display: flex;
+            gap: 100px;
+
+            .form-section{
+                display: grid;
+                row-gap: 20px;
+                width: 100%;
+
+                .form-field{
+                  margin-top: 10px;
+                  
+                  .input-field{
+                    width: 100%;
+                  }
+               }
+            }
+
+            
+        }
+    }
+}

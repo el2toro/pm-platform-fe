@@ -1,0 +1,116 @@
+<div class="profile">
+  <div class="heading">
+    <h1>Personal Information</h1>
+    <p>Edit your personal information</p>
+  </div>
+
+  <div class="photo-section">
+    <div class="photo">
+      <img src="assets/images/{{profile.image}}" alt="img" />
+    </div>
+
+    <div class="upload-image">
+      <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="Upload An Image" />
+      <!-- <p-fileupload #fu mode="basic" chooseLabel="Upload An Image" chooseIcon="pi pi-upload" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)" /> -->
+      <!-- <button pButton (onClick)="fu.upload()" severity="secondary" label="Upload An Image"></button> -->
+      <button icon="pi pi-trash" pButton severity="danger" (click)="deleteProfileImage()"></button>
+    </div>
+  </div>
+
+  <div class="personal-information">
+    <form class="form" [formGroup]="form">
+      <div class="form-section">
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="firstName"
+            pInputText
+            type="text"
+            formControlName="firstName"
+          />
+          <label for="firstName">First Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="lastName"
+            pInputText
+            type="text"
+            formControlName="lastName"
+          />
+          <label for="lastName">Last Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="email"
+            pInputText
+            type="email"
+            formControlName="email"
+          />
+          <label for="email">Email</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="phoneNumber"
+            pInputText
+            type="text"
+            formControlName="phoneNumber"
+          />
+          <label for="phoneNumber">Phone Number</label>
+        </p-floatlabel>
+      </div>
+
+      <div class="form-section">
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="firstName"
+            pInputText
+            type="text"
+            formControlName="firstName"
+          />
+          <label for="firstName">First Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="email"
+            pInputText
+            type="email"
+            formControlName="email"
+          />
+          <label for="email">Email</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="form-field">
+          <input
+            class="input-field"
+            id="phoneNumber"
+            pInputText
+            type="text"
+            formControlName="phoneNumber"
+          />
+          <label for="phoneNumber">Phone Number</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="form-field">
+          <textarea
+            [rows]="3"
+            class="input-field"
+            id="aboutYou"
+            pInputText
+            type="text"
+            formControlName="aboutYou"
+          ></textarea>
+          <label for="aboutYou">About You</label>
+        </p-floatlabel>
+      </div>
+    </form>
+  </div>
+</div>
