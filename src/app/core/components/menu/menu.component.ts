@@ -11,6 +11,7 @@ import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { UserModel } from '../../auth/models/user.model';
 import { MenuService } from '../../services/menu.service';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-menu',
@@ -24,14 +25,15 @@ import { MenuService } from '../../services/menu.service';
     IconFieldModule,
     InputIconModule,
     Button,
-    InputText
+    InputText,
+    MenuModule
   ],
 })
 export class MenuComponent implements OnInit {
   private menuService = inject(MenuService);
 
   items: MenuItem[] | undefined;
-  projectItems: MenuItem[] | undefined;
+  collapsedMenuItems: MenuItem[] | undefined;
   isCollapsed!: boolean;
   activeLabel: any;
 
@@ -154,45 +156,34 @@ export class MenuComponent implements OnInit {
       },
     ];
 
-    this.projectItems = [
+    this.collapsedMenuItems = [
       {
         items: [
           {
-            label: 'Dashboard',
             routerLink: '/dashboard',
-            icon: 'pi pi-circle-fill',
-            styleClass: 'custom-icon',
+            icon: 'pi pi-home',
           },
           {
-            label: 'Project Details',
-            routerLink: '/projects/details',
-            icon: 'pi pi-circle-fill',
-            styleClass: 'custom-icon',
+            routerLink: '/project-details',
+            icon: 'pi pi-box',
           },
           {
-            label: 'Team Management',
-            routerLink: '/team',
-            icon: 'pi pi-circle-fill',
-            styleClass: 'custom-icon',
+            routerLink: '/team-management',
+            icon: 'pi pi-users',
           },
           {
-            label: 'Reports & Insights',
             routerLink: '/reports',
-            icon: 'pi pi-circle-fill',
-            styleClass: 'custom-icon',
+            icon: 'pi pi-chart-line',
           },
           {
-            label: 'Marketing',
             routerLink: '/marketing',
-            icon: 'pi pi-circle-fill',
-            styleClass: 'custom-icon',
+            icon: 'pi pi-chart-bar',
+
           },
         ],
       },
     ];
   }
-
-
 
   goToProfile() {
     this.router.navigate(['/profile']);

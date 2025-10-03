@@ -1,40 +1,52 @@
-<div class="collapse-button" [ngClass]="isCollapsed ? 'collapse-button' : 'not-collapsed'">
-    <p-button class="custom-button" 
-      (click)="isCollapsed = !isCollapsed" 
-      icon="{{isCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'}}" 
-      pTooltip="{{isCollapsed ? 'Expand' : 'Collapse'}}">
-    </p-button>
+<div
+  class="collapse-button"
+  [ngClass]="isCollapsed ? 'collapse-button' : 'not-collapsed'"
+>
+  <p-button
+    class="custom-button"
+    (click)="isCollapsed = !isCollapsed"
+    icon="{{ isCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left' }}"
+    pTooltip="{{ isCollapsed ? 'Expand' : 'Collapse' }}"
+  >
+  </p-button>
 </div>
-<div class="menu collapsible"  
+<div
+  class="menu collapsible"
   [class.collapsed]="isCollapsed"
-  [ngStyle]="{'padding': isCollapsed ? '0px' : '0px 30px 25px 30px'}">
-  
-    <div class="sticky">
-         <div class="profile">
-         <div class="image" (click)="goToProfile()">
-           <img src="assets/images/{{user?.image}}" alt="img">
-       </div>
-       <div class="title">
-          <h3>{{ user?.firstName }}</h3>
-       </div>
+  [style.justify-content]="isCollapsed ? 'space-between' : ''"
+  [style.overflow-y]="isCollapsed ? '' : ''"
+  [style.padding-top]="isCollapsed ? '150px' : ''"
+  [ngStyle]="{ padding: isCollapsed ? '0px' : '0px 30px 25px 30px' }"
+>
+  @if (!isCollapsed) {
+  <div class="sticky">
+    <div class="profile">
+      <div class="image" (click)="goToProfile()">
+        <img src="assets/images/{{ user?.image }}" alt="img" />
+      </div>
+      <div class="title">
+        <h3>{{ user?.firstName }}</h3>
+      </div>
     </div>
 
     <div class="search">
-        <p-iconfield>
-            <p-inputicon class="pi pi-search" />
-            <input type="text" pInputText placeholder="Search" (keyup)="search()"/>
-        </p-iconfield>
+      <p-iconfield>
+        <p-inputicon class="pi pi-search" />
+        <input type="text" pInputText placeholder="Search" (keyup)="search()" />
+      </p-iconfield>
     </div>
+  </div>
+
+  <p-panelMenu [model]="items"></p-panelMenu>
+  }
+
+  @if (isCollapsed) {
+    <div class="collapsed-menu">
+        <p-menu [model]="collapsedMenuItems"></p-menu> 
     </div>
 
-    <p style="color: #C7C7C7; margin-bottom: 10px; font-size: 0.9rem">PAGES</p>
-    <p-panelMenu [model]="items"></p-panelMenu>
-
-    <!-- <hr>
-
-    <p style="color: #EAEAEA; margin-top: 20px; font-size: 0.8rem;">Projects</p>
-    <p-menu [model]="projectItems"></p-menu> -->
+    <div class="profile-image" (click)="goToProfile()">
+        <img src="assets/images/{{ user?.image }}" alt="img" />
+    </div>
+  }
 </div>
-
-
-

@@ -1,7 +1,7 @@
 .collapse-button {
   position: absolute;
   top: 11px;
-  left: 10px;
+  left: 17px;
   z-index: 100;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .collapsed {
-  max-width: 0;
+  max-width: 60px;
 }
 
 /* Chrome, Edge, Safari */
@@ -46,8 +46,6 @@
   min-height: 30px; /* prevents thumb being too tall */
 }
 
-
-
 /* Hide scrollbar buttons (arrows) */
 .menu::-webkit-scrollbar-button {
   display: none;
@@ -56,64 +54,86 @@
 }
 
 .menu {
+  display: flex;
+  flex-direction: column;
+ // justify-content: space-between;
   background-color: #131313;
   height: 100vh;
   font-size: 1rem;
   z-index: 99;
-  overflow-y: scroll;
 
-   /* scrollbar styling */
-  scrollbar-width: thin;              /* Firefox */
-  scrollbar-color: #404040 transparent;   /* thumb color | track color */
+  /* scrollbar styling */
+  //scrollbar-width: thin; /* Firefox */
+  //scrollbar-color: #404040 transparent; /* thumb color | track color */
 
-  .sticky{
+  .sticky {
     position: sticky;
     top: 0px;
     background: #131313;
     z-index: 10;
     padding-top: 30px;
-    
+
     .profile {
-    display: flex;
-    align-items: center;
+      display: flex;
+      align-items: center;
 
-    .image {
-      width: 50px;
-      height: 50px;
-      border: 2px solid var(--primary);
-      border-radius: 5px;
+      .image {
+        width: 50px;
+        height: 50px;
+        border: 2px solid var(--primary);
+        border-radius: 5px;
 
-      &:hover {
-        cursor: pointer;
-        opacity: 0.8;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 5px;
+        }
       }
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 5px;
+      .title {
+        padding-right: 50px;
+        margin-left: 20px;
+
+        h3 {
+          color: white;
+        }
       }
     }
 
-    .title {
-      padding-right: 50px;
-      margin-left: 20px;
+    .search {
+      padding: 20px 0px;
 
-      h3 {
+      input {
+        background-color: #4c4c4c;
+        border: none;
         color: white;
       }
     }
   }
 
-  .search {
-    padding: 20px 0px;
+  .profile-image {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-left: 5px;
+    margin-bottom: 50px;
 
-    input {
-      background-color: #4c4c4c;
-      border: none;
-      color: white;
+    img {
+      object-fit: contain;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
     }
-  }
+
+    &:hover{
+      cursor: pointer;
+      opacity: 0.8;
+    }
   }
 }
