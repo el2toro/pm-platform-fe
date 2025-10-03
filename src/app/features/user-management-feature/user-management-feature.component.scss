@@ -1,6 +1,6 @@
 .user-management {
   margin: 15px;
-  border: 1px solid red;
+  border: 2px solid #F1F1F2;
   border-radius: 10px;
   padding: 20px;
 
@@ -42,6 +42,11 @@
             height: 40px;
             border-radius: 50%;
         }
+    }
+
+    .actions{
+        display: flex;
+        gap: 10px;
     }
   }
 }

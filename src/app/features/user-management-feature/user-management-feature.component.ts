@@ -5,17 +5,18 @@ import { UserModel } from './Models/user.mode';
 import { InputText } from "primeng/inputtext";
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-user-management-feature',
   templateUrl: './user-management-feature.component.html',
   styleUrls: ['./user-management-feature.component.scss'],
-  imports: [TableModule, InputText, IconFieldModule, InputIconModule]
+  imports: [TableModule, InputText, IconFieldModule, InputIconModule, ButtonModule]
 })
 export class UserManagementFeatureComponent implements OnInit {
   private userService = inject(UserService);
   users = <UserModel[]>[];
-  searchText = '';
+  filtredUsers = <UserModel[]>[];
 
   constructor() { }
 
@@ -25,12 +26,17 @@ export class UserManagementFeatureComponent implements OnInit {
 
   getUsers(){
    this.userService.getUsers().subscribe({
-    next: (users) => this.users = users 
+    next: (users) => {this.users = users, this.filtredUsers = users }
    })
   }
 
-  search(){
-    console.log(this.searchText)
-   // this.users = this.users.filter(this.userService.firstName)
+  //TODO: add filter by phone/date
+  search(input: HTMLInputElement){
+    let inputText = input.value.toLocaleLowerCase().trim()
+
+   this.filtredUsers = this.users.filter(user => 
+    user.firstName.toLocaleLowerCase().includes(inputText) || 
+    user.lastName.toLocaleLowerCase().includes(inputText) || 
+    user.email.toLocaleLowerCase().includes(inputText))
   }
 }

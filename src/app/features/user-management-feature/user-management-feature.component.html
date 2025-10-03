@@ -8,13 +8,13 @@
     <div class="search">
       <p-iconfield>
             <p-inputicon class="pi pi-search" />
-            <input type="text" [value]="searchText" pInputText placeholder="Search" (keyup)="search()"/>
+            <input #searchInput type="text" pInputText placeholder="Search" (keyup)="search(searchInput)"/>
         </p-iconfield>
     </div>
   </div>
 
   <div class="users">
-    <p-table [value]="users">
+    <p-table [value]="filtredUsers">
       <ng-template #header>
         <tr>
           <th></th>
