@@ -8,6 +8,8 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { UserGuard } from './core/guards/user.guard';
 import { TaskDetailsPageComponent } from './features/dashboard-feature/pages/task-details-page/task-details-page.component';
 import { RegisterComponent } from './core/auth/register/register.component';
+import { UserManagementFeatureComponent } from './features/user-management-feature/user-management-feature.component';
+import { ProfileFeatureComponent } from './features/profile-feature/profile-feature.component';
 
 export const routes: Routes = [
     { 
@@ -29,5 +31,7 @@ export const routes: Routes = [
     { path: 'reports', component: InsightAndReportFeatureComponent },
     { path: 'board', component: KanbanBoardFeatureComponent },
     { path: 'task-details/:taskId', component: TaskDetailsPageComponent },
+    { path: 'team-management', component: UserManagementFeatureComponent},
+    { path: 'profile', component: ProfileFeatureComponent},
     { path: '**', redirectTo: 'login' }
 ];
