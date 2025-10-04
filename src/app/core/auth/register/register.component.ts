@@ -68,4 +68,8 @@ export class RegisterComponent implements OnInit {
       error: (error) => this.messageService.showError('Registration Failed. Please check your details and try again.')
     });   
   }
+
+  goToLogin(){
+    this.router.navigate(['/login']);
+  }
 }

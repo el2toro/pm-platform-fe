@@ -29,6 +29,7 @@
     </p-floatlabel>
    </form>
    
-    <button pButton (click)="createAccount()" [loading]="loading">Register</button>
+    <button class="register-button" pButton (click)="createAccount()" [loading]="loading">Register</button>
+     <a (click)="goToLogin()" class="go-back"><span><- Go back</span></a>
   </div>
 </div>
