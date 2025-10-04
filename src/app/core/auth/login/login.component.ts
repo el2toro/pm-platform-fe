@@ -59,6 +59,10 @@ export class LoginComponent implements OnInit {
     });   
   }
 
+  signInWithGoogle(){
+    
+  }
+
   goToRegister(){
     this.router.navigate(['/register']);
   }

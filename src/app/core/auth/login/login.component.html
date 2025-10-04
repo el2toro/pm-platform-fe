@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <div class="login">
   <div class="login-container">
-    <h1>Signin</h1>
+    <h1>Welcome back!</h1>
    <form [formGroup]="form">
      <p-floatlabel>
       <input class="input-field" id="email" pInputText formControlName="email" />
@@ -14,7 +14,17 @@
     </p-floatlabel>
    </form>
 
-   <button pButton (click)="login()" [loading]="loading">Login</button>
-      <a (click)="goToRegister()">Create an account</a>
+   <button class="sign-in" pButton (click)="login()" [loading]="loading">Sign In</button>
+
+   <div class="option">
+    <hr><span>OR</span><hr>
+   </div>
+
+   <button class="google-signin-button" 
+   pButton 
+   (click)="signInWithGoogle()" 
+   [loading]="loading" icon="pi pi-google" label="Sign in with Google"></button>
+
+      <a (click)="goToRegister()" class="sign-up"><span>No account?</span> <span>Sign Up -></span></a>
   </div>
 </div>
