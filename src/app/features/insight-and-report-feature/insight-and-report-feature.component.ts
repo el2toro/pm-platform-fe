@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { UserService } from '../user-management-feature/services/user.service';
 
 interface Project{
   name: string;
@@ -14,6 +15,9 @@ interface Project{
   imports: [CommonModule]
 })
 export class InsightAndReportFeatureComponent implements OnInit {
+  private userService = inject(UserService);
+  usersCount = 0;
+
  projects: Project[] = [
   {name: 'Project Alpha Kickoff', dueDate: 'Aug 1, 2025', progress: 40},
   {name: 'Product Beta Launch', dueDate: 'Sep 15, 2025', progress: 60},
@@ -27,6 +31,16 @@ export class InsightAndReportFeatureComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.getUsersCount();
   }
 
+  getUsersCount(){
+    this.userService.getUsers().subscribe({
+      next: (users) => this.usersCount = users.length
+    })
+  }
+
+  generateReport(){
+    
+  }
 }

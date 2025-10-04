@@ -34,7 +34,7 @@
       <textarea></textarea>
     </div>
 
-    <button>Generate Report</button>
+    <button (click)="generateReport()">Generate Report</button>
   </div>
 
   <div class="projects">
@@ -59,7 +59,7 @@
   <div class="project-data">
     <div class="contributors">
       <div class="count">
-        <p>357</p>
+        <p>{{ usersCount }}</p>
         <p>Professionals</p>
       </div>
 
