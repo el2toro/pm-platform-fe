@@ -6,10 +6,10 @@
   </div>
   <div class="projects">
     <p-table
-      [value]="projects"
+      [value]="projectsList"
       [rows]="pageSize"
       [paginator]="true"
-      [totalRecords]="100"
+      [totalRecords]="totalPages"
       [showCurrentPageReport]="true"
       [rowsPerPageOptions]="[5, 10, 25, 50]"
       currentPageReportTemplate="Showing {first} to {last} of {{totalRecords}} entries"

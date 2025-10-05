@@ -36,6 +36,10 @@ export class OverviewComponent implements OnInit {
   private dialogService = inject(DialogService);
   private messageService = inject(CustomMessageService);
 
+  get projectsList(): ProjectModel[]{
+    return this.projects;
+  }
+
   projects = <ProjectModel[]>[];
   selectedProject!: ProjectModel;
   ref!: DynamicDialogRef;

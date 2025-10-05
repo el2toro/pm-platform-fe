@@ -1,6 +1,6 @@
 export enum TaskStatus {
-  Backlog = 1,
-  ToDo = 2,
+  Backlog = 0,
+  ToDo = 1,
   InProgress = 3,
   Done = 4,
   Blocked = 5,
