@@ -1,30 +1,55 @@
 <p-toast></p-toast>
+<video autoplay muted loop>
+  <source src="assets/videos/background.mp4" type="video/mp4" />
+</video>
+
 <div class="login">
   <div class="login-container">
     <h1>Welcome back!</h1>
-   <form [formGroup]="form">
-     <p-floatlabel>
-      <input class="input-field" id="email" pInputText formControlName="email" />
-      <label for="email">Email</label>
-    </p-floatlabel>
-    
-    <p-floatlabel>
-      <input class="input-field" id="password" pInputText type="password" formControlName="password" />
-      <label for="password">Password</label>
-    </p-floatlabel>
-   </form>
+    <form [formGroup]="form">
+      <p-floatlabel>
+        <input
+          class="input-field"
+          id="email"
+          pInputText
+          formControlName="email"
+        />
+        <label for="email">Email</label>
+      </p-floatlabel>
 
-   <button class="sign-in" pButton (click)="login()" [loading]="loading">Sign In</button>
+      <p-floatlabel>
+        <input
+          class="input-field"
+          id="password"
+          pInputText
+          type="password"
+          formControlName="password"
+        />
+        <label for="password">Password</label>
+      </p-floatlabel>
+    </form>
 
-   <div class="option">
-    <hr><span>OR</span><hr>
-   </div>
+    <button class="sign-in" pButton (click)="login()" [loading]="loading">
+      Sign In
+    </button>
 
-   <button class="google-signin-button" 
-   pButton 
-   (click)="signInWithGoogle()" 
-   [loading]="loading" icon="pi pi-google" label="Sign in with Google"></button>
+    <div class="option">
+      <hr />
+      <span>OR</span>
+      <hr />
+    </div>
 
-      <a (click)="goToRegister()" class="sign-up"><span>No account?</span> <span>Sign Up -></span></a>
+    <button
+      class="google-signin-button"
+      pButton
+      (click)="signInWithGoogle()"
+      [loading]="loading"
+      icon="pi pi-google"
+      label="Sign in with Google"
+    ></button>
+
+    <a (click)="goToRegister()" class="sign-up"
+      ><span>No account?</span> <span>Sign Up -></span></a
+    >
   </div>
 </div>
