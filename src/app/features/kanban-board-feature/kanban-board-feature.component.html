@@ -13,13 +13,13 @@
      <div class="column-header">
        <p class="title">{{ column.name }}</p>
        <div class="action">
-        <span class="task-count">{{ column.tasks.length }}</span>
+        <span class="task-count">{{ getColumnTaskCount(column.name) }}</span>
         <button (click)="deleteTableColumn(1)"><i class="pi pi-ellipsis-h"></i></button>
        </div>
      </div>
      <button (click)="openCreateTaskModal(column.id)" class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
     <ul class="">
-      <li *ngFor="let task of column.tasks"
+      <li *ngFor="let task of getColumnTasks(column.name)"
           pDraggable="shared"
           (click)="openTaskDetailsPage(task)"
           (onDragStart)="dragStart(task, column)"

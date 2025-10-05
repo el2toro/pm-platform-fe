@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ProgressBar } from "primeng/progressbar";
-import { ProjectModel } from '../dashboard-feature/models/project-model';
 import { ProjectService } from '../dashboard-feature/apis/project/project.service';
 import { TaskStatus } from '../dashboard-feature/enums/task-status.enum';
 import { TaskModel } from '../dashboard-feature/models/task-model';
@@ -16,6 +15,7 @@ import { Toast } from "primeng/toast";
 import { CustomMessageService } from '../../../shared/services/custom-message.service';
 import { BoardModel } from '../dashboard-feature/models/board.model';
 import { map } from 'rxjs';
+import { BoardService } from '../dashboard-feature/apis/board/board.service';
 
 interface CreateEditTaskModalDto{
   isCreate: boolean;
@@ -38,9 +38,11 @@ export class KanbanBoardFeatureComponent implements OnInit {
   private projectService = inject(ProjectService);
   private router = inject(Router);
   private customMessageService = inject(CustomMessageService);
+  private boardService = inject(BoardService);
 
   board = new BoardModel();
   columns = <ColumnModel[]>[];
+  tasks = <TaskModel[]>[];
 
   draggedItem?: TaskModel;
   draggedFrom?: ColumnModel;
@@ -48,18 +50,32 @@ export class KanbanBoardFeatureComponent implements OnInit {
   constructor(private ref: DynamicDialogRef) { }
 
   ngOnInit() {
-    this.initBoard();
+    this.getBoard();
+    this.getTasks();
   }
 
-  initBoard(){
-    this.projectService.getBoard('11111111-1111-1111-1111-111111111111')
-    .pipe(
-      map(board =>{ 
-        this.board = board;
-        this.columns = board.columns;
-      })
-    ).subscribe()
+  getBoard(){
+    this.boardService.getBoard('66666666-6666-6666-6666-666666666666', '457D38D1-FFDA-4253-80CF-5DE71C171D37')
+    .subscribe({
+      next: (board) => {this.board = board; this.columns = board.columns},
+      error: (error) => this.customMessageService.showError('Something went wrong while loading the board. Please try again.')
+    })
   }
+
+  getTasks(){
+    this.taskService.getTasks('2F6A892A-40E1-4D88-9E3D-2C12B0F5BDA7')
+    .subscribe({
+      next: (tasks) => this.tasks = tasks
+    })
+  }
+
+  getColumnTasks(columnName: string){
+    return this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(columnName))
+  }
+
+  getColumnTaskCount(columnName: string){
+    return this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(columnName)).length
+  } 
 
   dragStart(item: TaskModel, from: ColumnModel) {
     this.draggedItem = item;
@@ -74,26 +90,22 @@ export class KanbanBoardFeatureComponent implements OnInit {
   onDrop(targetCol: ColumnModel) {
     if (this.draggedItem && this.draggedFrom) {
       // remove from old column
-      this.draggedFrom.tasks = this.draggedFrom.tasks.filter(
+      this.draggedFrom.tasks = this.draggedFrom.tasks?.filter(
         task => task.id !== this.draggedItem!.id
       );
       // add to new column
-      targetCol.tasks.push(this.draggedItem);
+      targetCol.tasks?.push(this.draggedItem);
 
       // update task status
       //TODO: map to task status
       let taskStatus = this.mapColumnNameToTaskStatus(targetCol?.name)
       this.draggedItem.taskStatus = taskStatus;
-      this.draggedItem.columnId = targetCol.id;
-      console.log(this.draggedItem);
-      this.taskService.updateTaskStatus(this.draggedItem!.id, targetCol.id, taskStatus).subscribe();
+
+      let taskId = this.draggedItem!.id
+ 
+      this.taskService.updateTaskStatus('2F6A892A-40E1-4D88-9E3D-2C12B0F5BDA7', taskId, taskStatus).subscribe();
     }
     this.dragEnd();
-  }
-
-  mapColumnItems(tasks: TaskModel[], status: TaskStatus){
-   return tasks.filter(task => task.taskStatus === status)
-    .map(task => task);
   }
 
   getSubtaskCount(subtasks: SubtaskModel[]) : number{
@@ -127,7 +139,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
         result.projectId = this.board.projectId;
   
         this.taskService.createTask(result).subscribe({
-         next: () => this.initBoard(), //TODO: call reload task not board
+         next: () => this.getBoard(), //TODO: call reload task not board
          error: (error) => this.customMessageService.showError(`Something went wrong! Error: ${error.message}`)
         });
       });
@@ -145,13 +157,17 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
     //TODO: mapping is not working corectly avoid hard coded cases
     mapColumnNameToTaskStatus(columName: string) : TaskStatus{
-      switch(columName.trim()){
-        case 'InProgress':
+      switch(columName){
+        case 'In Progress':
           return TaskStatus.InProgress;
-          case 'ToDo':
+          case 'To Do':
           return TaskStatus.ToDo;
           case 'Done':
           return TaskStatus.Done;
+          case 'Testing':
+          return TaskStatus.Testing;
+          case 'Review':
+          return TaskStatus.Review;
       }
 
       return TaskStatus.Backlog;
