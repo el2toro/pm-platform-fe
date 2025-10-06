@@ -13,6 +13,8 @@ import { AddEditProjectModalComponent } from '../add-edit-project-modal/add-edit
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
+import { SignalRService } from '../../../../../shared/services/signalR/signalR.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-overview',
@@ -35,9 +37,10 @@ export class OverviewComponent implements OnInit {
   private router = inject(Router)
   private dialogService = inject(DialogService);
   private messageService = inject(CustomMessageService);
+  private signalRService = inject(SignalRService);
 
-  get projectsList(): ProjectModel[]{
-    return this.projects;
+  get projectList(): Observable<ProjectModel[]>{
+    return this.projectService.projects$;
   }
 
   projects = <ProjectModel[]>[];
@@ -51,6 +54,7 @@ export class OverviewComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.signalRService.startConnection();
     this.getProjects();
   }
 
@@ -60,6 +64,7 @@ export class OverviewComponent implements OnInit {
         this.projects = paginatedResponse.items
         this.totalRecords = paginatedResponse.totalItems;
         this.totalPages = paginatedResponse.totalPages;
+        this.projectService.setProjects(paginatedResponse.items);
       }
     });
   }
@@ -103,12 +108,9 @@ export class OverviewComponent implements OnInit {
     this.ref.onClose.subscribe(result => {
       if(!result){ return };
 
-       this.projectService.createProject(result)
-       .subscribe({
-        next: () => {
-          this.getProjects()
-          this.messageService.showSuccess('Project created successfully');
-      }})
+       this.projectService.createProject(result).subscribe({
+        next: () => this.messageService.showSuccess('Project created successfully')
+      })
     });
   }
 
@@ -123,10 +125,7 @@ export class OverviewComponent implements OnInit {
       if(!result){ return };
 
        this.projectService.editProject(result).subscribe({
-        next: () => {
-          this.getProjects();
-          this.messageService.showSuccess('Project updated successfully');
-        }
+        next: () => this.messageService.showSuccess('Project updated successfully')
       })
     });
   }
