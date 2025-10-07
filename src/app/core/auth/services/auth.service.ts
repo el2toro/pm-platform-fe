@@ -27,6 +27,10 @@ constructor() { }
     return this.loggedInUser$.value;
   }
 
+  get tenantId() : string{
+    return this.loggedInUser?.tenantId ?? '';
+  }
+
   isLoggedIn(): boolean {
     return !!this.accessToken$.value;
   }
