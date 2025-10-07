@@ -140,10 +140,7 @@ export class AddEditTaskModalComponent implements OnInit {
        // this.task.subtasks = this.subtasks;
      }
 
-     if(!this.iSCreate){
-      this.task.taskStatus = this.formGroup.get(['taskStatus'])?.value;
-     }
-
+    this.task.taskStatus = this.formGroup.get(['taskStatus'])?.value;
     this.task.title = this.formGroup.get(['title'])?.value;
     this.task.description = this.formGroup.get(['description'])?.value;
     this.task.dueDate = formatDate(this.formGroup.get('dueDate')?.value, 'yyyy-MM-dd', 'en-US');

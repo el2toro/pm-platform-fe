@@ -14,8 +14,9 @@ import { ColumnModel } from '../dashboard-feature/models/column.model';
 import { Toast } from "primeng/toast";
 import { CustomMessageService } from '../../../shared/services/custom-message.service';
 import { BoardModel } from '../dashboard-feature/models/board.model';
-import { map } from 'rxjs';
 import { BoardService } from '../dashboard-feature/apis/board/board.service';
+import { TasksByColumnPipe } from "../dashboard-feature/pipes/tasks-by-column.pipe";
+import { Observable } from 'rxjs';
 
 interface CreateEditTaskModalDto{
   isCreate: boolean;
@@ -29,7 +30,7 @@ interface CreateEditTaskModalDto{
   templateUrl: './kanban-board-feature.component.html',
   styleUrls: ['./kanban-board-feature.component.scss'],
   standalone: true,
-  imports: [CommonModule, DragDropModule, ProgressBar, Toast],
+  imports: [CommonModule, DragDropModule, ProgressBar, Toast, TasksByColumnPipe],
   providers: [DynamicDialogRef]
 })
 export class KanbanBoardFeatureComponent implements OnInit {
@@ -47,11 +48,17 @@ export class KanbanBoardFeatureComponent implements OnInit {
   draggedItem?: TaskModel;
   draggedFrom?: ColumnModel;
 
+  get tasks$() : Observable<TaskModel[]>{
+    return this.taskService.tasks$;
+  }
+
   constructor(private ref: DynamicDialogRef) { }
 
   ngOnInit() {
-    this.getBoard();
     this.getTasks();
+    this.getBoard();
+
+    this.tasks$.subscribe(tasks => {this.tasks = tasks, this.mapTasksToColumn()})
   }
 
   getBoard(){
@@ -63,15 +70,21 @@ export class KanbanBoardFeatureComponent implements OnInit {
   }
 
   getTasks(){
-    this.taskService.getTasks('2F6A892A-40E1-4D88-9E3D-2C12B0F5BDA7')
+    this.taskService.getTasks('66666666-6666-6666-6666-666666666666')
     .subscribe({
-      next: (tasks) => this.tasks = tasks
+      next: (tasks) => {
+        this.mapTasksToColumn()
+        this.taskService.setTasks(tasks);
+      }
     })
   }
 
-  getColumnTasks(columnName: string){
-    return this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(columnName))
+  mapTasksToColumn(): void{
+    console.log('mapping called: ')
+    this.columns.forEach(column => 
+      column.tasks = this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(column.name)))
   }
+  
 
   getColumnTaskCount(columnName: string){
     return this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(columnName)).length
@@ -103,7 +116,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
       let taskId = this.draggedItem!.id
  
-      this.taskService.updateTaskStatus('2F6A892A-40E1-4D88-9E3D-2C12B0F5BDA7', taskId, taskStatus).subscribe();
+      this.taskService.updateTaskStatus('66666666-6666-6666-6666-666666666666', taskId, taskStatus).subscribe();
     }
     this.dragEnd();
   }
@@ -124,11 +137,11 @@ export class KanbanBoardFeatureComponent implements OnInit {
     return Math.floor(date)
   }
 
-  openCreateTaskModal(columnId: string) {
+  openCreateTaskModal(column: ColumnModel) {
       this.ref = this.dialogService.open(AddEditTaskModalComponent, {
         width: '600px',
         modal: true,
-        data: {isCreate: true, columnId: columnId, projectId: this.board.projectId} as CreateEditTaskModalDto,
+        data: {isCreate: true, columnId: column.id, projectId: this.board.projectId} as CreateEditTaskModalDto,
       });
   
       this.ref.onClose.subscribe((result) => {
@@ -137,9 +150,14 @@ export class KanbanBoardFeatureComponent implements OnInit {
         }
   
         result.projectId = this.board.projectId;
+
+        // this.taskService.task$.subscribe(task => {
+        //   column?.tasks?.push(task)
+        //    console.log('new task created: ', column)
+        // });
   
         this.taskService.createTask(result).subscribe({
-         next: () => this.getBoard(), //TODO: call reload task not board
+         next: () => this.customMessageService.showSuccess("New task created successfuly!"),
          error: (error) => this.customMessageService.showError(`Something went wrong! Error: ${error.message}`)
         });
       });
