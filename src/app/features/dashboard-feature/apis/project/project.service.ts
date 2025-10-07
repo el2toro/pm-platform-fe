@@ -3,13 +3,15 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectModel } from '../../models/project-model';
 import { BoardModel } from '../../models/board.model';
+import { AuthService } from '../../../../core/auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://localhost:5054/project-service/';
+  private authService = inject(AuthService);
+  private baseUrl = `https://localhost:5054/project-service/tenants/${this.authService.tenantId}/projects`;
 
   private projectsSubject = new BehaviorSubject<ProjectModel[]>([]);
   public projects$ = this.projectsSubject.asObservable();
@@ -34,24 +36,24 @@ export class ProjectService {
     params = params.append('pageNumber', pageNumber);
     params = params.append('pageSize', pageSize);
 
-    return this.http.get<any>(this.baseUrl + 'projects', { params: params } );
+    return this.http.get<any>(`${this.baseUrl}`, { params: params } );
   }
 
   getProjectDetails(projectId: string, tenantId: string): Observable<ProjectModel> {
     return this.http.get<ProjectModel>(
-      `${this.baseUrl}project/${projectId}/${tenantId}`
+      `${this.baseUrl}/${projectId}/${tenantId}`
     );
   }
 
    getBoard(projectId: string): Observable<BoardModel> {
-    return this.http.get<BoardModel>(`${this.baseUrl}projects/${projectId}/board`);
+    return this.http.get<BoardModel>(`${this.baseUrl}/${projectId}/board`);
   }
 
   createProject(project: any) {
-    return this.http.post(this.baseUrl + 'projects', project);
+    return this.http.post(this.baseUrl, project);
   }
 
   editProject(project: any) {
-    return this.http.put(this.baseUrl + 'projects', project);
+    return this.http.put(this.baseUrl, project);
   }
 }
