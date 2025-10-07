@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TaskModel } from '../../models/task-model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TaskStatus } from '../../enums/task-status.enum';
+import { ProjectModel } from '../../models/project-model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,51 @@ export class TaskService {
   constructor() {}
   private httpClient = inject(HttpClient);
   private baseUrl = 'https://localhost:5054/task-service';
+  private tasksSubject = new BehaviorSubject<TaskModel[]>([]);
+  public tasks$ = this.tasksSubject.asObservable();
+  private taskSubject = new BehaviorSubject<TaskModel>(new TaskModel());
+  public task$ = this.taskSubject.asObservable();
+
+  get currentTasks() : TaskModel[]{
+    return this.tasksSubject.value;
+  }
+
+  addTask(task: TaskModel) : void{
+    const updated = [...this.tasksSubject.value, task];
+    this.tasksSubject.next(updated);
+    //Single task
+    this.taskSubject.next(task);
+  }
+
+  setTasks(tasks: TaskModel[]): void{
+    this.tasksSubject.next(tasks);
+  }
+
+   //TODO: rename methods acordingly, because aren't distinctible
+  taskUpdate(updatedTask: TaskModel){
+    const currentTasks = this.tasksSubject.getValue();
+    const newTasks = currentTasks.map(task => task.id === updatedTask.id ? {...task, ...updatedTask} : task);
+
+    this.tasksSubject.next(newTasks);
+    //Single task
+ //   this.taskSubject.next(updatedTask);
+  }
+
+  // //TODO: rename methods acordingly, because aren't distinctible
+  // updateStatus(updatedTask: TaskModel){
+  //   const currentTasks = this.tasksSubject.getValue();
+  //   const newTasks = currentTasks.map(task => task.id === updatedTask.id ? {...task, ...updatedTask} : task);
+
+  //   this.tasksSubject.next(newTasks);
+  // }
+
+  // //TODO: rename methods acordingly, because aren't distinctible
+  // updateAssignee(updatedTask: TaskModel){
+  //   const currentTasks = this.tasksSubject.getValue();
+  //   const newTasks = currentTasks.map(task => task.id === updatedTask.id ? {...task, ...updatedTask} : task);
+
+  //   this.tasksSubject.next(newTasks);
+  // }
 
   createTask(task: TaskModel): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}/project/${task.projectId}/tasks`, task);
