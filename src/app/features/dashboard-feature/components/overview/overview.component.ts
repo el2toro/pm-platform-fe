@@ -13,7 +13,6 @@ import { AddEditProjectModalComponent } from '../add-edit-project-modal/add-edit
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
-import { SignalRService } from '../../../../../shared/services/signalR/signalR.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -37,7 +36,6 @@ export class OverviewComponent implements OnInit {
   private router = inject(Router)
   private dialogService = inject(DialogService);
   private messageService = inject(CustomMessageService);
-  private signalRService = inject(SignalRService);
 
   get projectList(): Observable<ProjectModel[]>{
     return this.projectService.projects$;
@@ -54,7 +52,6 @@ export class OverviewComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.signalRService.startConnection();
     this.getProjects();
   }
 
