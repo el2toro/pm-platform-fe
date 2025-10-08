@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { InputText } from "primeng/inputtext";
 import { FloatLabel } from "primeng/floatlabel";
 import { ButtonDirective } from "primeng/button";
@@ -17,6 +17,7 @@ import { CustomMessageService } from '../../../../shared/services/custom-message
   imports: [FloatLabel, ReactiveFormsModule, InputText, ButtonDirective, ToastModule]
 })
 export class RegisterComponent implements OnInit {
+  @Output() isLogin = new EventEmitter();
   private authService = inject(AuthService);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
@@ -70,6 +71,7 @@ export class RegisterComponent implements OnInit {
   }
 
   goToLogin(){
+    this.isLogin.emit(false);
     this.router.navigate(['/login']);
   }
 }
