@@ -31,16 +31,9 @@ private zone = inject(NgZone)
       .start()
       .then(() => console.log('SignalR Connected ✅'))
       .catch(err => console.error('SignalR Connection Error ❌', err));
-
-      this.hubConnection.on('ReceiveCreatedTask', (createdTask) => {
-
-        this.zone.run(() => {
-        this.taskService.addTask(createdTask)
-        console.log('Task  received:', createdTask)
-      })});
      
 
-     // registerTaskHandlers(this.hubConnection, this.taskService);
+      registerTaskHandlers(this.hubConnection, this.taskService);
       registerProjectHandlers(this.hubConnection, this.projectService)
 
     // this.hubConnection.on('ReceiveProjects', (response: ProjectModel) => {
