@@ -13,8 +13,8 @@ import { ProjectStatus } from '../../enums/project-status.enum';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FloatLabel } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
-import { ToastModule } from 'primeng/toast';
  import { formatDate } from '@angular/common';
+import { AuthService } from '../../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-add-edit-project-modal',
@@ -23,6 +23,8 @@ import { ToastModule } from 'primeng/toast';
   imports: [DialogModule, InputTextModule, ButtonModule, MessageModule, ReactiveFormsModule, InputText, DatePickerModule, Select, FloatLabelModule, TextareaModule, FloatLabel],
 })
 export class AddEditProjectModalComponent implements OnInit {
+  private authService = inject(AuthService);
+
   formGroup!: FormGroup;
   formSubmitted = false;
   project!: ProjectModel;
@@ -99,6 +101,7 @@ export class AddEditProjectModalComponent implements OnInit {
     this.project.description = this.formGroup.get(['description'])?.value;
     this.project.startDate = formatDate(this.formGroup.get('startDate')?.value, 'yyyy-MM-dd', 'en-US');
     this.project.endDate = formatDate(this.formGroup.get('endDate')?.value, 'yyyy-MM-dd', 'en-US');
+    this.project.tenantId = this.authService.tenantId;
   }
 
   mapProjectStatuses(){
