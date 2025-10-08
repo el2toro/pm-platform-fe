@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DashboardFeatureComponent } from './dashboard-feature.component';
+import { DashboardFeatureComponent } from './dashboard.component';
 
 describe('DashboardFeatureComponent', () => {
   let component: DashboardFeatureComponent;
