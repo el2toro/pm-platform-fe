@@ -15,8 +15,6 @@ import { Toast } from "primeng/toast";
 import { CustomMessageService } from '../../../shared/services/custom-message.service';
 import { BoardModel } from '../dashboard-feature/models/board.model';
 import { BoardService } from '../dashboard-feature/apis/board/board.service';
-import { TasksByColumnPipe } from "../dashboard-feature/pipes/tasks-by-column.pipe";
-import { Observable } from 'rxjs';
 
 interface CreateEditTaskModalDto{
   isCreate: boolean;
@@ -30,7 +28,7 @@ interface CreateEditTaskModalDto{
   templateUrl: './kanban-board-feature.component.html',
   styleUrls: ['./kanban-board-feature.component.scss'],
   standalone: true,
-  imports: [CommonModule, DragDropModule, ProgressBar, Toast, TasksByColumnPipe],
+  imports: [CommonModule, DragDropModule, ProgressBar, Toast],
   providers: [DynamicDialogRef]
 })
 export class KanbanBoardFeatureComponent implements OnInit {
@@ -48,17 +46,17 @@ export class KanbanBoardFeatureComponent implements OnInit {
   draggedItem?: TaskModel;
   draggedFrom?: ColumnModel;
 
-  get tasks$() : Observable<TaskModel[]>{
-    return this.taskService.tasks$;
-  }
-
   constructor(private ref: DynamicDialogRef) { }
 
   ngOnInit() {
-    this.getTasks();
-    this.getBoard();
+    this.taskService.tasks$.subscribe(tasks => 
+      {
+        this.tasks = tasks, 
+        this.mapTasksToColumn()
+      })
 
-    this.tasks$.subscribe(tasks => {this.tasks = tasks, this.mapTasksToColumn()})
+    this.getTasks();
+    this.getBoard();  
   }
 
   getBoard(){
@@ -70,19 +68,17 @@ export class KanbanBoardFeatureComponent implements OnInit {
   }
 
   getTasks(){
-    this.taskService.getTasks('66666666-6666-6666-6666-666666666666')
-    .subscribe({
-      next: (tasks) => {
-        this.mapTasksToColumn()
-        this.taskService.setTasks(tasks);
-      }
-    })
+    this.taskService.getTasks('66666666-6666-6666-6666-666666666666').subscribe()
   }
 
   mapTasksToColumn(): void{
-    console.log('mapping called: ')
-    this.columns.forEach(column => 
-      column.tasks = this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(column.name)))
+    this.columns.forEach(column => (column.tasks = [...this.filterTasks(column.name)]))
+
+    console.log(this.filterTasks('To Do'))
+  }
+
+  filterTasks(columnName: string) : TaskModel[]{
+    return this.tasks.filter(task => task.taskStatus  === this.mapColumnNameToTaskStatus(columnName))
   }
   
 
@@ -103,11 +99,11 @@ export class KanbanBoardFeatureComponent implements OnInit {
   onDrop(targetCol: ColumnModel) {
     if (this.draggedItem && this.draggedFrom) {
       // remove from old column
-      this.draggedFrom.tasks = this.draggedFrom.tasks?.filter(
-        task => task.id !== this.draggedItem!.id
-      );
+      // this.draggedFrom.tasks = this.draggedFrom.tasks?.filter(
+      //   task => task.id !== this.draggedItem!.id
+      // );
       // add to new column
-      targetCol.tasks?.push(this.draggedItem);
+      //targetCol.tasks?.push(this.draggedItem);
 
       // update task status
       //TODO: map to task status
