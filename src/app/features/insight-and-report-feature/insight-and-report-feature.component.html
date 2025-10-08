@@ -6,11 +6,11 @@
   <div class="kpis">
     <div class="kpi-item">
       <p>Completion Rate</p>
-      <p>80%</p>
+      <p>{{ analytics.projectCompletitionRate }}%</p>
     </div>
     <div class="kpi-item">
       <p>Overdue Tasks</p>
-      <p>10</p>
+      <p>{{ analytics.overdueTasks }}</p>
     </div>
     <div class="kpi-item">
       <p>Budget Usage</p>
@@ -26,12 +26,12 @@
     <h3>Custom Report</h3>
     <div class="report-name">
       <p>Report Name</p>
-      <input placeholder="Enter report name" />
+      <input placeholder="Enter report name" [(ngModel)]="reportName"/>
     </div>
 
     <div class="report-description">
       <p>Report Description</p>
-      <textarea></textarea>
+      <textarea [(ngModel)]="reportDescription"></textarea>
     </div>
 
     <button (click)="generateReport()">Generate Report</button>
@@ -41,7 +41,7 @@
     <h3>Your Projects</h3>
 
     <div class="project-list">
-      @for (project of projects; track $index) {
+      @for (project of analytics.projects; track $index) {
       <div class="project-item">
         <div class="timeline">
           <div class="bullet" [style.bottom.%]="project.progress"></div>
@@ -49,7 +49,7 @@
 
         <div class="details">
           <p>{{ project.name }}</p>
-          <p>{{ project.dueDate }}</p>
+          <p>{{ project.endDate | date}}</p>
         </div>
       </div>
       }
@@ -59,22 +59,22 @@
   <div class="project-data">
     <div class="contributors">
       <div class="count">
-        <p>{{ usersCount }}</p>
+        <p>{{ analytics.professionals }}</p>
         <p>Professionals</p>
       </div>
 
       <div class="contributors-details">
         <p>Today's Heroes</p>
         <div class="heroes">
-          @for (professional of professionals.slice(0, 7); track $index) {
+          @for (professional of analytics.professionalsOfTheDay.slice(0, 7); track $index) {
           <div class="hero-item">
             <!-- <img src="assets/images/portrait1.jpg" alt="img"> -->
 
             <p>
               {{
                 $index === 6
-                  ? "+" + professionals.length
-                  : professional.charAt(0)
+                  ? "+" + analytics.professionalsOfTheDay.length
+                  : professional.name.charAt(0).toUpperCase()
               }}
             </p>
           </div>
@@ -85,17 +85,17 @@
 
     <div class="active-projects">
       <div class="count">
-        <p>69</p>
+        <p>{{ analytics.activeProjects }}</p>
         <p>Active Projects</p>
       </div>
       <div class="pending-projects">
         <div class="status">
-          <p>43 Pending</p>
-          <p>72%</p>
+          <p>{{ analytics.pendingProjects }} Pending</p>
+          <p>{{ analytics.projectsPendingRate }}%</p>
         </div>
 
         <div class="progress-container">
-          <div class="progress-bar" [style.width.%]="60"></div>
+          <div class="progress-bar" [style.width.%]="analytics.projectsPendingRate"></div>
         </div>
       </div>
     </div>
