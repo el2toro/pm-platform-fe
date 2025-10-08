@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './core/auth/services/auth.service';
 import { MenuComponent } from "./core/components/menu/menu.component";
 import { DashboardNavComponent } from "./features/dashboard-feature/components/dashboard-nav/dashboard-nav.component";
+import { SignalRService } from '../shared/services/signalR/signalR.service';
 
 @Component({
     selector: 'app-root',
@@ -11,13 +12,18 @@ import { DashboardNavComponent } from "./features/dashboard-feature/components/d
     styleUrl: './app.component.scss'
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'pm-platform-fe';
+  private authService = inject(AuthService);
+  private signalRService = inject(SignalRService);
 
   get userIsLoggedIn(): boolean{
     return this.authService.isLoggedIn();
   }
 
   constructor() { }
-  private authService = inject(AuthService);
+
+  ngOnInit(): void {
+     this.signalRService.startConnection();
+  }
 }
