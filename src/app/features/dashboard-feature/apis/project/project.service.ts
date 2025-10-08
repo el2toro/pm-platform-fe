@@ -11,7 +11,7 @@ import { AuthService } from '../../../../core/auth/services/auth.service';
 export class ProjectService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
-  private baseUrl = `https://localhost:5054/project-service/tenants/${this.authService.tenantId}/projects`;
+  private baseUrl = `https://localhost:5054/project-service/tenants`;
 
   private projectsSubject = new BehaviorSubject<ProjectModel[]>([]);
   public projects$ = this.projectsSubject.asObservable();
@@ -31,12 +31,12 @@ export class ProjectService {
     this.projectsSubject.next(projects);
   }
 
-  getProjects(pageNumber: number, pageSize: number): Observable<any> {
+  getProjects(pageNumber: number, pageSize: number): Observable<any> { 
     let params = new HttpParams();
     params = params.append('pageNumber', pageNumber);
     params = params.append('pageSize', pageSize);
 
-    return this.http.get<any>(`${this.baseUrl}`, { params: params } );
+    return this.http.get<any>(`${this.baseUrl}/${this.authService.tenantId}/projects`, { params: params } );
   }
 
   getProjectDetails(projectId: string, tenantId: string): Observable<ProjectModel> {
@@ -45,15 +45,11 @@ export class ProjectService {
     );
   }
 
-   getBoard(projectId: string): Observable<BoardModel> {
-    return this.http.get<BoardModel>(`${this.baseUrl}/${projectId}/board`);
-  }
-
   createProject(project: any) {
-    return this.http.post(this.baseUrl, project);
+    return this.http.post(`${this.baseUrl}/${this.authService.tenantId}/projects`, project);
   }
 
   editProject(project: any) {
-    return this.http.put(this.baseUrl, project);
+    return this.http.put(`${this.baseUrl}/${this.authService.tenantId}/projects`, project);
   }
 }
