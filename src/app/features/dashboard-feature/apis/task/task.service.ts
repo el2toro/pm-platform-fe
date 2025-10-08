@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TaskModel } from '../../models/task-model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { TaskStatus } from '../../enums/task-status.enum';
 import { AuthService } from '../../../../core/auth/services/auth.service';
 
@@ -12,7 +12,7 @@ export class TaskService {
   constructor() {}
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
-  private baseUrl = `https://localhost:5054/task-service/tenants/${this.authService.tenantId}/projects`;
+  private baseUrl = `https://localhost:5054/task-service/tenants`;
   private tasksSubject = new BehaviorSubject<TaskModel[]>([]);
   public tasks$ = this.tasksSubject.asObservable();
   private taskSubject = new BehaviorSubject<TaskModel>(new TaskModel());
@@ -26,7 +26,7 @@ export class TaskService {
     const updated = [...this.tasksSubject.value, task];
     this.tasksSubject.next(updated);
     //Single task
-    this.taskSubject.next(task);
+    //this.taskSubject.next(task);
   }
 
   setTasks(tasks: TaskModel[]): void{
@@ -60,21 +60,21 @@ export class TaskService {
   // }
 
   createTask(task: TaskModel): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/${task.projectId}/tasks`, task);
+    return this.httpClient.post<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${task.projectId}/tasks`, task);
   }
 
   updateTask(task: TaskModel): Observable<any> {
-    return this.httpClient.put<any>(`${this.baseUrl}/${task.projectId}/tasks`, task);
+    return this.httpClient.put<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${task.projectId}/tasks`, task);
   }
 
   deleteTask(projectId: string,  taskId: TaskModel): Observable<any> {
     const params = new HttpHeaders();
     params.append('taskId', taskId.toString());
-    return this.httpClient.delete<any>(`${this.baseUrl}/${projectId}/tasks`, { headers: params });
+    return this.httpClient.delete<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${projectId}/tasks`, { headers: params });
   }
 
   updateTaskStatus(projectId: string, taskId: string, status: TaskStatus): Observable<any> {
-    const url = `${this.baseUrl}/${projectId}/tasks/${taskId}/status`;
+    const url = `${this.baseUrl}/${this.authService.tenantId}/projects/${projectId}/tasks/${taskId}/status`;
     // const params = new HttpParams()
     //   .set('taskId', taskId)
     //   .set('status', status);
@@ -82,6 +82,9 @@ export class TaskService {
   }
 
   getTasks(projectId: string){
-    return this.httpClient.get<TaskModel[]>(`${this.baseUrl}/${projectId}/tasks`);
+    return this.httpClient.get<TaskModel[]>(`${this.baseUrl}/${this.authService.tenantId}/projects/${projectId}/tasks`)
+    .pipe(
+      map(tasks => this.tasksSubject.next(tasks)) 
+    );
   }
 }
