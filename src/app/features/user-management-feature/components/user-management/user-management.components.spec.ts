@@ -1,9 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserManagementFeatureComponent } from './user-management-feature.component';
+import { UserManagementFeatureComponent } from './user-management.component';
+import { async } from 'rxjs';
 
 describe('UserManagementFeatureComponent', () => {
   let component: UserManagementFeatureComponent;
