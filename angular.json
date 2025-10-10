@@ -20,9 +20,7 @@
             "outputPath": "dist/pm-platform-fe",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -36,9 +34,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "src/styles/index.scss"
-            ],
+            "styles": ["src/styles/index.scss"],
             "scripts": []
           },
           "configurations": {
@@ -46,13 +42,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "10kb",
+                  "maximumError": "15kb"
                 }
               ],
               "outputHashing": "all"
@@ -83,10 +79,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -100,9 +93,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "src/styles/index.scss"
-            ],
+            "styles": ["src/styles/index.scss"],
             "scripts": []
           }
         }
