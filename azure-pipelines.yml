@@ -1,60 +1,92 @@
+
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
 trigger:
 - master
 
+pool:
+  name: 'Self-Hosted'
+
 stages:
-# -----------------------------
-# Stage 1: Build Angular App
-# -----------------------------
 - stage: Build
-  displayName: Build Angular App
+  displayName: Build stage
   jobs:
-    - job: Build
-      pool:
-        name: 'Self-Hosted'
-      steps:
-        # 1️⃣ Navigate into your Angular project and build
-        - script: |
-            cd pm-platform-fe
-            dir
-            npx ng version
-            npx ng build --configuration production
-            echo "Build complete!"
-          displayName: 'Build Angular App'
+  - job: Build
+    pool:
+      name: 'Self-Hosted'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '20.x'
+        displayName: 'Install Node.js 20.x'
 
-        # 2️⃣ Verify dist folder exists
-        - script: dir pm-platform-fe\dist
-          displayName: 'Verify dist folder'
+      - script: |
+          cd PmPlatformFe/
+          npm install -g @angular/cli
+          npm install
+          ng build --prod
+        displayName: 'npm install and build'
+        workingDirectory: '$(Build.SourcesDirectory)'
+      - task: ArchiveFiles@2
+        displayName: 'Archive files'
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/pm-platform-fe/'
+          includeRootFolder: false
+          archiveType: zip
+          archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+          replaceExistingArchive: true
 
-        # 3️⃣ Publish pipeline artifact (multi-stage friendly)
-        - task: PublishPipelineArtifact@1
-          inputs:
-            targetPath: 'pm-platform-fe/dist/pm-platform-fe'
-            artifact: 'angular-build'
-            publishLocation: 'pipeline'
-          displayName: 'Publish Angular Build Artifact'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
 
-# -----------------------------
-# Stage 2: Deploy to Azure Web App
-# -----------------------------
-- stage: Deploy
-  displayName: Deploy Angular to Azure
+- stage: Development
+  displayName: 'Deploy to Development'
   dependsOn: Build
+  condition: succeeded()
   jobs:
-    - job: Deploy
+  - deployment: DeploymentDevelopment
+    pool:
+      name: 'Self-Hosted'
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy App Service'
+            inputs:
+              azureSubscription: 'resourceManagerServiceConnection'
+              appType: 'webAppLinux'
+              appName: 'pmplatform'
+              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+              runtimeStack: 'NODE|20-lts'
+
+- stage: Acceptance
+  dependsOn: [ Development ]
+  displayName: 'Deploy to Acceptance'
+  jobs:
+    - job:  DeployToAcceptance
+      displayName: 'DeployAcceptance'
+      steps:
+      - script: echo Deploying to Acceptance
+- stage: Production
+  dependsOn: [ Acceptance ]
+  displayName: 'Deploy to Production'
+  jobs:
+    - deployment: DeployProduction
       pool:
         name: 'Self-Hosted'
-      steps:
-        # 1️⃣ Download artifact
-        - task: DownloadPipelineArtifact@2
-          inputs:
-            artifact: 'angular-build'
-            path: '$(Pipeline.Workspace)/angular-build'
-          displayName: 'Download Angular Build Artifact'
-
-        # 2️⃣ Deploy to Azure Web App
-        - task: AzureWebApp@1
-          inputs:
-            azureSubscription: 'resourceManagerServiceConnection'
-            appName: 'pmplatform'
-            package: '$(Pipeline.Workspace)/angular-build'
-          displayName: 'Deploy Angular App to Azure Web App'
+      environment: Production
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: echo Deploying to Production
+     
