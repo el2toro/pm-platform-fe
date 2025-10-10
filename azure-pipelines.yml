@@ -10,13 +10,14 @@ stages:   # top-level keyword
           name: 'Self-Hosted'
         steps:
           - script: |
+              cd pm-platform-fe
               npm install
               npx ng build --configuration production
             displayName: 'Build Angular App'
 
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: 'dist/pm-platform-fe'
+              targetPath: 'pm-platform-fe/dist/pm-platform-fe'
               artifact: 'angular-build'
               publishLocation: 'pipeline'
             displayName: 'Publish Angular Build Artifact'
@@ -29,6 +30,9 @@ stages:   # top-level keyword
         pool:
           name: 'Self-Hosted'
         steps:
+          - script: dir pm-platform-fe/dist
+            displayName: 'Check dist folder contents'
+
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: 'angular-build'
