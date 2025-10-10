@@ -25,6 +25,15 @@ steps:
     publishLocation: 'Container'
   displayName: 'Publish Angular Build Artifacts'
 
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'angular-build'
+    downloadPath: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Download Angular Build Artifact'
+
+
 # Step 4: Deploy to Azure Web App
 - task: AzureWebApp@1
   inputs:
