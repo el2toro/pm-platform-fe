@@ -15,8 +15,10 @@ stages:
         # 1️⃣ Navigate into your Angular project and build
         - script: |
             cd pm-platform-fe
-            npm ci
+            dir
+            npx ng version
             npx ng build --configuration production
+            echo "Build complete!"
           displayName: 'Build Angular App'
 
         # 2️⃣ Verify dist folder exists
