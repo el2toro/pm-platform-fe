@@ -20,8 +20,8 @@ steps:
 # Step 3: Publish build artifacts
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'dist/pm-platform-fe' 
-    ArtifactName: 'angular-build'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'angular-build'
     publishLocation: 'Container'
   displayName: 'Publish Angular Build Artifacts'
 
