@@ -1,47 +1,58 @@
 trigger:
 - master
 
-stages:   # top-level keyword
-  - stage: Build
-    displayName: Build Angular
-    jobs:
-      - job: Build
-        pool:
-          name: 'Self-Hosted'
-        steps:
-          - script: |
-              cd pm-platform-fe
-              npm install
-              npx ng build --configuration production
-            displayName: 'Build Angular App'
+stages:
+# -----------------------------
+# Stage 1: Build Angular App
+# -----------------------------
+- stage: Build
+  displayName: Build Angular App
+  jobs:
+    - job: Build
+      pool:
+        name: 'Self-Hosted'
+      steps:
+        # 1️⃣ Navigate into your Angular project and build
+        - script: |
+            cd pm-platform-fe
+            npm ci
+            npx ng build --configuration production
+          displayName: 'Build Angular App'
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: 'pm-platform-fe/dist/pm-platform-fe'
-              artifact: 'angular-build'
-              publishLocation: 'pipeline'
-            displayName: 'Publish Angular Build Artifact'
+        # 2️⃣ Verify dist folder exists
+        - script: dir pm-platform-fe\dist
+          displayName: 'Verify dist folder'
 
-  - stage: Deploy
-    displayName: Deploy Angular
-    dependsOn: Build
-    jobs:
-      - job: Deploy
-        pool:
-          name: 'Self-Hosted'
-        steps:
-          - script: dir pm-platform-fe/dist
-            displayName: 'Check dist folder contents'
+        # 3️⃣ Publish pipeline artifact (multi-stage friendly)
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: 'pm-platform-fe/dist/pm-platform-fe'
+            artifact: 'angular-build'
+            publishLocation: 'pipeline'
+          displayName: 'Publish Angular Build Artifact'
 
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'angular-build'
-              path: '$(Pipeline.Workspace)/angular-build'
-            displayName: 'Download Angular Build Artifact'
+# -----------------------------
+# Stage 2: Deploy to Azure Web App
+# -----------------------------
+- stage: Deploy
+  displayName: Deploy Angular to Azure
+  dependsOn: Build
+  jobs:
+    - job: Deploy
+      pool:
+        name: 'Self-Hosted'
+      steps:
+        # 1️⃣ Download artifact
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: 'angular-build'
+            path: '$(Pipeline.Workspace)/angular-build'
+          displayName: 'Download Angular Build Artifact'
 
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'resourceManagerServiceConnection'
-              appName: 'pmplatform'
-              package: '$(Pipeline.Workspace)/angular-build'
-            displayName: 'Deploy Angular App to Azure Web App'
+        # 2️⃣ Deploy to Azure Web App
+        - task: AzureWebApp@1
+          inputs:
+            azureSubscription: 'resourceManagerServiceConnection'
+            appName: 'pmplatform'
+            package: '$(Pipeline.Workspace)/angular-build'
+          displayName: 'Deploy Angular App to Azure Web App'
