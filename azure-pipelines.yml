@@ -1,22 +1,35 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - master
 
 pool:
-  name: 'Self-Hosted'
+  name: 'Self-Hosted' 
 
 steps:
+# Step 1: Install Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
+# Step 2: Install dependencies and build Angular app
 - script: |
-    npm install -g @angular/cli
     npm install
-    ng build --prod
-  displayName: 'npm install and build'
+    npx ng build --configuration production
+  displayName: 'Build Angular App'
+
+# Step 3: Publish build artifacts
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'dist/pm-platform-fe' 
+    ArtifactName: 'angular-build'
+    publishLocation: 'Container'
+  displayName: 'Publish Angular Build Artifacts'
+
+# Step 4: Deploy to Azure Web App
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'resourceManagerServiceConnection'  # service connection in DevOps
+    appName: 'pmplatform'                    # name of your Web App
+    package: '$(Build.ArtifactStagingDirectory)/angular-build'  # path to published artifact
+  displayName: 'Deploy Angular App to Azure Web App'
+
