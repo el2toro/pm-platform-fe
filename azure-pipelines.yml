@@ -1,44 +1,43 @@
 trigger:
 - master
 
-pool:
-  name: 'Self-Hosted' 
+stages:   # top-level keyword
+  - stage: Build
+    displayName: Build Angular
+    jobs:
+      - job: Build
+        pool:
+          name: 'Self-Hosted'
+        steps:
+          - script: |
+              npm install
+              npx ng build --configuration production
+            displayName: 'Build Angular App'
 
-steps:
-# Step 1: Install Node.js
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: 'dist/pm-platform-fe'
+              artifact: 'angular-build'
+              publishLocation: 'pipeline'
+            displayName: 'Publish Angular Build Artifact'
 
-# Step 2: Install dependencies and build Angular app
-- script: |
-    npm install
-    npx ng build --configuration production
-  displayName: 'Build Angular App'
+  - stage: Deploy
+    displayName: Deploy Angular
+    dependsOn: Build
+    jobs:
+      - job: Deploy
+        pool:
+          name: 'Self-Hosted'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: 'angular-build'
+              path: '$(Pipeline.Workspace)/angular-build'
+            displayName: 'Download Angular Build Artifact'
 
-# Step 3: Publish build artifacts
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'angular-build'
-    publishLocation: 'Container'
-  displayName: 'Publish Angular Build Artifacts'
-
-- task: DownloadBuildArtifacts@0
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'angular-build'
-    downloadPath: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Download Angular Build Artifact'
-
-
-# Step 4: Deploy to Azure Web App
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'resourceManagerServiceConnection'  # service connection in DevOps
-    appName: 'pmplatform'                    # name of your Web App
-    package: '$(Build.ArtifactStagingDirectory)/angular-build'  # path to published artifact
-  displayName: 'Deploy Angular App to Azure Web App'
-
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'resourceManagerServiceConnection'
+              appName: 'pmplatform'
+              package: '$(Pipeline.Workspace)/angular-build'
+            displayName: 'Deploy Angular App to Azure Web App'
