@@ -180,7 +180,6 @@ deleteSubtask(index: number) {
       { name: 'On Hold', value: TaskStatus.OnHold },
       { name: 'In progress', value: TaskStatus.InProgress },
       { name: 'Canceled', value: TaskStatus.Cancelled },
-      { name: 'Completed', value: TaskStatus.Completed },
       { name: 'Blocked', value: TaskStatus.Blocked },
       { name: 'Review', value: TaskStatus.Review },
       { name: 'Testing', value: TaskStatus.Testing },
