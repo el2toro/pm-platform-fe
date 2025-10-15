@@ -56,13 +56,17 @@ export class KanbanBoardFeatureComponent implements OnInit {
       })
 
     this.getTasks();
-    this.getBoard();  
+    this.getBoard();   
   }
 
   getBoard(){
     this.boardService.getBoard('66666666-6666-6666-6666-666666666666', '457D38D1-FFDA-4253-80CF-5DE71C171D37')
     .subscribe({
-      next: (board) => {this.board = board; this.columns = board.columns},
+      next: (board) => {
+        this.board = board; 
+        this.columns = board.columns,
+        this.mapTasksToColumn()
+      },
       error: (error) => this.customMessageService.showError('Something went wrong while loading the board. Please try again.')
     })
   }
@@ -73,8 +77,6 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
   mapTasksToColumn(): void{
     this.columns.forEach(column => (column.tasks = [...this.filterTasks(column.name)]))
-
-    console.log(this.filterTasks('To Do'))
   }
 
   filterTasks(columnName: string) : TaskModel[]{
@@ -98,12 +100,12 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
   onDrop(targetCol: ColumnModel) {
     if (this.draggedItem && this.draggedFrom) {
-      // remove from old column
-      // this.draggedFrom.tasks = this.draggedFrom.tasks?.filter(
-      //   task => task.id !== this.draggedItem!.id
-      // );
-      // add to new column
-      //targetCol.tasks?.push(this.draggedItem);
+      //remove from old column
+      this.draggedFrom.tasks = this.draggedFrom.tasks?.filter(
+        task => task.id !== this.draggedItem!.id
+      );
+    //  add to new column
+      targetCol.tasks?.push(this.draggedItem);
 
       // update task status
       //TODO: map to task status
@@ -147,14 +149,12 @@ export class KanbanBoardFeatureComponent implements OnInit {
   
         result.projectId = this.board.projectId;
 
-        // this.taskService.task$.subscribe(task => {
-        //   column?.tasks?.push(task)
-        //    console.log('new task created: ', column)
-        // });
-  
         this.taskService.createTask(result).subscribe({
-         next: () => this.customMessageService.showSuccess("New task created successfuly!"),
-         error: (error) => this.customMessageService.showError(`Something went wrong! Error: ${error.message}`)
+         next: (createdTask) => {
+          column?.tasks?.push(createdTask)
+          this.customMessageService.showSuccess("New task created successfuly!")
+        },
+         error: (error) => this.customMessageService.showError(`Something went wrong while creating the new task`)
         });
       });
     }
