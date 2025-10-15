@@ -13,10 +13,6 @@ export class TaskStatusPipe implements PipeTransform {
         taskStatus = TaskStatus[TaskStatus.Backlog];
         break;
 
-      case TaskStatus.Blocked:
-        taskStatus = TaskStatus[TaskStatus.Backlog];
-        break;
-
       case TaskStatus.OnHold:
         taskStatus = TaskStatus[TaskStatus.OnHold];
         break;
@@ -27,10 +23,6 @@ export class TaskStatusPipe implements PipeTransform {
 
       case TaskStatus.Cancelled:
         taskStatus = TaskStatus[TaskStatus.Cancelled];
-        break;
-
-      case TaskStatus.Completed:
-        taskStatus = TaskStatus[TaskStatus.Completed];
         break;
 
       case TaskStatus.ToDo:
