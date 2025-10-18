@@ -14,6 +14,7 @@ import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dy
 import { ToastModule } from 'primeng/toast';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
 import { Observable } from 'rxjs';
+import { SignalRService } from '../../../../../shared/services/signalR/signalR.service';
 
 @Component({
   selector: 'app-overview',
@@ -36,6 +37,7 @@ export class OverviewComponent implements OnInit {
   private router = inject(Router)
   private dialogService = inject(DialogService);
   private messageService = inject(CustomMessageService);
+  private signalRService = inject(SignalRService);
 
   get projectList(): Observable<ProjectModel[]>{
     return this.projectService.projects$;
@@ -53,6 +55,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+    this.signalRService.startConnection();
   }
 
   getProjects(){
@@ -139,6 +142,11 @@ export class OverviewComponent implements OnInit {
   goToProjectDetails(projectId: string, tenantId: string){
    this.router.navigate(['/project-details'], 
     { queryParams: { projectId: projectId, tenantId: tenantId } });
+  }
+
+  onRowSelect(event: any) {
+   const selectedProject: ProjectModel = event.data;
+   this.router.navigate(['/board'],  { state: { project: selectedProject } });
   }
 
   //TODO: move to pipe or service

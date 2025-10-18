@@ -14,7 +14,8 @@
        <p class="title">{{ column.name }}</p>
        <div class="action">
         <span class="task-count">{{ column?.tasks?.length }}</span>
-        <button (click)="deleteTableColumn(1)"><i class="pi pi-ellipsis-h"></i></button>
+        <p-menu (onItemClick)="onMenuItemClick('data')"  #menu [model]="items" [popup]="true"/>
+        <button (click)="menu.toggle($event)"><i class="pi pi-ellipsis-h"></i></button>
        </div>
      </div>
      <button (click)="openCreateTaskModal(column)" class="add-task-button"><i class="pi pi-plus"></i> Add Task</button>
