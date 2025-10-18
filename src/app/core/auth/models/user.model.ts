@@ -5,4 +5,5 @@ export class UserModel{
     lastName = '';
     email = ''
     image = '';
+    fullName = '';
 }
