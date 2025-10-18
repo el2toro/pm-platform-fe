@@ -64,7 +64,7 @@ export class ProjectDetailsComponent implements OnInit {
       width: '600px',
       modal: true,
       data: task,
-    });
+    }) ?? new DynamicDialogRef();
 
     this.ref.onClose.subscribe((result) => {
       if (!result) {
@@ -82,7 +82,7 @@ export class ProjectDetailsComponent implements OnInit {
       width: '600px',
       modal: true,
       data: null,
-    });
+    }) ?? new DynamicDialogRef();
 
     this.ref.onClose.subscribe((result) => {
       if (!result) {

@@ -100,7 +100,7 @@ export class OverviewComponent implements OnInit {
     this.ref = this.dialogService.open(AddEditProjectModalComponent, {
       width: '500px',
       modal: true
-    });
+    }) ?? new DynamicDialogRef<any>;
 
     this.ref.onClose.subscribe(result => {
       if(!result){ return };
@@ -116,7 +116,7 @@ export class OverviewComponent implements OnInit {
       width: '500px',
       modal: true,
       data: project
-    });
+    }) ?? new DynamicDialogRef<any>;
 
     this.ref.onClose.subscribe(result => {
       if(!result){ return };
