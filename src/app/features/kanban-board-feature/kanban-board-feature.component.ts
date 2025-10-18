@@ -15,6 +15,7 @@ import { Toast } from "primeng/toast";
 import { CustomMessageService } from '../../../shared/services/custom-message.service';
 import { BoardModel } from '../dashboard-feature/models/board.model';
 import { BoardService } from '../dashboard-feature/apis/board/board.service';
+import { EditTaskDialodComponent } from './components/edit-task-dialod/edit-task-dialod.component';
 
 interface CreateEditTaskModalDto{
   isCreate: boolean;
@@ -46,17 +47,21 @@ export class KanbanBoardFeatureComponent implements OnInit {
   draggedItem?: TaskModel;
   draggedFrom?: ColumnModel;
 
-  constructor(private ref: DynamicDialogRef) { }
+  constructor(private ref: DynamicDialogRef<any>) { }
 
   ngOnInit() {
     this.taskService.tasks$.subscribe(tasks => 
       {
         this.tasks = tasks, 
-        this.mapTasksToColumn()
+         this.columns = this.columns.map(column => ({
+      ...column,
+      tasks: this.filterTasks(column.name),
+    }));
       })
 
-    this.getTasks();
+   
     this.getBoard();   
+     this.getTasks();
   }
 
   getBoard(){
@@ -64,8 +69,8 @@ export class KanbanBoardFeatureComponent implements OnInit {
     .subscribe({
       next: (board) => {
         this.board = board; 
-        this.columns = board.columns,
-        this.mapTasksToColumn()
+        this.columns = board.columns;
+        this.mapTasksToColumn();
       },
       error: (error) => this.customMessageService.showError('Something went wrong while loading the board. Please try again.')
     })
@@ -76,7 +81,14 @@ export class KanbanBoardFeatureComponent implements OnInit {
   }
 
   mapTasksToColumn(): void{
-    this.columns.forEach(column => (column.tasks = [...this.filterTasks(column.name)]))
+  
+   this.columns = this.columns.map(column => ({
+      ...column,
+      tasks: this.filterTasks(column.name),
+    }));
+
+    console.log(this.columns);
+    console.log(this.tasks);
   }
 
   filterTasks(columnName: string) : TaskModel[]{
@@ -103,7 +115,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
       //remove from old column
       this.draggedFrom.tasks = this.draggedFrom.tasks?.filter(
         task => task.id !== this.draggedItem!.id
-      );
+      )
     //  add to new column
       targetCol.tasks?.push(this.draggedItem);
 
@@ -140,7 +152,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
         width: '600px',
         modal: true,
         data: {isCreate: true, columnId: column.id, projectId: this.board.projectId} as CreateEditTaskModalDto,
-      });
+      }) ?? new DynamicDialogRef<any>;
   
       this.ref.onClose.subscribe((result) => {
         if (!result) {
@@ -159,10 +171,28 @@ export class KanbanBoardFeatureComponent implements OnInit {
       });
     }
 
-    openTaskDetailsPage(task: TaskModel){
-      this.router.navigate(['/task-details', task.id], 
-        {state: { task: task, projectTitle: this.board?.projectName, projectDescription: this.board.projectDescription }});
-    }
+    openTaskUpdateDialog(column: ColumnModel, task: TaskModel){
+     this.ref =  this.dialogService.open(EditTaskDialodComponent, {
+        width: '600px',
+        modal: true,
+        data: { task: task }
+      }) ?? new DynamicDialogRef<any>;
+
+     this.ref.onClose.subscribe((updatedTask) => {
+        if (!updatedTask) {
+          return;
+        }
+
+         this.taskService.updateTask(task).subscribe({
+        next: (updatedTask) => {
+          this.customMessageService.showSuccess("Task updated successfuly!")
+        },
+        error: (error) => this.customMessageService.showError(`Something went wrong while updating the task`)
+      });
+
+      // this.router.navigate(['/task-details', task.id], 
+      //   {state: { task: task, projectTitle: this.board?.projectName, projectDescription: this.board.projectDescription }});
+    })}
 
     deleteTableColumn(columnTitle: TaskStatus) {
       //TODO: map task status

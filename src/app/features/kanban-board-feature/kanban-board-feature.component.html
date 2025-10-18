@@ -21,7 +21,7 @@
     <ul class="">
       <li *ngFor="let task of column.tasks"
           pDraggable="shared"
-          (click)="openTaskDetailsPage(task)"
+          (click)="openTaskUpdateDialog(column, task)"
           (onDragStart)="dragStart(task, column)"
           (onDragEnd)="dragEnd()">
 
