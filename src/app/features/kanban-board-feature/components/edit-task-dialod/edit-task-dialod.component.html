@@ -1,0 +1,93 @@
+<div class="heading">
+  <h1>Edit Task</h1>
+</div>
+
+<form [formGroup]="form" class="form">
+  <div class="form-field">
+    <p-floatlabel>
+      <input
+        class="input-field"
+        id="title"
+        pInputText
+        formControlName="title"
+      />
+      <label for="title">Task title</label>
+    </p-floatlabel>
+  </div>
+
+    <div class="form-field">
+      <p-floatlabel>
+        <textarea
+          class="input-field"
+          id="description"
+          pInputText
+          formControlName="description"
+          rows="4"></textarea>
+        <label for="title">Description</label>
+      </p-floatlabel>
+    </div>
+
+    
+    <div class="form-field">
+      <p-floatlabel>
+        <p-select
+        [style]="{'width': '100%'}"
+          [autofocus]="false"
+          appendTo="body"
+          [options]="statusOptions"
+          formControlName="status"
+          optionLabel="label"
+          >
+      </p-select>
+        <label for="status">Status</label>
+    </p-floatlabel>
+  </div>
+
+    <div class="form-field">
+      <p-floatlabel>
+        <p-select
+        [style]="{'width': '100%'}"
+          [autofocus]="false"
+          appendTo="body"
+          [options]="users"
+          formControlName="assignee"
+          optionLabel="fullName"
+          [filter]="true"
+          filterBy="fullName"
+          [showClear]="true"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div class="template" style="display: flex; gap: 10px;">
+                <div class="image" style="width: 20px; height: 20px;  border-radius: 50%">
+                <img src="assets/images/portrait.jpg" alt="img" style="width: 100%; height: 100%; object-fit: cover;  border-radius: 50%"/>
+              </div>
+              <div>{{ selectedOption.fullName }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-user #item>
+            <div class="template" style="display: flex; gap: 10px;">
+              <div class="image" style="width: 20px; height: 20px;  border-radius: 50%">
+                <img src="assets/images/portrait.jpg" alt="img" style="width: 100%; height: 100%; object-fit: cover;  border-radius: 50%"/>
+              </div>
+              <div>{{ user.fullName }}</div>
+            </div>
+          </ng-template>
+        </p-select>
+        <label for="title">Assigneed To</label>
+      </p-floatlabel>
+      </div>
+
+       <div class="actions">
+    <button
+      pButton
+      label="Cancel"
+      severity="secondary"
+      (click)="onClose()"
+    ></button>
+    <button
+      pButton
+      label="Save"
+      (click)="onSave()"
+    ></button>
+  </div>
+</form>
