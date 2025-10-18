@@ -39,8 +39,6 @@ export class TaskService {
     const newTasks = currentTasks.map(task => task.id === updatedTask.id ? {...task, ...updatedTask} : task);
 
     this.tasksSubject.next(newTasks);
-    //Single task
- //   this.taskSubject.next(updatedTask);
   }
 
   // //TODO: rename methods acordingly, because aren't distinctible

@@ -4,5 +4,5 @@ import { TaskService } from "../../../../app/features/dashboard-feature/apis/tas
 export function registerTaskHandlers(hub: HubConnection, taskService:TaskService ){
    hub.on("ReceiveCreatedTask", (createdTask) => taskService.addTask(createdTask));
    hub.on("ReceiveUpdatedTask", (updatedTask) => taskService.taskUpdate(updatedTask));
-   //hub.on("ReceiveTaskAssignee", (updatedTask) => taskService.updateAssignee(updatedTask));
+   hub.on("ReceiveTaskAssignee", (updatedTask) => { console.log("Task assignee updated", updatedTask)});
 }
