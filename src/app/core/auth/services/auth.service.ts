@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { LoginRequestModel } from '../models/login-request.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoginResponseModel as LoginResponseModel } from '../models/login-response.model';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { UserModel } from '../models/user.model';
@@ -41,7 +41,15 @@ constructor() { }
       tap((response) => {
         this.setTokens(response.refreshToken, response.token);
         //TODO: add proper mapping
-        this.loggedInUser$.next({id: response.userId, tenantId: response.tenantId, firstName: response.firstName, lastName: response.lastName, email: response.email, image: 'avatar.jpg'});
+        this.loggedInUser$.next({
+          id: response.userId, 
+          tenantId: response.tenantId, 
+          firstName: response.firstName, 
+          lastName: response.lastName, 
+          email: response.email, 
+          image: 'avatar.jpg',
+          fullName: response.firstName + ' ' + response.lastName
+        });
       })
     );
   }
@@ -72,4 +80,11 @@ constructor() { }
     this.accessToken$.next(accessToken);
     this.refreshToken$.next(refreshToken);
   }
+
+  //TODO: move to apropriate service 'UserService'
+   getUsers(tenantId: string): Observable<UserModel[]> {
+    //  let httpParams = new HttpParams();
+    //  httpParams = httpParams.append('tenantId', tenantId);
+      return this.http.get<UserModel[]>(`${this.baseUrl}/tenants/${tenantId}/users`);
+    }
 }
