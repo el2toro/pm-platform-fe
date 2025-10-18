@@ -32,7 +32,7 @@
         <tr [pSelectableRow]="user">
           <td>
             <div class="user-image">
-              <img src="assets/images/{{ user.image }}" alt="img" />
+              <img src="assets/images/portrait1.jpg" alt="img" />
             </div>
           </td>
           <td>{{user.firstName}}</td>
@@ -48,6 +48,7 @@
                 Details
               </button>
               <button
+              (click)="editUser(user)"
                 class="action-button"
                 pButton icon="pi pi-user-edit" label="Edit">
               </button>
