@@ -31,19 +31,21 @@ import { MenuModule } from 'primeng/menu';
 })
 export class MenuComponent implements OnInit {
   private menuService = inject(MenuService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   items: MenuItem[] | undefined;
   collapsedMenuItems: MenuItem[] | undefined;
   isCollapsed!: boolean;
   activeLabel: any;
+  isMenuDisable = this.menuService.menuItemDisabled;
 
   get user() : UserModel | null{
     return this.authService.loggedInUser;
   }
 
   constructor() {}
-  private authService = inject(AuthService);
-  private router = inject(Router);
+ 
 
   ngOnInit() {
     this.initMenuItems();
@@ -54,21 +56,12 @@ export class MenuComponent implements OnInit {
       {
         label: 'Dashboards',
         icon: 'pi pi-th-large',
-        expanded: true,
         items: [
           {
             label: 'Dashboard',
-            expanded: false,
             routerLink: 'dashboard',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon p-highlight',
-            command: (menuItem) => this.setActive(menuItem),
-          },
-          {
-            label: 'Kanban Board',
-            routerLink: 'board',
-            icon: 'pi pi-circle-fill',
-            styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem),
           },
           {
@@ -92,6 +85,34 @@ export class MenuComponent implements OnInit {
             styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem)
           },
+        ],
+      },
+      {
+        label: 'Boards',
+        icon: 'pi pi-th-large',    
+        disabled: false,  
+        items: [
+          {
+            label: 'All Boards',
+            routerLink: 'dashboard',
+            icon: 'pi pi-circle-fill',
+            styleClass: 'custom-icon p-highlight',
+            command: (menuItem) => this.setActive(menuItem),
+          },
+          {
+            label: 'Board',
+            routerLink: 'board',
+            icon: 'pi pi-circle-fill',
+            styleClass: 'custom-icon',
+            command: (menuItem) => this.setActive(menuItem),
+          },
+          {
+            label: 'Backlogs',
+            routerLink: '/team-management',
+            icon: 'pi pi-circle-fill',
+            styleClass: 'custom-icon',
+            command: (menuItem) => this.setActive(menuItem)
+          }
         ],
       },
       {
