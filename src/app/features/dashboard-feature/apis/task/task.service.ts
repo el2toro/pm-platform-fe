@@ -15,18 +15,10 @@ export class TaskService {
   private baseUrl = `https://localhost:5054/task-service/tenants`;
   private tasksSubject = new BehaviorSubject<TaskModel[]>([]);
   public tasks$ = this.tasksSubject.asObservable();
-  private taskSubject = new BehaviorSubject<TaskModel>(new TaskModel());
-  public task$ = this.taskSubject.asObservable();
-
-  get currentTasks() : TaskModel[]{
-    return this.tasksSubject.value;
-  }
-
+ 
   addTask(task: TaskModel) : void{
     const updated = [...this.tasksSubject.value, task];
     this.tasksSubject.next(updated);
-    //Single task
-    //this.taskSubject.next(task);
   }
 
   setTasks(tasks: TaskModel[]): void{
@@ -40,22 +32,6 @@ export class TaskService {
 
     this.tasksSubject.next(newTasks);
   }
-
-  // //TODO: rename methods acordingly, because aren't distinctible
-  // updateStatus(updatedTask: TaskModel){
-  //   const currentTasks = this.tasksSubject.getValue();
-  //   const newTasks = currentTasks.map(task => task.id === updatedTask.id ? {...task, ...updatedTask} : task);
-
-  //   this.tasksSubject.next(newTasks);
-  // }
-
-  // //TODO: rename methods acordingly, because aren't distinctible
-  // updateAssignee(updatedTask: TaskModel){
-  //   const currentTasks = this.tasksSubject.getValue();
-  //   const newTasks = currentTasks.map(task => task.id === updatedTask.id ? {...task, ...updatedTask} : task);
-
-  //   this.tasksSubject.next(newTasks);
-  // }
 
   createTask(task: TaskModel): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${task.projectId}/tasks`, task);
