@@ -80,11 +80,4 @@ constructor() { }
     this.accessToken$.next(accessToken);
     this.refreshToken$.next(refreshToken);
   }
-
-  //TODO: move to apropriate service 'UserService'
-   getUsers(tenantId: string): Observable<UserModel[]> {
-    //  let httpParams = new HttpParams();
-    //  httpParams = httpParams.append('tenantId', tenantId);
-      return this.http.get<UserModel[]>(`${this.baseUrl}/tenants/${tenantId}/users`);
-    }
 }
