@@ -18,4 +18,28 @@ export class UserService {
   getUsers(): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(`${this.baseUrl}/${this.tenantId}/users`);
   }
+
+  getUsersById(
+    tenantId: string,
+    projectId: string,
+    userIds: string[]
+  ): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(
+      `${this.baseUrl}/${tenantId}/projects/${projectId}/users`,
+      { params: { userIds: userIds } }
+    );
+  }
+
+  getUserById(
+    tenantId: string,
+    userId: string
+  ): Observable<UserModel> {
+    return this.http.get<UserModel>(
+      `${this.baseUrl}/${tenantId}/users/${userId}`,
+    );
+  }
+
+  updateUser(user: UserModel): Observable<any>{
+   return this.http.put(`${this.baseUrl}/${this.tenantId}/users`, user);
+  }
 }
