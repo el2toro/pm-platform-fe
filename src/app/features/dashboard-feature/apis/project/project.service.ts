@@ -41,7 +41,7 @@ export class ProjectService {
 
   getProjectDetails(projectId: string, tenantId: string): Observable<ProjectModel> {
     return this.http.get<ProjectModel>(
-      `${this.baseUrl}/${projectId}/${tenantId}`
+      `${this.baseUrl}/${tenantId}/projects/${projectId}`
     );
   }
 
