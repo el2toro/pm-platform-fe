@@ -15,6 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
 import { Observable } from 'rxjs';
 import { SignalRService } from '../../../../../shared/services/signalR/signalR.service';
+import { MenuService } from '../../../../core/services/menu.service';
 
 @Component({
   selector: 'app-overview',
@@ -38,6 +39,7 @@ export class OverviewComponent implements OnInit {
   private dialogService = inject(DialogService);
   private messageService = inject(CustomMessageService);
   private signalRService = inject(SignalRService);
+  private menuService = inject(MenuService);
 
   get projectList(): Observable<ProjectModel[]>{
     return this.projectService.projects$;
@@ -101,7 +103,7 @@ export class OverviewComponent implements OnInit {
 
   openCreateProjectModal(){
     this.ref = this.dialogService.open(AddEditProjectModalComponent, {
-      width: '500px',
+      width: '50%',
       modal: true
     }) ?? new DynamicDialogRef<any>;
 
@@ -116,7 +118,7 @@ export class OverviewComponent implements OnInit {
 
   openEditProjectModal(project: ProjectModel){
     this.ref = this.dialogService.open(AddEditProjectModalComponent, {
-      width: '500px',
+      width: '50%',
       modal: true,
       data: project
     }) ?? new DynamicDialogRef<any>;
@@ -138,15 +140,13 @@ export class OverviewComponent implements OnInit {
   this.getProjects();
 }
 
-
-  goToProjectDetails(projectId: string, tenantId: string){
-   this.router.navigate(['/project-details'], 
-    { queryParams: { projectId: projectId, tenantId: tenantId } });
-  }
-
   onRowSelect(event: any) {
    const selectedProject: ProjectModel = event.data;
-   this.router.navigate(['/board'],  { state: { project: selectedProject } });
+   if(event.data === true) { return; }
+  // this.router.navigate(['/board'],  { state: { project: selectedProject } });
+
+    this.menuService.setMenuItemDisabled(false);
+    this.router.navigate(['/project-details'], { state: { project: selectedProject } });
   }
 
   //TODO: move to pipe or service
