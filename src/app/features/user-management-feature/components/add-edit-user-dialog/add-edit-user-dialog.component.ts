@@ -1,32 +1,58 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserModel } from '../../Models/user.mode';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-add-edit-user-dialog',
   templateUrl: './add-edit-user-dialog.component.html',
   styleUrls: ['./add-edit-user-dialog.component.scss'],
-  imports: [ReactiveFormsModule]
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    FloatLabelModule,
+    InputTextModule,
+    ButtonModule,
+  ],
 })
 export class AddEditUserDialogComponent implements OnInit {
-  private form!: FormGroup;
+  private dynamicDialogRef = inject(DynamicDialogRef);
   private dynamicDialogConfig = inject(DynamicDialogConfig);
   private user: UserModel = this.dynamicDialogConfig.data.user;
+  form!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
   }
 
-  initForm(){
+  initForm() {
     this.form = this.formBuilder.group({
       firstName: [this.user.firstName],
       lastName: [this.user.lastName],
       email: [this.user.email],
-      phone: [this.user.phoneNumber],
-      birthDate: [this.user.birthDate]
+      phoneNumber: [this.user.phoneNumber],
+      birthDate: [this.user.birthDate],
     });
+  }
+
+  save() {
+    if (this.form.valid) {
+      const updatedUser = { ...this.user, ...this.form.value };
+      this.dynamicDialogRef.close(updatedUser);
+    }
+  }
+
+  cancel() {
+    this.dynamicDialogRef.close();
   }
 }

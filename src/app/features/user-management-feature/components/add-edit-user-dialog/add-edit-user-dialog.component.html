@@ -1,3 +1,26 @@
-<p>
-  add-edit-user-dialog works!
-</p>
+<form [formGroup]="form" class="user-form">
+  <p-float-label class="form-field">
+    <input id="firstName" type="text" pInputText formControlName="firstName" />
+    <label for="firstName">First Name</label>
+  </p-float-label>
+  <p-float-label class="form-field">
+    <input id="lastName" type="text" pInputText formControlName="lastName" />
+    <label for="lastName">Last Name</label>
+  </p-float-label>
+   <p-float-label class="form-field">
+    <input id="email" type="email" pInputText formControlName="email" />
+    <label for="email">Email</label>
+  </p-float-label>
+  <p-float-label class="form-field">
+    <input id="phoneNumber" type="text" pInputText formControlName="phoneNumber" />
+    <label for="phoneNumber">Phone Number</label>
+  </p-float-label>
+  <p-float-label class="form-field">
+    <input id="birthDate" type="text" pInputText formControlName="birthDate" />
+    <label for="birthDate">Date Of Birth</label>
+  </p-float-label>
+<div class="dialog-actions">
+  <button (click)="cancel()" pButton label="Cancel" [disabled]="form.invalid"></button>
+  <button (click)="save()" pButton label="Save" [disabled]="form.invalid && !form.touched" severity="success"></button>
+</div>
+</form>
