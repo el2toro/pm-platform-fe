@@ -7,5 +7,6 @@ export class UserModel {
     birthDate = '';
     createdAt = '';
     updatedAt = '';
-    image = ''
+    image = '';
+    tenantId = '';
 }

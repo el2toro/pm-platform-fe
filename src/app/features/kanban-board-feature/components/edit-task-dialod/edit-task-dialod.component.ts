@@ -4,13 +4,13 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { AuthService } from '../../../../core/auth/services/auth.service';
-import { UserModel } from '../../../../core/auth/models/user.model';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ButtonModule } from 'primeng/button';
 import { TaskModel } from '../../../dashboard-feature/models/task-model';
 import { TaskService } from '../../../dashboard-feature/apis/task/task.service';
 import { TaskStatus } from '../../../dashboard-feature/enums/task-status.enum';
+import { UserService } from '../../../user-management-feature/services/user.service';
+import { UserModel } from '../../../user-management-feature/Models/user.mode';
 
 @Component({
   selector: 'app-edit-task-dialod',
@@ -19,13 +19,12 @@ import { TaskStatus } from '../../../dashboard-feature/enums/task-status.enum';
   imports: [ReactiveFormsModule, InputIconModule, InputTextModule, FloatLabelModule, SelectModule, FormsModule, ButtonModule],
 })
 export class EditTaskDialodComponent implements OnInit {
-  private authService = inject(AuthService);
+  private userService = inject(UserService);
   private config = inject(DynamicDialogConfig);
   private taskService = inject(TaskService);
   form!: FormGroup;
   users = <UserModel[]>[];
   task!: TaskModel;
-  tenantId = this.authService.tenantId;
   statusOptions: any;
 
   constructor(private formBuilder: FormBuilder, private ref: DynamicDialogRef) { 
@@ -49,7 +48,7 @@ export class EditTaskDialodComponent implements OnInit {
   }
 
   getUsers() {
-    this.authService.getUsers(this.tenantId).subscribe({
+    this.userService.getUsers().subscribe({
       next: (users) => { 
         this.users = users, 
         this.buildForm() 
