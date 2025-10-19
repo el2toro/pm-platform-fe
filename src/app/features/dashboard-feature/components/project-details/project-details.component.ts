@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../../apis/project/project.service';
+import { Router } from '@angular/router';
 import { ProjectModel } from '../../models/project-model';
 import { CommonModule } from '@angular/common';
 import { TaskModel } from '../../models/task-model';
@@ -9,59 +8,71 @@ import { TaskStatusPipe } from '../../pipes/task-status.pipe';
 import { AddEditTaskModalComponent } from '../add-edit-task-modal/add-edit-task-modal.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TaskService } from '../../apis/task/task.service';
-import { AuthService } from '../../../../core/auth/services/auth.service';
+import { UserService } from '../../../user-management-feature/services/user.service';
+import { UserModel } from '../../../user-management-feature/Models/user.mode';
+import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
+import { Toast } from "primeng/toast";
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss'],
   standalone: true,
-  imports: [TableModule, CommonModule, TaskStatusPipe],
+  imports: [TableModule, CommonModule, TaskStatusPipe, Toast],
 })
+
 export class ProjectDetailsComponent implements OnInit {
-  private taskService =  inject(TaskService);
+  private taskService = inject(TaskService);
   private dialogService = inject(DialogService);
   private router = inject(Router);
-  private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private customMessageService = inject(CustomMessageService);
   ref!: DynamicDialogRef;
   tasks = <TaskModel[]>[];
-  projectId!: string;
-  tenantId!: string;
-  project = new ProjectModel();
+  project!: ProjectModel;
+  assignedUsers = <UserModel[]>[];
+  TaskCreatedByUser = new UserModel();
 
-  constructor(
-    private route: ActivatedRoute,
-    private projectService: ProjectService
-  ) {}
+  constructor() {}
 
   ngOnInit() {
-    this.getParams();
-    this.getProjectDetails();
+    this.project = history.state.project as ProjectModel;
+
+    this.subscribeToTaskUpdates();
+
+    this.getTasks();
+    this.getAssignedUser();
   }
 
-  getParams() {
-    this.route.queryParams.subscribe({
-      next: (params) => {
-        this.projectId = params['projectId'];
-        this.tenantId = params['tenantId'];
-      },
+  subscribeToTaskUpdates() {
+    this.taskService.tasks$.subscribe({
+      next: (tasks) => this.tasks = tasks
     });
   }
 
-  getProjectDetails() {
-    this.projectService
-      .getProjectDetails(this.projectId, this.tenantId)
+  getTasks() {
+    this.taskService
+      .getTasks(this.project.id)
       .subscribe({
-        next: (project) => {
-          this.project = project;
-          this.tasks = project.tasks;
-        },
-      });
+         next: () => this.getAssignedUser()
+        }
+      );
+  }
+
+  //TODO: To be reviewed, it is not working as expected
+  getTaskAwner(createdBy: string) : string {
+   let fullname = '';
+   this.userService.getUserById(this.project.tenantId, createdBy).subscribe({
+      next: (user) => { 
+        fullname = `${user.firstName} ${user.lastName}`;
+      }
+   });
+   return fullname;
   }
 
   openEditTaskModal(task: TaskModel) {
     this.ref = this.dialogService.open(AddEditTaskModalComponent, {
-      width: '600px',
+      width: '50%',
       modal: true,
       data: task,
     }) ?? new DynamicDialogRef();
@@ -72,14 +83,14 @@ export class ProjectDetailsComponent implements OnInit {
       }
 
       this.taskService.updateTask(result).subscribe({
-        next: () => this.getProjectDetails(),
+        next: () => this.customMessageService.showSuccess('Task updated successfully')
       });
     });
   }
 
   openCreateTaskModal() {
     this.ref = this.dialogService.open(AddEditTaskModalComponent, {
-      width: '600px',
+      width: '50%',
       modal: true,
       data: null,
     }) ?? new DynamicDialogRef();
@@ -89,17 +100,18 @@ export class ProjectDetailsComponent implements OnInit {
         return;
       }
 
-      result.projectId = this.projectId;
-     // result.tenantId = this.tenantId;
+      result.projectId = this.project.id;
 
       this.taskService.createTask(result).subscribe({
-        next: () => this.getProjectDetails(),
+        next: () => this.customMessageService.showSuccess('Task created successfully')
       });
     });
   }
 
   getAssignedUser(){
-    //this.authService.getUserById()
+    this.userService.getUsersById(this.project.tenantId, this.project.id, this.assignedUserIds()).subscribe({
+      next: (users) => this.assignedUsers = users
+    });
   }
 
   openTaskDetailsPage(taskId: string) {
@@ -110,5 +122,9 @@ export class ProjectDetailsComponent implements OnInit {
 
   getStatusColor(arg0: any) {
     throw new Error('Method not implemented.');
+  }
+
+  private  assignedUserIds() : string[]{
+    return this.tasks.filter(t => t.assignedTo !== null).map(t => t.assignedTo);
   }
 }

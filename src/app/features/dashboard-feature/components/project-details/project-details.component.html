@@ -1,60 +1,108 @@
+<p-toast></p-toast>
 <div class="project-details">
-<div class="heading">
-  <div class="project-info">
-    <h1>{{ project.name }}</h1>
-    <p>{{ project.description }}</p>
+  <div class="heading">
+    <div class="project-info">
+      <h1>{{ project.name }}</h1>
+      <p>{{ project.description }}</p>
+    </div>
+    <div class="actions">
+      <button (click)="openCreateTaskModal()">Create Task</button>
+    </div>
   </div>
-  <div class="actions">
-    <button (click)="openCreateTaskModal()">Create Task</button>
-  </div>
-</div>
 
-<div class="tasks">
- <h3>Task Breakdown</h3>
+  <div class="tasks">
+    <h3>Task Breakdown</h3>
 
-  <p-table
-    [value]="tasks">
-        <ng-template #header>
-            <tr>
-                <th>Task</th>
-                <th>Owner</th>
-                <th>Deadline</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-task>
-            <tr>
-                <td>{{ task.title }}</td>
-                <td>
-                  <span>
-                    {{ task.user?.firstName }}
-                    {{ task.user?.lastName }}
-                  </span>
-                </td>
-                <td>
-                    {{ task.dueDate | date }}                       
-                </td>
-                <td>
-                  <span class="label">{{ task.taskStatus | taskStatus }}</span>
-                </td>
-                 <td>
-                  <button (click)="openTaskDetailsPage(task.id)" class="edit-task-button">Details</button>
-                  <button (click)="openEditTaskModal(task)" class="edit-task-button">Edit Task</button>
-                 </td>
-            </tr>
-        </ng-template>
+    <p-table [value]="tasks">
+      <ng-template #header>
+        <tr>
+          <th>Task</th>
+          <th>Owner</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-task>
+        <tr>
+          <td>{{ task.title }}</td>
+          <td>
+            {{ "Benjamin Wilson" }}
+          </td>
+          <td>
+            {{ task.dueDate | date }}
+          </td>
+          <td>
+            <span class="label">{{ task.taskStatus | taskStatus }}</span>
+          </td>
+          <td>
+            <button
+              (click)="openTaskDetailsPage(task.id)"
+              class="edit-task-button"
+            >
+              Details
+            </button>
+            <button (click)="openEditTaskModal(task)" class="edit-task-button">
+              Edit Task
+            </button>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
   </div>
 
   <div class="teams">
-   <h3>Team</h3>
-   <div class="members">
-     
-   </div>
+    <h3>Team</h3>
+    <hr />
+    <div class="container">
+      <div class="description">
+        <p>
+          Create a high-fidelity UI design for the Project Management Dashboard,
+          ensuring a clean, intuitive layout. Include sections for project
+          overviews, task management, team collaboration, and reports. <br />
+          ⏳ Deadline: {{ project.endDate | date }} <br />
+          🎯 Priority: High <br />
+          📂 Attachments: [Design Brief.pdf], [Brand Guidelines.fig]
+        </p>
+      </div>
+
+      <div class="members-container">
+        <div class="members">
+          @for (user of assignedUsers.slice(0, 3); track $index) {
+          <div class="member">
+            <img src="assets/images/portrait.jpg" alt="img" />
+          </div>
+          } @if (assignedUsers.length > 3) {
+          <div class="member" style="background-color: rgb(92, 198, 92)">
+            <p>+{{ assignedUsers.length - 3 }}</p>
+          </div>
+          }
+        </div>
+        <p>Team Members</p>
+      </div>
+    </div>
   </div>
 
-  <div class="notes">
+  <section class="notes-section">
     <h3>Notes</h3>
-  </div>
+    <hr />
+
+    <div class="notes">
+      <div class="image-container">
+        <!-- <img src="assets/images/notes-image.png" alt="notes" /> -->
+      </div>
+      <h4>Creating new website UI elements</h4>
+    </div>
+    <p>
+      Visual elements: With the site architecture and some content in place, we
+      can start working on the visual brand. Depending on the client, this may
+      already be well-defined, but you might also be defining the visual style
+      from the ground up. Tools like style tiles, moodboards, and element
+      collages can help with this process.Testing: By now, you've got all your
+      pages and defined how they display to the site visitor, so it's time to
+      make sure it all works. Combine manual browsing of the site on a variety
+      of devices with automated site crawlers to identify everything from user
+      experience issues to simple broken links.
+    </p>
+  </section>
 </div>
