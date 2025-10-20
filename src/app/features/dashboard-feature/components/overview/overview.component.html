@@ -6,7 +6,7 @@
   </div>
   <div class="projects">
     <p-table
-    *ngIf="projectList | async as projects" [value]="projects"
+      [value]="projects"
       [rows]="pageSize"
       [paginator]="true"
       [totalRecords]="totalPages"

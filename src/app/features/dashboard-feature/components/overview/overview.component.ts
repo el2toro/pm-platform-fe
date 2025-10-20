@@ -41,10 +41,6 @@ export class OverviewComponent implements OnInit {
   private signalRService = inject(SignalRService);
   private menuService = inject(MenuService);
 
-  get projectList(): Observable<ProjectModel[]>{
-    return this.projectService.projects$;
-  }
-
   projects = <ProjectModel[]>[];
   selectedProject!: ProjectModel;
   ref!: DynamicDialogRef;
@@ -56,14 +52,21 @@ export class OverviewComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.subscribeForProjectsChanges()
     this.getProjects();
     this.signalRService.startConnection();
+  }
+
+  subscribeForProjectsChanges(){
+    this.projectService.projects$.subscribe({
+      next: (projects) => this.projects = projects
+    })
   }
 
   getProjects(){
     this.projectService.getProjects(this.pageNumber, this.pageSize).subscribe({
       next: (paginatedResponse) => {
-        this.projects = paginatedResponse.items
+        this.projects = paginatedResponse.items;
         this.totalRecords = paginatedResponse.totalItems;
         this.totalPages = paginatedResponse.totalPages;
         this.projectService.setProjects(paginatedResponse.items);
