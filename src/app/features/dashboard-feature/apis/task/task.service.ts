@@ -33,6 +33,13 @@ export class TaskService {
     this.tasksSubject.next(newTasks);
   }
 
+removeTask(taskId: string){
+   const currentTasks = this.tasksSubject.getValue();
+   const newTasks = currentTasks.filter(t => t.id !== taskId);
+
+   this.tasksSubject.next(newTasks);
+}
+
   createTask(task: TaskModel): Observable<any> {
     return this.httpClient.post<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${task.projectId}/tasks`, task);
   }
@@ -41,10 +48,8 @@ export class TaskService {
     return this.httpClient.put<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${task.projectId}/tasks`, task);
   }
 
-  deleteTask(projectId: string,  taskId: TaskModel): Observable<any> {
-    const params = new HttpHeaders();
-    params.append('taskId', taskId.toString());
-    return this.httpClient.delete<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${projectId}/tasks`, { headers: params });
+  deleteTask(projectId: string,  taskId: string): Observable<any> {
+    return this.httpClient.delete<any>(`${this.baseUrl}/${this.authService.tenantId}/projects/${projectId}/tasks/${taskId}`);
   }
 
   updateTaskStatus(projectId: string, taskId: string, status: TaskStatus): Observable<any> {
