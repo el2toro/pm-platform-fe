@@ -63,20 +63,9 @@
       font-weight: 600;
     }
 
-    .edit-task-button {
-      width: 94px;
-      height: 30px;
-      background-color: #e8fff3;
-      color: #50cd89;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: 600;
-
-      &:hover {
-        cursor: pointer;
-        opacity: 0.8;
-      }
+    .actions{
+      display: flex;
+      gap: 20px;
     }
   }
 

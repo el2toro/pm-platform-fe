@@ -11,22 +11,33 @@ import { TaskService } from '../../apis/task/task.service';
 import { UserService } from '../../../user-management-feature/services/user.service';
 import { UserModel } from '../../../user-management-feature/Models/user.mode';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
-import { Toast } from "primeng/toast";
+import { Toast } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss'],
   standalone: true,
-  imports: [TableModule, CommonModule, TaskStatusPipe, Toast],
+  imports: [
+    TableModule,
+    CommonModule,
+    TaskStatusPipe,
+    Toast,
+    ButtonModule,
+    ConfirmDialog,
+  ],
+  providers: [ConfirmationService],
 })
-
 export class ProjectDetailsComponent implements OnInit {
   private taskService = inject(TaskService);
   private dialogService = inject(DialogService);
   private router = inject(Router);
   private userService = inject(UserService);
   private customMessageService = inject(CustomMessageService);
+  private confirmationService = inject(ConfirmationService);
   ref!: DynamicDialogRef;
   tasks = <TaskModel[]>[];
   project!: ProjectModel;
@@ -38,9 +49,8 @@ export class ProjectDetailsComponent implements OnInit {
   ngOnInit() {
     this.project = history.state.project as ProjectModel;
 
-    this.subscribeToTaskUpdates();
-
     this.getTasks();
+    this.subscribeToTaskUpdates();
     this.getAssignedUser();
   }
 
@@ -51,31 +61,29 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   getTasks() {
-    this.taskService
-      .getTasks(this.project.id)
-      .subscribe({
-         next: () => this.getAssignedUser()
-        }
-      );
+    this.taskService.getTasks(this.project.id).subscribe({
+      next: () => this.getAssignedUser(),
+    });
   }
 
   //TODO: To be reviewed, it is not working as expected
-  getTaskAwner(createdBy: string) : string {
-   let fullname = '';
-   this.userService.getUserById(this.project.tenantId, createdBy).subscribe({
-      next: (user) => { 
+  getTaskAwner(createdBy: string): string {
+    let fullname = '';
+    this.userService.getUserById(this.project.tenantId, createdBy).subscribe({
+      next: (user) => {
         fullname = `${user.firstName} ${user.lastName}`;
-      }
-   });
-   return fullname;
+      },
+    });
+    return fullname;
   }
 
   openEditTaskModal(task: TaskModel) {
-    this.ref = this.dialogService.open(AddEditTaskModalComponent, {
-      width: '50%',
-      modal: true,
-      data: task,
-    }) ?? new DynamicDialogRef();
+    this.ref =
+      this.dialogService.open(AddEditTaskModalComponent, {
+        width: '50%',
+        modal: true,
+        data: task,
+      }) ?? new DynamicDialogRef();
 
     this.ref.onClose.subscribe((result) => {
       if (!result) {
@@ -89,11 +97,12 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   openCreateTaskModal() {
-    this.ref = this.dialogService.open(AddEditTaskModalComponent, {
-      width: '50%',
-      modal: true,
-      data: null,
-    }) ?? new DynamicDialogRef();
+    this.ref =
+      this.dialogService.open(AddEditTaskModalComponent, {
+        width: '50%',
+        modal: true,
+        data: null,
+      }) ?? new DynamicDialogRef();
 
     this.ref.onClose.subscribe((result) => {
       if (!result) {
@@ -103,15 +112,22 @@ export class ProjectDetailsComponent implements OnInit {
       result.projectId = this.project.id;
 
       this.taskService.createTask(result).subscribe({
-        next: () => this.customMessageService.showSuccess('Task created successfully')
+        next: () =>
+          this.customMessageService.showSuccess('Task created successfully'),
       });
     });
   }
 
-  getAssignedUser(){
-    this.userService.getUsersById(this.project.tenantId, this.project.id, this.assignedUserIds()).subscribe({
-      next: (users) => this.assignedUsers = users
-    });
+  getAssignedUser() {
+    this.userService
+      .getUsersById(
+        this.project.tenantId,
+        this.project.id,
+        this.assignedUserIds()
+      )
+      .subscribe({
+        next: (users) => (this.assignedUsers = users),
+      });
   }
 
   openTaskDetailsPage(taskId: string) {
@@ -124,7 +140,39 @@ export class ProjectDetailsComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  private  assignedUserIds() : string[]{
-    return this.tasks.filter(t => t.assignedTo !== null).map(t => t.assignedTo);
+  deleteTask(taskId: string): void {
+    this.confirmationService.confirm({
+      ///target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Confirm',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.taskService.deleteTask(this.project.id, taskId).subscribe({
+          next: () => {
+            this.customMessageService.showSuccess('Task deleted succesfully!');
+          },
+        });
+      },
+      reject: () => {
+        //this.customMessageService.showError('Rejected');
+      },
+    });
+  }
+
+  private assignedUserIds(): string[] {
+    return this.tasks
+      .filter((t) => t.assignedTo !== null)
+      .map((t) => t.assignedTo);
   }
 }

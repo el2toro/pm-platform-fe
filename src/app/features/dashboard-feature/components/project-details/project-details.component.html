@@ -1,4 +1,5 @@
-<p-toast></p-toast>
+<p-toast/>
+<p-confirmdialog />
 <div class="project-details">
   <div class="heading">
     <div class="project-info">
@@ -36,15 +37,18 @@
             <span class="label">{{ task.taskStatus | taskStatus }}</span>
           </td>
           <td>
-            <button
-              (click)="openTaskDetailsPage(task.id)"
-              class="edit-task-button"
+           <div class="actions">
+             <p-button
+             severity="danger"
+             label="Delete"
+              class="task-custom-button custom-danger-button"
+              (click)="deleteTask(task.id)"
+              icon="pi pi-trash"
             >
-              Details
-            </button>
-            <button (click)="openEditTaskModal(task)" class="edit-task-button">
-              Edit Task
-            </button>
+            </p-button>
+            <p-button label="Edit" class="task-custom-button" icon="pi pi-pencil" (click)="openEditTaskModal(task)" severity="success">
+            </p-button>
+           </div>
           </td>
         </tr>
       </ng-template>
