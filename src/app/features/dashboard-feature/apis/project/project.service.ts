@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectModel } from '../../models/project-model';
-import { BoardModel } from '../../models/board.model';
 import { AuthService } from '../../../../core/auth/services/auth.service';
 
 @Injectable({
@@ -18,13 +17,15 @@ export class ProjectService {
 
   constructor() {}
 
-  get currentProjects(): ProjectModel[] {
-    return this.projectsSubject.value;
-  }
-
   addProject(newProject: ProjectModel): void {
     const updated = [...this.projectsSubject.value, newProject];
     this.projectsSubject.next(updated);
+  }
+
+   updateProject(updatedProject: ProjectModel): void {
+    const currentProjects = this.projectsSubject.getValue();
+    const updatedProjects = currentProjects.map(project => project.id === updatedProject.id ? {...project, ...updatedProject} : project);
+    this.projectsSubject.next(updatedProjects);
   }
 
   setProjects(projects: ProjectModel[]): void {
