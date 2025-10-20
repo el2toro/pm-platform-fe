@@ -24,11 +24,11 @@ import { AuthService } from '../../../../core/auth/services/auth.service';
 })
 export class AddEditProjectModalComponent implements OnInit {
   private authService = inject(AuthService);
-
   formGroup!: FormGroup;
   formSubmitted = false;
   project!: ProjectModel;
   projectStatuses = <any[]>[];
+  buttonDisabled = true;
 
   get iSCreate() : boolean{
     return !this.project;
@@ -62,6 +62,10 @@ export class AddEditProjectModalComponent implements OnInit {
       startDate: [null],
       endDate: [null]
     })
+
+    this.formGroup.valueChanges.subscribe({
+      next: () => this.buttonDisabled = false
+    })
   }
 
    editProjectForm(){
@@ -71,6 +75,10 @@ export class AddEditProjectModalComponent implements OnInit {
       startDate: [new Date(this.project.startDate)],
       endDate: [new Date(this.project.endDate)],
       projectStatus: [this.project.projectStatus]
+    })
+
+    this.formGroup.valueChanges.subscribe({
+      next: () => this.buttonDisabled = false
     })
   }
 

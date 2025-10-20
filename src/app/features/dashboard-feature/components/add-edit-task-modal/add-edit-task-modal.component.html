@@ -20,10 +20,22 @@
     } -->
   </div>
 
+    <div class="form-field">
+    <p-floatlabel>
+      <textarea
+        class="input-field"
+        id="description"
+        pInputText
+        formControlName="description"
+      ></textarea>
+      <label for="description">Description</label>
+    </p-floatlabel>
+  </div>
+
   <div class="form-field">
     <p-floatlabel>
       <p-datepicker
-        class="input-field"
+        class="input-field custom-input-text"
         appendTo="body"
         [autofocus]="false"
         formControlName="dueDate"
@@ -204,7 +216,9 @@
       (click)="onClose()"
     ></button>
     <button
+    [disabled]="buttonDisabled"
       pButton
+      severity="success"
       label="{{ iSCreate ? 'Create' : 'Save' }}"
       (click)="onSaveOrCreate()"
     ></button>

@@ -31,6 +31,7 @@ export class AddEditTaskModalComponent implements OnInit {
   formSubmitted = false;
   task = new TaskModel();
   taskStatuses = <any[]>[];
+  buttonDisabled = true;
 
   get iSCreate() : boolean{
     return this.config.data as TaskModel === null;
@@ -76,6 +77,10 @@ export class AddEditTaskModalComponent implements OnInit {
       commentContent: [null]
 
     })
+
+    this.formGroup.valueChanges.subscribe({
+      next: () => this.buttonDisabled = false
+    })
   }
 
    editTaskForm(){
@@ -86,25 +91,25 @@ export class AddEditTaskModalComponent implements OnInit {
       dueDate: [new Date(this.task.dueDate)],
       taskStatus: [this.task.taskStatus],
       subtasks: this.formBuilder
-          .array(this.task.subtasks?.map(st => this.formBuilder
-          .group({id: st.id,  title: st.title , isComplited: st.isCompleted}))),
+          .array(this.task.subtasks?.map(subtask => this.formBuilder
+          .group({...subtask}))),
 
       comments: this.formBuilder
           .array(this.task.comments?.map(comment => this.formBuilder
-          .group({content: comment.content})))
+          .group({...comment})))
     });
 
-    //TODO: the subtasks are not updated in database, at the backend it arrives ok
     this.formGroup.controls['subtasks'].valueChanges.subscribe(value => {
       this.task.subtasks = value;
-      console.log('subtasks: ', this.task.subtasks);
      });
 
       this.formGroup.controls['comments'].valueChanges.subscribe(value => {
       this.task.comments = value;
-
-      console.log('comments: ', this.task.comments);
      });
+
+    this.formGroup.valueChanges.subscribe({
+      next: () => this.buttonDisabled = false
+    }) 
   }
 
   onClose(){
@@ -124,8 +129,6 @@ export class AddEditTaskModalComponent implements OnInit {
   mapFormToTaskModel(){
      if(this.iSCreate){
        this.task = new TaskModel();
-        //this.task.comments = this.comments;
-       // this.task.subtasks = this.subtasks;
      }
 
     this.task.taskStatus = this.formGroup.get(['taskStatus'])?.value;
