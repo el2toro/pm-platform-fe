@@ -4,7 +4,7 @@
 }
 
 .p-menu {
-  background-color: transparent !important;
+ // background-color: transparent !important;
   border: none !important;
 }
 
@@ -110,6 +110,24 @@
   margin-bottom: 10px;
 }
 
+.task-custom-button{
+  .p-button{
+    height: 30px;
+    background-color: #50CD89;
+  }
+
+  .p-button-icon {
+    font-size: 10px;
+    font-weight: 600;
+  }
+}
+
+.custom-danger-button{
+  .p-button{
+    background-color: #e75e5e;
+  }
+}
+
 .custom-button {
   .p-button-icon {
     font-size: 10px;
@@ -184,6 +202,12 @@
   .p-menu-list {
     gap: 30px;
   }
+}
+
+.custom-input-text{
+  .p-inputtext {
+  width: 100%;
+}
 }
 
 /* ✅ Global scrollbar styling */

@@ -28,6 +28,7 @@ export class AddEditUserDialogComponent implements OnInit {
   private dynamicDialogConfig = inject(DynamicDialogConfig);
   private user: UserModel = this.dynamicDialogConfig.data.user;
   form!: FormGroup;
+  buttonDisabled = true;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -43,6 +44,10 @@ export class AddEditUserDialogComponent implements OnInit {
       phoneNumber: [this.user.phoneNumber],
       birthDate: [this.user.birthDate],
     });
+
+    this.form.valueChanges.subscribe(() => {
+      this.buttonDisabled = false;
+    })
   }
 
   save() {

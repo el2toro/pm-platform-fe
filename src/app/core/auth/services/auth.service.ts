@@ -70,10 +70,10 @@ constructor() { }
     );
   }
 
-  logout(tenantId: string) : Observable<any> {
+  logout() : Observable<any> {
     const refreshToken = this.refreshToken$.value;
     this.setTokens(null, null);
-    return this.http.post<any>(`${this.baseUrl}/logout`, {refreshToken: refreshToken, tenantId: tenantId}, { withCredentials: true });
+    return this.http.post<any>(`${this.baseUrl}/logout`, {refreshToken: refreshToken, tenantId: this.tenantId}, { withCredentials: true });
   }
 
   private setTokens(refreshToken: string | null, accessToken: string | null): void{

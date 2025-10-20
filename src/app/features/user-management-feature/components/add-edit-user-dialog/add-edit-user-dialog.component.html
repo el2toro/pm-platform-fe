@@ -20,7 +20,7 @@
     <label for="birthDate">Date Of Birth</label>
   </p-float-label>
 <div class="dialog-actions">
-  <button (click)="cancel()" pButton label="Cancel" [disabled]="form.invalid"></button>
-  <button (click)="save()" pButton label="Save" [disabled]="form.invalid && !form.touched" severity="success"></button>
+  <button (click)="cancel()" pButton label="Cancel" [disabled]="form.invalid" severity="secondary"></button>
+  <button (click)="save()" pButton label="Save" [disabled]="buttonDisabled" severity="success"></button>
 </div>
 </form>

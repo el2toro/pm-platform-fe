@@ -35,6 +35,7 @@ export class MenuComponent implements OnInit {
   private router = inject(Router);
 
   items: MenuItem[] | undefined;
+  profileMenuItems: MenuItem[] | undefined;
   collapsedMenuItems: MenuItem[] | undefined;
   isCollapsed!: boolean;
   activeLabel: any;
@@ -204,6 +205,28 @@ export class MenuComponent implements OnInit {
         ],
       },
     ];
+
+    this.profileMenuItems = [
+            {
+                items: [
+                    {
+                        label: 'Profile',
+                        icon: 'pi pi-user',
+                        command: () => this.goToProfile()
+                    },
+                    {
+                        label: 'Logout',
+                        icon: 'pi pi-sign-out',
+                        command: () => this.logout()
+                    }
+                ]
+            }
+        ];
+  }
+
+  logout(){
+    this.authService.logout();
+     this.router.navigate(['/login']);
   }
 
   goToProfile() {

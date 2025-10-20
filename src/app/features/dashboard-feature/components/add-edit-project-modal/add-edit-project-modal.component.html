@@ -39,7 +39,7 @@
   <div class="form-field">
     <p-floatlabel>
       <p-datepicker
-        class="input-field"
+        class="input-field custom-input-text"
         appendTo="body"
         [autofocus]="false"
         formControlName="startDate"
@@ -51,7 +51,7 @@
   <div class="form-field">
     <p-floatlabel>
       <p-datepicker
-        class="input-field"
+        class="input-field custom-input-text"
         appendTo="body"
         [autofocus]="false"
         formControlName="endDate"
@@ -79,12 +79,15 @@
   
   <div class="actions">
     <button
+    severity="secondary"
       pButton
       label="Cancel"
       severity="secondary"
       (click)="onClose()"
     ></button>
     <button
+    severity="success"
+    [disabled]="buttonDisabled"
       pButton
       label="{{ iSCreate ? 'Create' : 'Save' }}"
       (click)="onSaveOrCreate()"

@@ -1,7 +1,8 @@
 export class CommentModel {
+    id!: string;
     content!: string;
     createdAt!: string;
-    createdBy!: string;
-    userId!: string;
+    updatedAt!: string;
+    comentedBy!: string;
     taskId!: string;
 }

@@ -10,6 +10,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AddEditUserDialogComponent } from '../add-edit-user-dialog/add-edit-user-dialog.component';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
 import { AuthService } from '../../../../core/auth/services/auth.service';
+import { Toast } from "primeng/toast";
 
 @Component({
   selector: 'app-user-management',
@@ -21,7 +22,8 @@ import { AuthService } from '../../../../core/auth/services/auth.service';
     IconFieldModule,
     InputIconModule,
     ButtonModule,
-  ],
+    Toast
+],
   providers: [DynamicDialogRef]
 })
 export class UserManagementFeatureComponent implements OnInit {
@@ -79,7 +81,11 @@ export class UserManagementFeatureComponent implements OnInit {
         updatedUser.tenantId = this.authService.tenantId
 
         this.userService.updateUser(updatedUser).subscribe({
-          next: () =>this.customMessageService.showSuccess('User updated successfully')
+          next: (updatedUser) => {
+            const index = this.users.findIndex(u => u.id === updatedUser.id);
+            this.users[index] = updatedUser;
+            this.customMessageService.showSuccess('User updated successfully')
+          }
         });
       },
     });

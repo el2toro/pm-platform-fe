@@ -39,7 +39,7 @@ export class UserService {
     );
   }
 
-  updateUser(user: UserModel): Observable<any>{
-   return this.http.put(`${this.baseUrl}/${this.tenantId}/users`, user);
+  updateUser(user: UserModel): Observable<UserModel>{
+   return this.http.put<UserModel>(`${this.baseUrl}/${this.tenantId}/users`, user);
   }
 }

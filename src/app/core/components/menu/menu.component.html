@@ -21,7 +21,8 @@
   @if (!isCollapsed) {
   <div class="sticky">
     <div class="profile">
-      <div class="image" (click)="goToProfile()">
+      <p-menu #menu [model]="profileMenuItems" [popup]="true" />
+      <div class="image" (click)="menu.toggle($event)">
         <img src="assets/images/{{ user?.image }}" alt="img" />
       </div>
       <div class="title">
@@ -42,7 +43,7 @@
 
   @if (isCollapsed) {
     <div class="collapsed-menu">
-        <p-menu [model]="collapsedMenuItems"></p-menu> 
+        <p-menu [style]="{'background-color': 'transparent'}" [model]="collapsedMenuItems"></p-menu> 
     </div>
 
     <div class="profile-image" (click)="goToProfile()">
