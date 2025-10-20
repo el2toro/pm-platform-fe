@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="profile">
   <div class="heading">
     <h1>Personal Information</h1>
@@ -69,23 +70,23 @@
         <p-floatlabel class="form-field">
           <input
             class="input-field"
-            id="firstName"
+            id="birthDate"
             pInputText
             type="text"
-            formControlName="firstName"
+            formControlName="birthDate"
           />
-          <label for="firstName">First Name</label>
+          <label for="birthDate">Date Of Birth</label>
         </p-floatlabel>
 
         <p-floatlabel class="form-field">
           <input
             class="input-field"
-            id="email"
+            id="address"
             pInputText
-            type="email"
-            formControlName="email"
+            type="address"
+            formControlName="address"
           />
-          <label for="email">Email</label>
+          <label for="address">Address</label>
         </p-floatlabel>
 
         <p-floatlabel class="form-field">
@@ -113,8 +114,8 @@
       </div>
     </form>
     <div class="actions">
-      <button pButton label="Cancel" severity="danger"></button>
-      <button pButton label="Save" severity="success"></button>  
+      <button (click)="cancel()" pButton label="Cancel" severity="danger"></button>
+      <button (click)="save()" pButton label="Save" severity="success" [disabled]="buttonDisabled"></button>  
     </div>
   </div>
 </div>
