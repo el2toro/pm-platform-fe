@@ -29,7 +29,7 @@ export const routes: Routes = [
     },
     { path: 'project-details', component: ProjectDetailsComponent },
     { path: 'reports', component: InsightAndReportFeatureComponent },
-    { path: 'board', component: KanbanBoardFeatureComponent },
+    { path: 'projects/:projectId/boards/:boardId', component: KanbanBoardFeatureComponent },
     { path: 'task-details/:taskId', component: TaskDetailsPageComponent },
     { path: 'team-management', component: UserManagementFeatureComponent},
     { path: 'profile', component: ProfileFeatureComponent},
