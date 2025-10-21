@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { UserModel } from '../../auth/models/user.model';
 import { MenuService } from '../../services/menu.service';
 import { MenuModule } from 'primeng/menu';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -34,29 +35,39 @@ export class MenuComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  items: MenuItem[] | undefined;
+  items!: MenuItem[];
   profileMenuItems: MenuItem[] | undefined;
   collapsedMenuItems: MenuItem[] | undefined;
   isCollapsed!: boolean;
   activeLabel: any;
-  isMenuDisable = this.menuService.menuItemDisabled;
 
   get user() : UserModel | null{
     return this.authService.loggedInUser;
   }
+
+  get isMenuItemVisible(): boolean{
+    return this.menuService.menuItemDisabled;
+  }
+
+ get menuItems(): MenuItem[]{
+  return this.menuService.getMenuItem
+ }
 
   constructor() {}
  
 
   ngOnInit() {
     this.initMenuItems();
+    this.getMainMenuItems();
+    this.menuService.setMenuItems(this.items);
   }
 
-  initMenuItems() {
-    this.items = [
+  getMainMenuItems(){
+   return this.items = [
       {
         label: 'Dashboards',
         icon: 'pi pi-th-large',
+        visible: true,
         items: [
           {
             label: 'Dashboard',
@@ -91,18 +102,18 @@ export class MenuComponent implements OnInit {
       {
         label: 'Boards',
         icon: 'pi pi-th-large',    
-        disabled: false,  
+        visible: this.isMenuItemVisible,  
         items: [
           {
             label: 'All Boards',
-            routerLink: 'dashboard',
+            routerLink: 'boards',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon p-highlight',
             command: (menuItem) => this.setActive(menuItem),
           },
           {
             label: 'Board',
-            routerLink: 'board',
+            routerLink: ['board'],
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem),
@@ -119,6 +130,7 @@ export class MenuComponent implements OnInit {
       {
         label: 'Pages',
         icon: 'pi pi-file',
+        visible: true,
         items: [
           {
             label: 'Profile',
@@ -138,6 +150,7 @@ export class MenuComponent implements OnInit {
       },
       {
         label: 'Tasks',
+        visible: true,
         icon: 'pi pi-list-check',
         items: [
           {
@@ -159,6 +172,7 @@ export class MenuComponent implements OnInit {
       {
         label: 'Reports & Insights',
         icon: 'pi pi-chart-bar',
+        visible: true,
         items: [
           {
             label: 'Reports',
@@ -177,7 +191,9 @@ export class MenuComponent implements OnInit {
         ],
       },
     ];
+  }
 
+  initMenuItems() {
     this.collapsedMenuItems = [
       {
         items: [
@@ -238,6 +254,9 @@ export class MenuComponent implements OnInit {
   }
 
   setActive(event: MenuItemCommandEvent) {
+
+    console.log('menuitem: ', event.item)
+
     this.activeLabel = event.item?.label ?? null;
 
     this.menuService.setActiveMenuTitle(this.activeLabel);
