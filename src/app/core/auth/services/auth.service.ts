@@ -35,6 +35,14 @@ constructor() { }
     return !!this.accessToken$.value;
   }
 
+  googleLogin(response: any){
+     this.http.post('https://localhost:5054/auth-service/login/google', {
+    credential: response.credential
+  }).subscribe(result => {
+    console.log(result);
+  });
+  }
+
   login(loginRequest: LoginRequestModel): Observable<LoginResponseModel> {
    return  this.http.post<LoginResponseModel>(`${this.baseUrl}/login`, loginRequest, { withCredentials: true })
      .pipe(
