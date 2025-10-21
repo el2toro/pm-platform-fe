@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class BoardService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://localhost:5054/board-service/project';
+  private baseUrl = 'https://localhost:5054/board-service/projects';
 
   constructor() {}
 
