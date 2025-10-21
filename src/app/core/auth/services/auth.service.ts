@@ -35,12 +35,23 @@ constructor() { }
     return !!this.accessToken$.value;
   }
 
-  googleLogin(response: any){
-     this.http.post('https://localhost:5054/auth-service/login/google', {
-    credential: response.credential
-  }).subscribe(result => {
-    console.log(result);
-  });
+  googleLogin(googleResponse: any): Observable<LoginResponseModel>{
+   return  this.http.post<LoginResponseModel>('https://localhost:5054/auth-service/login/google', {
+    credential: googleResponse.credential
+  }).pipe(
+    tap((response) => {
+          this.setTokens(response.refreshToken, response.token);
+        //TODO: add proper mapping
+        this.loggedInUser$.next({
+          id: response.userId, 
+          tenantId: response.tenantId, 
+          firstName: response.firstName, 
+          lastName: response.lastName, 
+          email: response.email, 
+          image: 'avatar.jpg',
+          fullName: response.firstName + ' ' + response.lastName
+        });
+    }))
   }
 
   login(loginRequest: LoginRequestModel): Observable<LoginResponseModel> {
