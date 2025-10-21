@@ -48,16 +48,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.buildForm();
-
-    // // Initialize the callback handler for Google sign-in
-    (window as any).handleCredentialResponse = (response: any) => {
-      // response.credential is the Google JWT
-      this.authService.googleLogin(response);
-    };
   }
 
   ngAfterViewInit(): void {
-    this,this.renderGoogleButton();
+    this.renderGoogleButton();
   }
 
   buildForm() {
@@ -124,6 +118,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
   handleCredentialResponse(response: any) {
     console.log('Google Credential:', response.credential);
     // Here you can POST the credential to your backend
-    this.router.navigate(['/dashboard'])
+        this.authService.googleLogin(response).subscribe({
+          next: () => this.router.navigate(['/dashboard'])
+        });
   }
 }
