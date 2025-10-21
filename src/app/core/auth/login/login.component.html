@@ -36,14 +36,17 @@
       <hr />
     </div>
 
-    <button
-      class="google-signin-button"
-      pButton
-      (click)="signInWithGoogle()"
-      [disabled]="loading"
-      icon="pi pi-google"
-      label="Sign in with Google"
-    ></button>
+    <!-- This is the visible Google button -->
+<div class="google-signin-button" [class.disabled]="loading">
+  <div id="googleButton"></div>
+</div>
+
+ <!-- Loads Google Identity -->
+<div id="g_id_onload"
+     data-client_id="425629473287-qgkfafn34j9o649p81p287shogmiturc.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse"
+     data-auto_prompt="false">
+</div>
 
     <a (click)="goToRegister()" class="sign-up"
       ><span>No account?</span> <span>Sign Up -></span></a
