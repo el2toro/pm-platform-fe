@@ -14,6 +14,8 @@ import { DialogModule } from 'primeng/dialog';
 import { TaskStatus } from '../../enums/task-status.enum';
 import { CommonModule, formatDate } from '@angular/common';
 import { TableModule } from "primeng/table";
+import { UserModel } from '../../../user-management-feature/Models/user.mode';
+import { UserService } from '../../../user-management-feature/services/user.service';
 
 @Component({
   selector: 'app-add-edit-task-modal',
@@ -23,14 +25,15 @@ import { TableModule } from "primeng/table";
   imports: [CommonModule, DialogModule, InputTextModule, ButtonModule, MessageModule, ReactiveFormsModule, InputText, DatePickerModule, Select, FloatLabelModule, TextareaModule, FloatLabel, TableModule, FormsModule]
 })
 export class AddEditTaskModalComponent implements OnInit {
-  private messageService = inject(MessageService);
   private ref = inject(DynamicDialogRef);
   private config = inject(DynamicDialogConfig);
   private formBuilder = inject(FormBuilder);
+  private userService = inject(UserService);
   formGroup!: FormGroup;
   formSubmitted = false;
   task = new TaskModel();
   taskStatuses = <any[]>[];
+  taskAssignedToOptions = <UserModel[]>[]
   buttonDisabled = true;
 
   get iSCreate() : boolean{
@@ -48,10 +51,9 @@ export class AddEditTaskModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-   this.mapTaskStatuses();
+    this.getUsers();
+    this.mapTaskStatuses();
     this.openModal();
-
-     // this.formGroup.get(['subtaskTitle'])?.disable();
   }
 
   openModal(){
@@ -65,11 +67,18 @@ export class AddEditTaskModalComponent implements OnInit {
         return control?.invalid && (control.touched || this.formSubmitted);
     }
 
+    getUsers(){
+      this.userService.getUsers().subscribe({
+        next: (users) => this.taskAssignedToOptions = users
+      })
+    }
+
   createTaskForm(){
     this.formGroup = this.formBuilder.group({
       title: [null],
       description: [null],
       dueDate: [null],
+      assignedTo:[null],
       taskStatus: [null],
       subtasks: this.formBuilder.array([]),
       subtaskTitle: [null],
@@ -90,6 +99,7 @@ export class AddEditTaskModalComponent implements OnInit {
       description: [this.task.description],
       dueDate: [new Date(this.task.dueDate)],
       taskStatus: [this.task.taskStatus],
+      assignedTo: [this.task.assignedTo],
       subtasks: this.formBuilder
           .array(this.task.subtasks?.map(subtask => this.formBuilder
           .group({...subtask}))),
@@ -132,6 +142,7 @@ export class AddEditTaskModalComponent implements OnInit {
      }
 
     this.task.taskStatus = this.formGroup.get(['taskStatus'])?.value;
+    this.task.assignedTo = this.formGroup.get(['assignedTo'])?.value;
     this.task.title = this.formGroup.get(['title'])?.value;
     this.task.description = this.formGroup.get(['description'])?.value;
     this.task.dueDate = formatDate(this.formGroup.get('dueDate')?.value, 'yyyy-MM-dd', 'en-US');

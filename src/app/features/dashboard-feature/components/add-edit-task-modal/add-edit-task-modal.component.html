@@ -61,6 +61,21 @@
   </div>
   }
 
+   <div class="form-field">
+    <p-floatlabel>
+      <p-select
+        [autofocus]="false"
+        class="input-field"
+        appendTo="body"
+        [options]="taskAssignedToOptions"
+        formControlName="assignedTo"
+        optionLabel="fullName"
+        optionValue="id"
+      />
+      <label for="assignedTo">Assigned to</label>
+    </p-floatlabel>
+  </div>
+
   <div class="card">
     @if (iSCreate) {
 
