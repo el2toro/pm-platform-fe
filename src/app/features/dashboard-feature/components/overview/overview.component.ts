@@ -13,7 +13,6 @@ import { AddEditProjectModalComponent } from '../add-edit-project-modal/add-edit
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { CustomMessageService } from '../../../../../shared/services/custom-message.service';
-import { Observable } from 'rxjs';
 import { SignalRService } from '../../../../../shared/services/signalR/signalR.service';
 import { MenuService } from '../../../../core/services/menu.service';
 
@@ -148,7 +147,6 @@ export class OverviewComponent implements OnInit {
    if(event.data === true) { return; }
   // this.router.navigate(['/board'],  { state: { project: selectedProject } });
 
-    this.menuService.setMenuItemDisabled(false);
     this.router.navigate(['/project-details'], { state: { project: selectedProject } });
   }
 

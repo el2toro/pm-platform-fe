@@ -15,6 +15,7 @@ import { Toast } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { MenuService } from '../../../../core/services/menu.service';
 
 @Component({
   selector: 'app-project-details',
@@ -38,16 +39,20 @@ export class ProjectDetailsComponent implements OnInit {
   private userService = inject(UserService);
   private customMessageService = inject(CustomMessageService);
   private confirmationService = inject(ConfirmationService);
+  private menuService = inject(MenuService);
   ref!: DynamicDialogRef;
   tasks = <TaskModel[]>[];
   project!: ProjectModel;
   assignedUsers = <UserModel[]>[];
-  TaskCreatedByUser = new UserModel();
+  taskCreatedByUser = new UserModel();
 
   constructor() {}
 
   ngOnInit() {
     this.project = history.state.project as ProjectModel;
+
+    //TODO: get board id for second parameter
+    this.menuService.setMenuItemVisible(false, this.project.id, this.project.id);
 
     this.getTasks();
     this.subscribeToTaskUpdates();
