@@ -18,6 +18,7 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { ProjectModel } from '../dashboard-feature/models/project-model';
+import { ActivatedRoute } from '@angular/router';
 
 interface CreateEditTaskModalDto {
   isCreate: boolean;
@@ -46,12 +47,14 @@ export class KanbanBoardFeatureComponent implements OnInit {
   private dialogService = inject(DialogService);
   private customMessageService = inject(CustomMessageService);
   private boardService = inject(BoardService);
+  private activatedRoute = inject(ActivatedRoute);
   private selectedProject!: ProjectModel;
   items: MenuItem[] | undefined;
 
   board = new BoardModel();
   columns = <ColumnModel[]>[];
   tasks = <TaskModel[]>[];
+  projectId!: string;
   
 
   draggedItem?: TaskModel;
@@ -61,7 +64,9 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
   ngOnInit() {
     this.selectedProject = history.state.project as ProjectModel;
-
+     this.activatedRoute.paramMap.subscribe(params => {
+      this.projectId = params.get('projectId')!;
+    });
     this.taskService.tasks$.subscribe((tasks) => {
       (this.tasks = tasks), this.mapTasksToColumn();
     });
@@ -96,14 +101,14 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
   getBoard() {
     this.boardService
-      .getBoard(
-        this.selectedProject.id,
-        '457D38D1-FFDA-4253-80CF-5DE71C171D37'
-      )
+    //TODO:  remove this.projectId and add boardId
+      .getBoard(this.projectId, this.projectId)
       .subscribe({
-        next: (board) => {
+        next: (board) => {      
           this.board = board;
           this.columns = board.columns;
+
+          console.log(this.board)
           this.mapTasksToColumn();
         },
         error: (error) =>
@@ -115,7 +120,7 @@ export class KanbanBoardFeatureComponent implements OnInit {
 
   getTasks() {
     this.taskService
-      .getTasks(this.selectedProject.id)
+      .getTasks(this.projectId)
       .subscribe();
   }
 
