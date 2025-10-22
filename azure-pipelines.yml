@@ -25,7 +25,7 @@ stages:
       displayName: 'Install Node.js 20.x'
 
     - script: |
-        cd pmplatform-fe/
+        cd pm-platform-fe/
         npm install -g @angular/cli
         npm install
         ng build --configuration=production
@@ -37,11 +37,11 @@ stages:
         containerRegistry: 'dockerHubServiceConnection'
         repository: '$(imageName)'
         command: 'BuildAndPush'
-        Dockerfile: '$(Build.SourcesDirectory)/pmplatform-fe/Dockerfile'
+        Dockerfile: '$(Build.SourcesDirectory)/pm-platform-fe/Dockerfile'
         tags: |
           $(Build.BuildId)
           latest
-        buildContext: '$(Build.SourcesDirectory)/pmplatform-fe'
+        buildContext: '$(Build.SourcesDirectory)/pm-platform-fe'
 
 # -----------------------------
 # 🚀 DEPLOYMENT STAGES (Optional)
