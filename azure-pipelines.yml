@@ -37,8 +37,8 @@ stages:
         containerRegistry: 'dockerHubServiceConnection'
         repository: '$(imageName)'
         command: 'BuildAndPush'
-        Dockerfile: 'pm-platform-fe/Dockerfile'
-        buildContext: 'pm-platform-fe'
+        Dockerfile: '$(Build.SourcesDirectory)/pm-platform-fe/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)/pm-platform-fe'
         tags: |
           $(Build.BuildId)
           latest
