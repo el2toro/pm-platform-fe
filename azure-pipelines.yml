@@ -96,4 +96,5 @@ stages:
 
                   # Deploy Docker image to Web App
                   Set-AzWebApp -Name $appName -ResourceGroupName $resourceGroup -ContainerImageName $imageName
+                   azurePowerShellVersion: 'LatestVersion'
                 
