@@ -37,8 +37,8 @@ stages:
         containerRegistry: 'dockerHubServiceConnection'
         repository: '$(imageName)'
         command: 'BuildAndPush'
-        Dockerfile: 'pm-platform-fe/Dockerfile'
-        buildContext: 'pm-platform-fe'
+        Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        buildContext: '$(Build.SourcesDirectory)'
         tags: |
           $(Build.BuildId)
           latest
@@ -82,5 +82,19 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:
-          - script: echo "Deploying Docker Image to Production"
+          steps:         
+            - task: AzurePowerShell@5
+              displayName: 'Deploy Angular Docker Image to Azure Web App'
+              inputs:
+               azureSubscription: 'resourceManagerServiceConnection'
+               ScriptType: 'InlineScript'
+               Inline: |
+                  # Set variables
+                  $appName = "pm-platform-fe"
+                  $resourceGroup = "pm-platform-rg"
+                  $imageName = "$(imageName):latest"
+
+                  # Deploy Docker image to Web App
+                  Set-AzWebApp -Name $appName -ResourceGroupName $resourceGroup -ContainerImageName $imageName
+               azurePowerShellVersion: 'LatestVersion'
+                
