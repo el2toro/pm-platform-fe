@@ -1,0 +1,22 @@
+ .tasks {
+    padding: 20px;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f1417;
+      margin-bottom: 24px;
+    }
+
+    .label {
+      height: 32px;
+      width: 145px;
+      padding: 8px 20px;
+      background-color: #f0f2f5;
+      color: #0f1417;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-wrap: nowrap;
+    }
+  }
