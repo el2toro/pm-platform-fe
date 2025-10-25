@@ -66,4 +66,20 @@ removeTask(taskId: string){
       map(tasks => this.tasksSubject.next(tasks)) 
     );
   }
+
+  getAllTasks(){
+    return this.httpClient.get<TaskModel[]>(`${this.baseUrl}/${this.authService.tenantId}/tasks`)
+    .pipe(
+      map(tasks => this.tasksSubject.next(tasks)) 
+    );
+  }
+
+  getMyTasks(){
+    return this.httpClient.get<TaskModel[]>(`${this.baseUrl}/${this.authService.tenantId}/tasks/users/${this.authService.loggedInUser?.id}`)
+    .pipe(
+      map(tasks => this.tasksSubject.next(tasks)) 
+    );
+  }
 }
+
+
