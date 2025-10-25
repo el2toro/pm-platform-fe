@@ -40,6 +40,9 @@ export class TaskStatusPipe implements PipeTransform {
       case TaskStatus.Done:
         taskStatus = TaskStatus[TaskStatus.Done];
         break;
+       
+      default:
+        taskStatus = TaskStatus[TaskStatus.Backlog];
     }
 
     return taskStatus.split(/(?=[A-Z])/).join(' '); // split when an uppercase encoutered
