@@ -5,6 +5,7 @@ import { LoginResponseModel as LoginResponseModel } from '../models/login-respon
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { UserModel } from '../models/user.model';
 import { RegisterRequestModel } from '../models/register-request.model';
+import { enviroment } from '../../../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ constructor() { }
  private refreshToken$ = new BehaviorSubject<string | null>(null);
  private loggedInUser$ = new BehaviorSubject<UserModel | null>(null);
  private http = inject(HttpClient);
-  private baseUrl = 'https://localhost:5054/auth-service';
+  private baseUrl = `${enviroment.apiUrl}/auth-service`;
 
     /** Keep access token only in memory */
   get accessToken(): string | null {
@@ -36,7 +37,7 @@ constructor() { }
   }
 
   googleLogin(googleResponse: any): Observable<LoginResponseModel>{
-   return  this.http.post<LoginResponseModel>('https://localhost:5054/auth-service/login/google', {
+   return  this.http.post<LoginResponseModel>(`${this.baseUrl}/login/google`, {
     credential: googleResponse.credential
   }).pipe(
     tap((response) => {

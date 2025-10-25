@@ -119,8 +119,8 @@ export class MenuComponent implements OnInit {
             command: (menuItem) => this.setActive(menuItem),
           },
           {
-            label: 'Backlogs',
-            routerLink: '/team-management',
+            label: 'Backlog',
+            routerLink: '/backlog',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem)
@@ -155,14 +155,14 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'All Tasks',
-            routerLink: '/tasks',
+            routerLink: '/backlog',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem)
           },
           {
             label: 'My Tasks',
-            routerLink: '/tasks/mine',
+            routerLink: '/my-tasks',
             icon: 'pi pi-circle-fill',
             styleClass: 'custom-icon',
             command: (menuItem) => this.setActive(menuItem)

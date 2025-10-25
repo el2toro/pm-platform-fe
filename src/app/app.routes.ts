@@ -10,6 +10,8 @@ import { TaskDetailsPageComponent } from './features/dashboard-feature/pages/tas
 import { RegisterComponent } from './core/auth/register/register.component';
 import { ProfileFeatureComponent } from './features/profile-feature/profile-feature.component';
 import { UserManagementFeatureComponent } from './features/user-management-feature/components/user-management/user-management.component';
+import { AllTasksComponent } from './features/dashboard-feature/components/all-tasks/all-tasks.component';
+import { MyTasksComponent } from './features/dashboard-feature/components/my-tasks/my-tasks.component';
 
 export const routes: Routes = [
     { 
@@ -31,6 +33,8 @@ export const routes: Routes = [
     { path: 'reports', component: InsightAndReportFeatureComponent },
     { path: 'projects/:projectId/boards/:boardId', component: KanbanBoardFeatureComponent },
     { path: 'task-details/:taskId', component: TaskDetailsPageComponent },
+    { path: 'backlog', component: AllTasksComponent },
+    { path: 'my-tasks', component: MyTasksComponent },
     { path: 'team-management', component: UserManagementFeatureComponent},
     { path: 'profile', component: ProfileFeatureComponent},
     { path: '**', redirectTo: 'login' }
