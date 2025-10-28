@@ -1,27 +1,41 @@
-# PmPlatformFe
+# 🧩 Project Management Platform
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.19.
+A a modern, cloud-ready Project Management System built with Angular and .NET 8 microservices architecture.
+It allows teams to collaborate efficiently through boards, tasks, and real-time notifications, while maintaining a scalable and secure foundation.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 📸 Screenshots
+#### 🔐 Authentication
+![Login](Docs/Images/login.png) 
 
-## Code scaffolding
+#### 🏠 Dashboard
+![Dashboard](Docs/Images/projects.png) 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### 🗂️ Kanban  Board
+![Board](Docs/Images/board.png) 
 
-## Build
+#### 📋 Tasks
+![Task](Docs/Images/tasks.png) 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+#### 👤 Profile
+![Task](Docs/Images/profile.png) 
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Local Setup
+```bash
+# Clone the backend repo
+git clone https://github.com/yourusername/project-management-platform.git
+cd project-management-platform
 
-## Running end-to-end tests
+# Run services
+docker-compose up --build
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+# Run frontend
+git https://github.com/el2toro/pm-platform-fe.git
+cd pm-platform-fe
+npm install
+ng serve
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```

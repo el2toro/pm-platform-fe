@@ -23,7 +23,7 @@ constructor() { }
   get accessToken(): string | null {
     return this.accessToken$.value;
   }
-
+  
   get loggedInUser(): UserModel | null {
     return this.loggedInUser$.value;
   }
