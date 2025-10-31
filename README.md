@@ -26,8 +26,8 @@ It allows teams to collaborate efficiently through boards, tasks, and real-time 
 ### Local Setup
 ```bash
 # Clone the backend repo
-git clone https://github.com/yourusername/project-management-platform.git
-cd project-management-platform
+git clone https://github.com/el2toro/PMPlatform.git
+cd PMPlatform
 
 # Run services
 docker-compose up --build
